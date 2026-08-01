@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" width="96" height="96">
-  <title>Askstead logo</title>
-  <!-- speech bubble plot -->
-  <path d="M16 14 h64 a8 8 0 0 1 8 8 v40 a8 8 0 0 1 -8 8 H44 l-14 14 v-14 H16 a8 8 0 0 1 -8-8 V22 a8 8 0 0 1 8-8 z" fill="#1F6E63"/>
-  <path d="M16 14 h64 a8 8 0 0 1 8 8 v40 a8 8 0 0 1 -8 8 H44 l-14 14 v-14 H16 a8 8 0 0 1 -8-8 V22 a8 8 0 0 1 8-8 z" fill="none" stroke="#2B2118" stroke-opacity=".15" stroke-width="2"/>
-  <!-- star seed -->
-  <path d="M48 24 l5.9 12 13.2 1.9 -9.6 9.3 2.3 13.1 -11.8-6.2 -11.8 6.2 2.3-13.1 -9.6-9.3 13.2-1.9 z" fill="#D9A441" stroke="#FAF6EF" stroke-width="2.5" stroke-linejoin="round"/>
-</svg>
