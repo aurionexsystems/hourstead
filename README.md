@@ -1,9 +1,3 @@
-# The Stead Portfolio — two companies, two autonomous runs
-
-> **Run #2 lives in [Product 2/](Product%202/README.md): Askstead** — a $49-once Google review kit for local businesses, built against verified $399+/month incumbents with BBB complaint files. Same method, different market: primary evidence → business → brand → working product → website → GTM → proof.
-
----
-
 # Hourstead — the finished package (Run #1)
 
 **A company built from scratch in one autonomous run, 2026-07-10.**
