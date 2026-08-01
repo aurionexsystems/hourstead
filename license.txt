@@ -1,0 +1,65 @@
+HOURSTEAD LICENSE
+Version 1.1 — 2026-07-10
+
+Copyright (c) 2026 Hourstead ("the Licensor"). All rights reserved except
+as granted below.
+
+This license covers the Hourstead application (hourstead.html), the
+Hourstead website, brand assets, and accompanying documentation
+(together, "the Software"). It does not cover your data: stead files and
+anything you create with the Software are yours entirely, in every
+jurisdiction, forever. That's the point of the product.
+
+1. FREE TIER
+   You may use the Software free of charge, for personal or commercial
+   purposes, on any number of your own devices, subject to the built-in
+   free-tier limits (currently 3 active clients and a "Made with
+   Hourstead" line on invoices). No account or registration is required
+   or offered.
+
+2. FOUNDING LICENSE (PAID)
+   A Founding License is granted per person, upon one-time payment of
+   the listed price ($79 at the time of writing). It entitles that
+   person to:
+   a. use of the Software without free-tier limits;
+   b. all 1.x updates at no further charge;
+   c. priority email support.
+   A new major version (2.0) may require a new license; your 1.x license
+   never expires and never converts into a subscription.
+
+3. SOURCE VISIBILITY
+   The Software ships as readable source. You may inspect it, and you
+   may modify your own copy for your own use. This is not an open-source
+   license: you may not redistribute the Software or modified versions
+   of it, sell it, sublicense it, or offer it as a service to others.
+
+4. LICENSE KEYS
+   License keys are validated locally, on the honor system, by design.
+   Sharing keys, generating keys, or removing the free-tier limits
+   without payment is a breach of this license. It isn't protected by
+   technical enforcement because our customers don't need policing —
+   but it remains a breach.
+
+5. NO WARRANTY
+   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+   NONINFRINGEMENT. IN NO EVENT SHALL THE LICENSOR BE LIABLE FOR ANY
+   CLAIM, DAMAGES OR OTHER LIABILITY ARISING FROM THE USE OF THE
+   SOFTWARE. Export your stead file regularly; the file is the backup.
+
+6. NOT PROFESSIONAL ADVICE
+   Invoices and records produced with the Software are documents you
+   author. The Software does not provide accounting, tax, or legal
+   advice; confirm requirements for your jurisdiction with a
+   professional.
+
+7. THIRD-PARTY CODE
+   The Software bundles no third-party code or assets.
+
+8. TERMINATION
+   This license ends automatically if you breach it. Sections covering
+   your ownership of your data survive termination — your files remain
+   yours no matter what.
+
+Hourstead — your hours, your file, nobody's tenant.

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" width="96" height="96">
+  <title>Hourstead logo</title>
+  <rect x="8" y="8" width="80" height="80" rx="14" fill="#A63A2B"/>
+  <rect x="8" y="8" width="80" height="80" rx="14" fill="none" stroke="#2B2118" stroke-opacity=".15" stroke-width="2"/>
+  <!-- furrow rows -->
+  <path d="M22 66 H74 M22 74 H74" stroke="#FAF6EF" stroke-opacity=".35" stroke-width="3" stroke-linecap="round"/>
+  <!-- clock face as sun over the field -->
+  <circle cx="48" cy="38" r="19" fill="#FAF6EF"/>
+  <circle cx="48" cy="38" r="19" fill="none" stroke="#2B2118" stroke-opacity=".2" stroke-width="2"/>
+  <!-- clock hands: hour at 10, minute at 2 -->
+  <path d="M48 38 L39 32" stroke="#A63A2B" stroke-width="4" stroke-linecap="round"/>
+  <path d="M48 38 L56 28" stroke="#D9A441" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="48" cy="38" r="3" fill="#2B2118"/>
+</svg>

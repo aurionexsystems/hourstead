@@ -1,0 +1,81 @@
+ASKSTEAD LICENSE
+Version 1.1 — 2026-07-10
+
+Copyright (c) 2026 Askstead ("the Licensor"). All rights reserved except
+as granted below.
+
+This license covers the Askstead generator application (askstead.html),
+the Askstead website, brand assets, and accompanying documentation
+(together, "the Software"). It does not cover your kit: the printed
+cards, tents, stickers, posters, counter pages, and scripts you generate
+are yours entirely — print them, host them, hand them out, forever,
+whatever happens to us. Nobody can repossess paper.
+
+1. FREE TIER
+   You may use the Software free of charge, for personal or commercial
+   purposes, to generate complete kits for your own business, subject to
+   the built-in free-tier marking (a "Made with Askstead" credit line on
+   printables and counter pages). No account is required or offered.
+
+2. KIT LICENSE (PAID)
+   A Kit License is granted per business, upon one-time payment of the
+   listed price ($49 at the time of writing). It entitles that business
+   to:
+   a. kits without the credit line;
+   b. all 1.x updates at no further charge;
+   c. email support from the maker.
+
+3. AGENCY BUNDLE (PAID)
+   An Agency Bundle (listed at $149) comprises five Kit Licenses for use
+   on behalf of five distinct client businesses. Each client business
+   receives the rights in Section 2 for its own kit; the agency may
+   charge its clients for setup services however it likes.
+
+4. SOURCE VISIBILITY
+   The Software ships as readable source. You may inspect it, and you
+   may modify your own copy for your own use. This is not an open-source
+   license: you may not redistribute the Software or modified versions
+   of it, sell it, sublicense it, or offer the generator itself as a
+   service to others.
+
+5. LICENSE KEYS
+   License keys are validated locally, on the honor system, by design.
+   Sharing keys, generating keys, or removing the credit line without
+   payment is a breach of this license.
+
+6. COMPLIANCE NOTICE — USE THE KIT HONESTLY
+   The Software is designed to comply with Google's review policies and
+   the FTC's Consumer Reviews and Testimonials Rule: every generated
+   asset offers the public review path to all customers, with private
+   feedback alongside — never in front. You agree not to alter generated
+   assets to gate reviews by sentiment, offer incentives in exchange for
+   reviews, or otherwise solicit reviews deceptively. Breaching this
+   section terminates the license; it may also break the law, which is
+   your problem, not ours — see Section 8.
+
+7. NO WARRANTY
+   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+   NONINFRINGEMENT. IN NO EVENT SHALL THE LICENSOR BE LIABLE FOR ANY
+   CLAIM, DAMAGES OR OTHER LIABILITY ARISING FROM THE USE OF THE
+   SOFTWARE. No particular volume of reviews, ranking, or business
+   outcome is promised.
+
+8. NOT LEGAL ADVICE
+   Summaries of Google policy and FTC rules in the Software and its
+   documentation are provided for convenience, with sources, and are not
+   legal advice. Platform policies and regulations change; confirm
+   current requirements for your jurisdiction with a professional.
+
+9. THIRD-PARTY SERVICES AND CODE
+   The Software bundles no third-party code. QR codes are generated
+   locally; for unusually long links the Software may, as a fallback,
+   send that link (and nothing else) to the free api.qrserver.com
+   service to render the QR image. No other data leaves your machine.
+
+10. TERMINATION
+   This license ends automatically if you breach it. Your generated
+   kits remain yours after termination.
+
+Askstead — ask well, own the tools.

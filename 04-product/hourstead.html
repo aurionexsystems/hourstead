@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hourstead — your hours, your file</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap');
+
+  :root{
+    --red:#B83A2C; 
+    --red-hover:#9E2F23;
+    --red-light:rgba(184, 58, 44, 0.08);
+    --cream:#FAF7F2; 
+    --soil:#231B15; 
+    --wheat:#D99B26; 
+    --wheat-light:#FFF8EB;
+    --sage:#4E7051;
+    --sage-light:#F0F5EF;
+    --card-bg: #FFFFFF;
+    --line:#E8E1D7; 
+    --line-subtle:#F2ECDF;
+    --muted:#7A6F62;
+    --muted-light:#A39788;
+    --shadow-sm: 0 2px 8px rgba(35, 27, 21, 0.04);
+    --shadow-md: 0 8px 24px rgba(35, 27, 21, 0.06);
+    --shadow-lg: 0 16px 32px rgba(35, 27, 21, 0.08);
+    --radius-sm: 8px;
+    --radius-md: 14px;
+    --radius-lg: 20px;
+    --transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  *{box-sizing:border-box; margin:0; padding:0}
+  body{
+    background-color: var(--cream);
+    background-image: radial-gradient(circle at 50% 0%, rgba(217, 155, 38, 0.05) 0%, rgba(250, 247, 242, 0) 70%);
+    color: var(--soil); 
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+  }
+  h1,h2,h3{font-family: 'Playfair Display', Georgia, serif; font-weight: 700; letter-spacing: -0.01em;}
+  button, input, select, textarea { font-family: inherit; font-size: inherit; }
+  button { cursor: pointer; }
+  
+  input, select, textarea {
+    color: var(--soil); 
+    background: #fff; 
+    border: 1px solid var(--line); 
+    border-radius: var(--radius-sm); 
+    padding: 9px 12px;
+    transition: var(--transition);
+  }
+  input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--wheat);
+    box-shadow: 0 0 0 3px rgba(217, 155, 38, 0.2);
+  }
+  a { color: var(--red); text-decoration: none; transition: var(--transition); }
+  a:hover { color: var(--red-hover); text-decoration: underline; }
+
+  /* Header */
+  header {
+    display: flex; 
+    align-items: center; 
+    gap: 16px; 
+    padding: 16px 32px; 
+    background: rgba(250, 247, 242, 0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  header svg { flex: none; filter: drop-shadow(0 2px 4px rgba(184, 58, 44, 0.2)); transition: transform 0.3s ease; }
+  header svg:hover { transform: rotate(-4deg) scale(1.05); }
+  header .brand-text { display: flex; flex-direction: column; }
+  header .name { font-family: 'Playfair Display', Georgia, serif; font-size: 24px; font-weight: 700; color: var(--soil); leading-trim: both; line-height: 1.1; }
+  header .tag { color: var(--muted); font-size: 12px; font-weight: 500; letter-spacing: 0.02em; }
+  
+  nav { margin-left: auto; display: flex; gap: 6px; background: rgba(35, 27, 21, 0.04); padding: 4px; border-radius: 12px; }
+  nav button {
+    background: none; 
+    border: none; 
+    padding: 8px 18px; 
+    border-radius: 8px; 
+    color: var(--muted);
+    font-weight: 600;
+    font-size: 13px;
+    transition: var(--transition);
+  }
+  nav button:hover { color: var(--soil); }
+  nav button.on { background: var(--card-bg); color: var(--soil); box-shadow: var(--shadow-sm); }
+
+  /* Layout */
+  main { max-width: 960px; margin: 0 auto; padding: 32px 24px 100px; }
+  
+  .card {
+    background: var(--card-bg); 
+    border: 1px solid var(--line-subtle); 
+    border-radius: var(--radius-lg); 
+    padding: 24px; 
+    margin-bottom: 20px;
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+  }
+  .card:hover { box-shadow: var(--shadow-md); border-color: var(--line); }
+
+  .row { display: flex; gap: 12px; flex-wrap: wrap; align-items: flex-end; }
+  .row label { display: flex; flex-direction: column; gap: 6px; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); }
+
+  /* Buttons */
+  .btn {
+    background: var(--red); 
+    color: #fff; 
+    border: none; 
+    border-radius: var(--radius-sm); 
+    padding: 10px 20px; 
+    font-weight: 600;
+    font-size: 13px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    box-shadow: 0 2px 6px rgba(184, 58, 44, 0.25);
+    transition: var(--transition);
+  }
+  .btn:hover { background: var(--red-hover); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(184, 58, 44, 0.35); }
+  .btn:active { transform: translateY(0); }
+  .btn.quiet { background: transparent; color: var(--soil); border: 1px solid var(--line); box-shadow: none; }
+  .btn.quiet:hover { background: var(--cream); border-color: var(--muted-light); color: var(--soil); }
+  .btn.small { padding: 6px 12px; font-size: 12px; border-radius: 6px; }
+  .btn:disabled { opacity: .4; cursor: not-allowed; transform: none !important; box-shadow: none !important; }
+
+  /* Tables */
+  table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 14px; margin-top: 4px; }
+  th { text-align: left; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); padding: 10px 12px; border-bottom: 2px solid var(--line-subtle); }
+  td { padding: 14px 12px; border-bottom: 1px solid var(--line-subtle); vertical-align: middle; transition: var(--transition); }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background-color: rgba(250, 247, 242, 0.5); }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; font-weight: 500; }
+
+  /* Stats Grid */
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 20px; }
+  .stat { 
+    background: var(--card-bg); 
+    border: 1px solid var(--line-subtle); 
+    border-radius: var(--radius-md); 
+    padding: 20px;
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    transition: var(--transition);
+  }
+  .stat:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+  .stat b { display: block; font-size: 28px; font-family: 'Playfair Display', Georgia, serif; color: var(--soil); line-height: 1.1; }
+  .stat span { font-size: 12px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+
+  /* Timer Box */
+  #timerBox { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; background: linear-gradient(135deg, #ffffff 0%, #FAF7F2 100%); border: 1px solid var(--line); }
+  #timerClock { font-family: 'Playfair Display', Georgia, serif; font-size: 38px; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--red); letter-spacing: -0.02em; min-width: 140px; }
+
+  /* Pills & Badges */
+  .pill { font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 99px; background: var(--cream); border: 1px solid var(--line); color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; display: inline-block; }
+  .pill.paid { background: var(--sage-light); color: var(--sage); border-color: rgba(78, 112, 81, 0.25); }
+  .pill.sent { background: var(--wheat-light); color: #8A6110; border-color: rgba(217, 155, 38, 0.3); }
+  
+  .muted { color: var(--muted); font-size: 13px; }
+  .danger { color: var(--red); }
+  .danger:hover { background: var(--red-light) !important; color: var(--red-hover); }
+  .banner { background: var(--wheat-light); border: 1px solid rgba(217, 155, 38, 0.3); border-radius: var(--radius-md); padding: 14px 18px; font-size: 13.5px; color: #73510C; margin-bottom: 20px; font-weight: 500; }
+
+  /* Invoice Document */
+  #invoiceDoc { background: #fff; border: 1px solid var(--line); border-radius: var(--radius-lg); padding: 52px; max-width: 800px; margin: 0 auto; box-shadow: var(--shadow-lg); }
+  #invoiceDoc .top { display: flex; justify-content: space-between; margin-bottom: 40px; border-bottom: 2px solid var(--soil); padding-bottom: 24px; }
+  #invoiceDoc h2 { font-size: 36px; letter-spacing: -0.02em; color: var(--soil); }
+  #invoiceDoc .totals { margin-top: 24px; margin-left: auto; width: 280px; }
+  #invoiceDoc .totals div { display: flex; justify-content: space-between; padding: 8px 12px; font-size: 14px; }
+  #invoiceDoc .totals .grand { border-top: 2px solid var(--soil); font-weight: 700; font-size: 18px; font-family: 'Playfair Display', Georgia, serif; margin-top: 6px; padding-top: 12px; }
+  #invoiceDoc footer { margin-top: 56px; font-size: 12px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 16px; text-align: center; }
+
+  @media print{
+    body * { visibility: hidden; }
+    body { background: #fff; }
+    #invoiceDoc, #invoiceDoc * { visibility: visible; }
+    #invoiceDoc { position: absolute; left: 0; top: 0; width: 100%; border: none; border-radius: 0; padding: 0; box-shadow: none; }
+  }
+  dialog { border: 1px solid var(--line); border-radius: var(--radius-md); padding: 28px; max-width: 440px; box-shadow: var(--shadow-lg); }
+  dialog::backdrop { background: rgba(35, 27, 21, 0.4); backdrop-filter: blur(4px); }
+</style>
+</head>
+<body>
+<header>
+  <svg width="38" height="38" viewBox="0 0 96 96" aria-hidden="true"><rect x="8" y="8" width="80" height="80" rx="18" fill="#B83A2C"/><path d="M22 66 H74 M22 74 H74" stroke="#FAF7F2" stroke-opacity=".4" stroke-width="3.5" stroke-linecap="round"/><circle cx="48" cy="38" r="19" fill="#FAF7F2"/><path d="M48 38 L39 32" stroke="#B83A2C" stroke-width="4.5" stroke-linecap="round"/><path d="M48 38 L56 28" stroke="#D99B26" stroke-width="4.5" stroke-linecap="round"/><circle cx="48" cy="38" r="3.5" fill="#231B15"/></svg>
+  <div class="brand-text"><div class="name">Hourstead</div><div class="tag">your hours · your file · nobody's tenant</div></div>
+  <nav id="nav"></nav>
+</header>
+<main id="main"></main>
+
+<script>
+'use strict';
+/* ---------- state ---------- */
+const BLANK = () => ({
+  version: 1,
+  settings: { bizName:'', bizAddress:'', currency:'$', taxRate:0, invoicePrefix:'HS-', nextInvoiceNo:1, license:'' },
+  clients: [],   // {id,name,email,address,rate,archived}
+  entries: [],   // {id,clientId,date:'YYYY-MM-DD',minutes,desc,invoiceId:null}
+  invoices: [],  // {id,number,clientId,issued,due,entryIds:[],taxRate,status:'draft'|'sent'|'paid'}
+  timer: null    // {clientId,desc,startedAt} while running
+});
+let db = load();
+let view = 'track';
+let openInvoiceId = null;
+
+function load(){
+  try{
+    const raw = localStorage.getItem('hourstead');
+    if(raw){ const d = JSON.parse(raw); if(d && d.version===1) return d; }
+  }catch(e){}
+  return BLANK();
+}
+function save(){ localStorage.setItem('hourstead', JSON.stringify(db)); scheduleSteadWrite(); }
+
+/* ---------- stead-file auto-save (File System Access API, Chrome/Edge) ----------
+   localStorage remains the working copy; linking a stead file mirrors every change
+   to a real file on disk, so a browser-data wipe can no longer lose work. */
+const FS_OK = 'showSaveFilePicker' in window;
+let steadHandle = null;      // active, permission granted
+let steadPending = null;     // restored from IndexedDB, awaiting a user-gesture permission grant
+let steadTimer = null;
+function idbStead(mode, fn){
+  return new Promise((ok, bad) => {
+    const req = indexedDB.open('hourstead-fs', 1);
+    req.onupgradeneeded = () => req.result.createObjectStore('h');
+    req.onerror = () => bad(req.error);
+    req.onsuccess = () => {
+      const tx = req.result.transaction('h', mode);
+      const r = fn(tx.objectStore('h'));
+      tx.oncomplete = () => ok(r && 'result' in r ? r.result : undefined);
+      tx.onerror = () => bad(tx.error);
+    };
+  });
+}
+function scheduleSteadWrite(){
+  if(!steadHandle) return;
+  clearTimeout(steadTimer);
+  steadTimer = setTimeout(writeStead, 800);
+}
+async function writeStead(){
+  if(!steadHandle) return;
+  try{
+    const w = await steadHandle.createWritable();
+    await w.write(JSON.stringify(db, null, 2));
+    await w.close();
+  }catch(e){
+    steadHandle = null;               // permission revoked or file gone — surface in Settings
+    if(view === 'settings') render();
+  }
+}
+async function linkStead(){
+  try{
+    steadHandle = await showSaveFilePicker({
+      suggestedName: 'mybusiness.stead.json',
+      types: [{ description: 'Stead file', accept: { 'application/json': ['.json'] } }]
+    });
+    steadPending = null;
+    await idbStead('readwrite', st => st.put(steadHandle, 'stead'));
+    await writeStead();
+  }catch(e){ /* picker cancelled */ }
+  render();
+}
+async function unlinkStead(){
+  steadHandle = null; steadPending = null;
+  try{ await idbStead('readwrite', st => st.delete('stead')); }catch(e){}
+  render();
+}
+async function resumeStead(){
+  if(steadPending && (await steadPending.requestPermission({ mode: 'readwrite' })) === 'granted'){
+    steadHandle = steadPending; steadPending = null;
+    writeStead();
+  }
+  render();
+}
+(async function restoreStead(){
+  if(!FS_OK) return;
+  try{
+    const h = await idbStead('readonly', st => st.get('stead'));
+    if(!h) return;
+    if((await h.queryPermission({ mode: 'readwrite' })) === 'granted') steadHandle = h;
+    else steadPending = h;
+    if(view === 'settings') render();
+  }catch(e){}
+})();
+const uid = () => Math.random().toString(36).slice(2,10);
+const today = () => new Date().toISOString().slice(0,10);
+
+/* ---------- license (free tier: 3 active clients) ---------- */
+function licensed(){
+  const k = (db.settings.license||'').toUpperCase().trim();
+  const m = k.match(/^HS1-([A-Z2-9]{4})-([A-Z2-9]{4})-([A-Z2-9]{2})(\d{2})$/);
+  if(!m) return false;
+  let sum = 0;
+  for(const ch of (m[1]+m[2]+m[3])) sum += ch.charCodeAt(0);
+  return sum % 97 === Number(m[4]);
+}
+function activeClients(){ return db.clients.filter(c=>!c.archived); }
+function atClientCap(){ return !licensed() && activeClients().length >= 3; }
+
+/* ---------- helpers ---------- */
+const esc = s => String(s??'').replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const client = id => db.clients.find(c=>c.id===id);
+const money = n => db.settings.currency + n.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g,',');
+const hrs = mins => (mins/60).toFixed(2);
+function entryAmount(e){ const c=client(e.clientId); return c ? +( (e.minutes/60) * c.rate ).toFixed(2) : 0; }
+function fmtDur(ms){
+  const s = Math.floor(ms/1000);
+  return String(Math.floor(s/3600)).padStart(2,'0')+':'+String(Math.floor(s/60)%60).padStart(2,'0')+':'+String(s%60).padStart(2,'0');
+}
+
+/* ---------- render root ---------- */
+const VIEWS = { track:'Track', clients:'Clients', invoices:'Invoices', settings:'Settings' };
+function go(v){ view=v; if(v!=='invoices') openInvoiceId=null; render(); }
+function render(){
+  document.getElementById('nav').innerHTML = Object.entries(VIEWS).map(([k,label])=>
+    `<button class="${view===k?'on':''}" onclick="go('${k}')">${label}</button>`).join('');
+  const m = document.getElementById('main');
+  if(view==='track') m.innerHTML = trackView();
+  else if(view==='clients') m.innerHTML = clientsView();
+  else if(view==='invoices') m.innerHTML = openInvoiceId ? invoiceDetail(openInvoiceId) : invoicesView();
+  else m.innerHTML = settingsView();
+  if(view==='track') tickTimer();
+}
+
+/* ---------- Track ---------- */
+function trackView(){
+  const unbilled = db.entries.filter(e=>!e.invoiceId);
+  const unbilledAmt = unbilled.reduce((s,e)=>s+entryAmount(e),0);
+  const weekStart = new Date(); weekStart.setDate(weekStart.getDate()-((weekStart.getDay()+6)%7)); // Monday
+  const wk = weekStart.toISOString().slice(0,10);
+  const weekMins = db.entries.filter(e=>e.date>=wk).reduce((s,e)=>s+e.minutes,0);
+  const opts = activeClients().map(c=>`<option value="${c.id}">${esc(c.name)}</option>`).join('');
+  const t = db.timer;
+  const rows = db.entries.slice().sort((a,b)=>b.date.localeCompare(a.date)).slice(0,50).map(e=>{
+    const c = client(e.clientId);
+    return `<tr>
+      <td>${e.date}</td><td>${esc(c?c.name:'?')}</td><td>${esc(e.desc)}</td>
+      <td class="num">${hrs(e.minutes)}</td><td class="num">${money(entryAmount(e))}</td>
+      <td>${e.invoiceId?'<span class="pill">billed</span>':'<span class="pill sent">unbilled</span>'}</td>
+      <td>${e.invoiceId?'':`<button class="btn quiet small" onclick="delEntry('${e.id}')">✕</button>`}</td>
+    </tr>`;}).join('');
+  return `
+  <div class="stats">
+    <div class="stat"><b>${hrs(weekMins)}h</b><span>logged this week</span></div>
+    <div class="stat"><b>${money(unbilledAmt)}</b><span>unbilled</span></div>
+    <div class="stat"><b>${db.invoices.filter(i=>i.status==='paid').length}</b><span>invoices paid</span></div>
+  </div>
+  <div class="card" id="timerBox">
+    ${activeClients().length===0 ? `<span class="muted">Add a client first, then track time against them.</span>
+      <button class="btn" onclick="go('clients')">Add your first client</button>` : t ? `
+      <span id="timerClock">00:00:00</span>
+      <span><b>${esc(client(t.clientId)?.name||'?')}</b> — ${esc(t.desc)||'<span class="muted">no description</span>'}</span>
+      <button class="btn" style="margin-left:auto" onclick="stopTimer()">■ Stop &amp; log</button>` : `
+      <select id="tClient">${opts}</select>
+      <input id="tDesc" placeholder="What are you working on?" style="flex:1; min-width:180px">
+      <button class="btn" onclick="startTimer()">▶ Start timer</button>`}
+  </div>
+  ${activeClients().length ? `<div class="card"><h3 style="margin-bottom:10px">Add time manually</h3>
+    <div class="row">
+      <label>Client<select id="mClient">${opts}</select></label>
+      <label>Date<input id="mDate" type="date" value="${today()}"></label>
+      <label>Hours<input id="mHours" type="number" min="0" step="0.25" style="width:90px" placeholder="1.5"></label>
+      <label>Description<input id="mDesc" placeholder="e.g. homepage revisions" style="min-width:220px"></label>
+      <button class="btn quiet" onclick="addManual()">Log it</button>
+    </div></div>`:''}
+  <div class="card"><h3 style="margin-bottom:10px">Recent entries</h3>
+    ${db.entries.length ? `<table><tr><th>Date</th><th>Client</th><th>Description</th><th class="num">Hours</th><th class="num">Amount</th><th></th><th></th></tr>${rows}</table>`
+    : '<p class="muted">Nothing logged yet. Your hours will appear here.</p>'}
+  </div>`;
+}
+let timerInterval = null;
+function tickTimer(){
+  clearInterval(timerInterval);
+  if(!db.timer) return;
+  const el = () => document.getElementById('timerClock');
+  const upd = () => { const n=el(); if(n) n.textContent = fmtDur(Date.now()-db.timer.startedAt); };
+  upd(); timerInterval = setInterval(()=>{ if(!db.timer){clearInterval(timerInterval);return;} upd(); },1000);
+}
+function startTimer(){
+  db.timer = { clientId:document.getElementById('tClient').value, desc:document.getElementById('tDesc').value.trim(), startedAt:Date.now() };
+  save(); render();
+}
+function stopTimer(){
+  const t = db.timer;
+  const minutes = Math.max(1, Math.round((Date.now()-t.startedAt)/60000));
+  db.entries.push({id:uid(), clientId:t.clientId, date:today(), minutes, desc:t.desc, invoiceId:null});
+  db.timer = null; save(); render();
+}
+function addManual(){
+  const h = parseFloat(document.getElementById('mHours').value);
+  if(!(h>0)) return alert('Enter hours (e.g. 1.5).');
+  db.entries.push({id:uid(), clientId:document.getElementById('mClient').value,
+    date:document.getElementById('mDate').value||today(), minutes:Math.round(h*60),
+    desc:document.getElementById('mDesc').value.trim(), invoiceId:null});
+  save(); render();
+}
+function delEntry(id){ db.entries = db.entries.filter(e=>e.id!==id); save(); render(); }
+
+/* ---------- Clients ---------- */
+function clientsView(){
+  const rows = db.clients.map(c=>{
+    const mins = db.entries.filter(e=>e.clientId===c.id).reduce((s,e)=>s+e.minutes,0);
+    return `<tr style="${c.archived?'opacity:.5':''}">
+      <td><b>${esc(c.name)}</b><br><span class="muted">${esc(c.email)}</span></td>
+      <td class="num">${money(c.rate)}/h</td><td class="num">${hrs(mins)}h</td>
+      <td>${c.archived?'<span class="pill">archived</span>':''}</td>
+      <td><button class="btn quiet small" onclick="toggleArchive('${c.id}')">${c.archived?'Restore':'Archive'}</button></td>
+    </tr>`;}).join('');
+  return `
+  ${atClientCap() ? `<div class="banner">Free steads hold <b>3 active clients</b>. Archive one, or enter a Founding License in Settings for unlimited clients.</div>`:''}
+  <div class="card"><h3 style="margin-bottom:10px">New client</h3>
+    <div class="row">
+      <label>Name<input id="cName" placeholder="Acme Co."></label>
+      <label>Email<input id="cEmail" type="email" placeholder="billing@acme.com"></label>
+      <label>Hourly rate<input id="cRate" type="number" min="0" step="1" style="width:100px" placeholder="120"></label>
+      <label>Billing address<input id="cAddr" placeholder="street, city" style="min-width:220px"></label>
+      <button class="btn" onclick="addClient()" ${atClientCap()?'disabled':''}>Add client</button>
+    </div></div>
+  <div class="card">${db.clients.length?`<table><tr><th>Client</th><th class="num">Rate</th><th class="num">Lifetime hours</th><th></th><th></th></tr>${rows}</table>`:'<p class="muted">No clients yet.</p>'}</div>`;
+}
+function addClient(){
+  if(atClientCap()) return;
+  const name = document.getElementById('cName').value.trim();
+  const rate = parseFloat(document.getElementById('cRate').value);
+  if(!name) return alert('Client needs a name.');
+  if(!(rate>=0)) return alert('Set an hourly rate (0 is fine).');
+  db.clients.push({id:uid(), name, email:document.getElementById('cEmail').value.trim(),
+    address:document.getElementById('cAddr').value.trim(), rate, archived:false});
+  save(); render();
+}
+function toggleArchive(id){
+  const c = client(id);
+  if(c.archived && atClientCap()) return alert('Free steads hold 3 active clients. Archive another first, or add a license.');
+  c.archived = !c.archived; save(); render();
+}
+
+/* ---------- Invoices ---------- */
+function invoicesView(){
+  const billable = {};
+  db.entries.filter(e=>!e.invoiceId).forEach(e=>{ (billable[e.clientId] ??= []).push(e); });
+  const buildRows = Object.entries(billable).map(([cid,list])=>{
+    const c = client(cid); if(!c) return '';
+    const amt = list.reduce((s,e)=>s+entryAmount(e),0);
+    return `<tr><td><b>${esc(c.name)}</b></td><td class="num">${hrs(list.reduce((s,e)=>s+e.minutes,0))}h</td>
+      <td class="num">${money(amt)}</td>
+      <td><button class="btn small" onclick="makeInvoice('${cid}')">Create invoice</button></td></tr>`;
+  }).join('');
+  const invRows = db.invoices.slice().reverse().map(i=>{
+    const c = client(i.clientId);
+    return `<tr>
+      <td><a href="#" onclick="openInvoiceId='${i.id}';render();return false"><b>${esc(i.number)}</b></a></td>
+      <td>${esc(c?c.name:'?')}</td><td>${i.issued}</td>
+      <td class="num">${money(invoiceTotal(i).total)}</td>
+      <td><span class="pill ${i.status}">${i.status}</span></td>
+      <td>${i.status!=='paid'?`<button class="btn quiet small" onclick="setStatus('${i.id}','${i.status==='draft'?'sent':'paid'}')">Mark ${i.status==='draft'?'sent':'paid'}</button>`:''}</td>
+    </tr>`;}).join('');
+  return `
+  <div class="card"><h3 style="margin-bottom:10px">Ready to bill</h3>
+    ${buildRows?`<table><tr><th>Client</th><th class="num">Unbilled hours</th><th class="num">Amount</th><th></th></tr>${buildRows}</table>`
+    :'<p class="muted">No unbilled time. Go log some hours.</p>'}</div>
+  <div class="card"><h3 style="margin-bottom:10px">Invoices</h3>
+    ${invRows?`<table><tr><th>Number</th><th>Client</th><th>Issued</th><th class="num">Total</th><th>Status</th><th></th></tr>${invRows}</table>`
+    :'<p class="muted">None yet.</p>'}</div>`;
+}
+function makeInvoice(cid){
+  const list = db.entries.filter(e=>!e.invoiceId && e.clientId===cid);
+  if(!list.length) return;
+  const n = db.settings.nextInvoiceNo++;
+  const number = db.settings.invoicePrefix + String(n).padStart(4,'0');
+  const due = new Date(); due.setDate(due.getDate()+14);
+  const inv = {id:uid(), number, clientId:cid, issued:today(), due:due.toISOString().slice(0,10),
+    entryIds:list.map(e=>e.id), taxRate:db.settings.taxRate||0, status:'draft'};
+  db.invoices.push(inv);
+  list.forEach(e=>e.invoiceId=inv.id);
+  openInvoiceId = inv.id; save(); render();
+}
+function invoiceTotal(inv){
+  const items = db.entries.filter(e=>inv.entryIds.includes(e.id));
+  const sub = +items.reduce((s,e)=>s+entryAmount(e),0).toFixed(2);
+  const tax = +(sub*inv.taxRate/100).toFixed(2);
+  return {sub, tax, total:+(sub+tax).toFixed(2)};
+}
+function setStatus(id,s){ db.invoices.find(i=>i.id===id).status=s; save(); render(); }
+function deleteInvoice(id){
+  if(!confirm('Delete this invoice? Its time entries return to unbilled.')) return;
+  db.entries.forEach(e=>{ if(e.invoiceId===id) e.invoiceId=null; });
+  db.invoices = db.invoices.filter(i=>i.id!==id);
+  openInvoiceId=null; save(); render();
+}
+function invoiceDetail(id){
+  const inv = db.invoices.find(i=>i.id===id);
+  if(!inv){ openInvoiceId=null; return invoicesView(); }
+  const c = client(inv.clientId);
+  const {sub,tax,total} = invoiceTotal(inv);
+  const items = db.entries.filter(e=>inv.entryIds.includes(e.id)).sort((a,b)=>a.date.localeCompare(b.date));
+  const s = db.settings;
+  return `
+  <p style="margin-bottom:14px">
+    <button class="btn quiet small" onclick="openInvoiceId=null;render()">← All invoices</button>
+    <button class="btn small" onclick="window.print()">Print / save PDF</button>
+    <button class="btn quiet small danger" onclick="deleteInvoice('${inv.id}')">Delete</button>
+  </p>
+  <div id="invoiceDoc">
+    <div class="top">
+      <div><h2>Invoice</h2><div class="muted">${esc(inv.number)}</div></div>
+      <div style="text-align:right">
+        <b>${esc(s.bizName||'Your business name — set it in Settings')}</b><br>
+        <span class="muted">${esc(s.bizAddress)}</span>
+      </div>
+    </div>
+    <div style="display:flex; justify-content:space-between; margin-bottom:24px">
+      <div><span class="muted">Billed to</span><br><b>${esc(c?c.name:'?')}</b><br><span class="muted">${esc(c?.address||'')}${c?.email?'<br>'+esc(c.email):''}</span></div>
+      <div style="text-align:right"><span class="muted">Issued</span> ${inv.issued}<br><span class="muted">Due</span> ${inv.due}</div>
+    </div>
+    <table>
+      <tr><th>Date</th><th>Description</th><th class="num">Hours</th><th class="num">Rate</th><th class="num">Amount</th></tr>
+      ${items.map(e=>`<tr><td>${e.date}</td><td>${esc(e.desc)||'—'}</td><td class="num">${hrs(e.minutes)}</td>
+        <td class="num">${money(client(e.clientId)?.rate||0)}</td><td class="num">${money(entryAmount(e))}</td></tr>`).join('')}
+    </table>
+    <div class="totals">
+      <div><span>Subtotal</span><span>${money(sub)}</span></div>
+      ${inv.taxRate?`<div><span>Tax (${inv.taxRate}%)</span><span>${money(tax)}</span></div>`:''}
+      <div class="grand"><span>Total due</span><span>${money(total)}</span></div>
+    </div>
+    ${licensed()?'':'<footer>Made with Hourstead — time tracking you own outright · hourstead.com</footer>'}
+  </div>`;
+}
+
+/* ---------- Settings ---------- */
+function settingsView(){
+  const s = db.settings;
+  return `
+  <div class="card"><h3 style="margin-bottom:10px">Your business</h3>
+    <div class="row">
+      <label>Business name<input id="sName" value="${esc(s.bizName)}" style="min-width:220px"></label>
+      <label>Address<input id="sAddr" value="${esc(s.bizAddress)}" style="min-width:260px"></label>
+      <label>Currency symbol<input id="sCur" value="${esc(s.currency)}" style="width:70px"></label>
+      <label>Tax %<input id="sTax" type="number" min="0" step="0.1" value="${s.taxRate}" style="width:80px"></label>
+      <label>Invoice prefix<input id="sPrefix" value="${esc(s.invoicePrefix)}" style="width:90px"></label>
+      <button class="btn quiet" onclick="saveSettings()">Save</button>
+    </div></div>
+  <div class="card"><h3 style="margin-bottom:6px">Your stead</h3>
+    <p class="muted" style="margin-bottom:12px">Everything — clients, hours, invoices — lives in this browser and in files you export. Export often; the file is the backup, and it opens in any copy of Hourstead.</p>
+    <button class="btn" onclick="exportStead()">Export stead file</button>
+    <button class="btn quiet" onclick="document.getElementById('importFile').click()">Import stead file</button>
+    <input type="file" id="importFile" accept=".json" style="display:none" onchange="importStead(this)">
+    <div style="margin-top:14px; padding-top:12px; border-top:1px solid var(--line)">
+      ${!FS_OK ? '<p class="muted">Auto-save to a file needs a Chromium browser (Chrome/Edge). In this browser, use Export above — it\'s the same file.</p>'
+      : steadHandle ? `<p class="muted"><span class="pill paid">auto-save on</span> Every change is mirrored to <b>${esc(steadHandle.name)}</b> on your disk.</p>
+        <button class="btn quiet small" style="margin-top:8px" onclick="unlinkStead()">Stop auto-saving</button>`
+      : steadPending ? `<p class="muted"><span class="pill sent">auto-save paused</span> Your stead file needs permission again after the restart.</p>
+        <button class="btn small" style="margin-top:8px" onclick="resumeStead()">Resume auto-save</button>
+        <button class="btn quiet small" style="margin-top:8px" onclick="unlinkStead()">Forget file</button>`
+      : `<p class="muted">Prefer not to trust browser storage? Link a stead file and every change writes straight to your disk.</p>
+        <button class="btn small" style="margin-top:8px" onclick="linkStead()">Link a stead file (auto-save)</button>`}
+    </div>
+  </div>
+  <div class="card"><h3 style="margin-bottom:6px">Founding License</h3>
+    <p class="muted" style="margin-bottom:12px">${licensed()
+      ? 'Licensed. Unlimited clients, no invoice footer. Thank you for homesteading with us.'
+      : 'Free steads hold 3 active clients and add a small footer to invoices. A Founding License ($79, once) removes both — forever.'}</p>
+    <div class="row">
+      <label>License key<input id="sLicense" value="${esc(s.license)}" placeholder="HS1-XXXX-XXXX-XXXX" style="min-width:230px"></label>
+      <button class="btn quiet" onclick="applyLicense()">Apply</button>
+      ${licensed()?'<span class="pill paid">active</span>':''}
+    </div></div>
+  <div class="card"><h3 style="margin-bottom:6px">Start over</h3>
+    <button class="btn quiet danger" onclick="wipe()">Erase everything</button></div>`;
+}
+function saveSettings(){
+  const s = db.settings;
+  s.bizName=document.getElementById('sName').value.trim();
+  s.bizAddress=document.getElementById('sAddr').value.trim();
+  s.currency=document.getElementById('sCur').value||'$';
+  s.taxRate=parseFloat(document.getElementById('sTax').value)||0;
+  s.invoicePrefix=document.getElementById('sPrefix').value;
+  save(); render();
+}
+function applyLicense(){
+  db.settings.license=document.getElementById('sLicense').value.trim();
+  save();
+  if(db.settings.license && !licensed()) alert('That key doesn\'t validate. Check for typos.');
+  render();
+}
+function exportStead(){
+  const blob = new Blob([JSON.stringify(db,null,2)],{type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'mybusiness.stead.json';
+  a.click(); URL.revokeObjectURL(a.href);
+}
+function importStead(input){
+  const f = input.files[0]; if(!f) return;
+  const r = new FileReader();
+  r.onload = () => {
+    try{
+      const d = JSON.parse(r.result);
+      if(d.version!==1 || !Array.isArray(d.clients) || !Array.isArray(d.entries) || !Array.isArray(d.invoices)) throw 0;
+      if(!confirm('Replace everything in this browser with the imported stead?')) return;
+      db = d; save(); render();
+    }catch(e){ alert('That file doesn\'t look like a stead file.'); }
+  };
+  r.readAsText(f); input.value='';
+}
+function wipe(){
+  if(confirm('Erase all Hourstead data in this browser? Export a stead file first if you want a backup.')){
+    db = BLANK(); save(); render();
+  }
+}
+
+render();
+</script>
+</body>
+</html>

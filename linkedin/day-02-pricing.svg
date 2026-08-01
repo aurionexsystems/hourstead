@@ -1,0 +1,12 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="627" viewBox="0 0 1200 627">
+<rect width="1200" height="627" fill="#FAF6EF"/><path d="M64 72h1072M64 555h1072" stroke="#2B2118" stroke-width="1" opacity=".36"/>
+<text x="66" y="51" fill="#2B2118" font-family="Arial, sans-serif" font-size="14" letter-spacing="3">HOURSTEAD  /  DAY 02</text>
+<circle cx="1087" cy="51" r="21" fill="#A63A2B"/><path d="M1087 37v28M1073 51h28" stroke="#FAF6EF" stroke-width="2"/>
+<rect x="66" y="110" width="716" height="385" fill="#FFFDF8" stroke="#2B2118" stroke-width="1"/>
+<path d="M98 148h650M98 454h650" stroke="#D9A441" stroke-width="2"/>
+<text x="98" y="187" fill="#A63A2B" font-family="Arial, sans-serif" font-size="14" letter-spacing="2">THE RECEIPTS</text>
+<text x="98" y="280" fill="#2B2118" font-family="Georgia, serif" font-size="58">A tool should not bill you.</text>
+<text x="98" y="405" fill="#2B2118" font-family="Arial, sans-serif" font-size="20">Your business records deserve a stable home.</text>
+<text x="98" y="475" fill="#2B2118" font-family="Arial, sans-serif" font-size="13" letter-spacing="2">YOUR HOURS. YOUR FILE. NOBODY'S TENANT.</text>
+<g transform="translate(864 166)" fill="none" stroke="#2B2118" stroke-width="3"><rect width="195" height="270"/><path d="M32 55h131M32 88h89M32 145h131M32 178h131M32 211h94"/><circle cx="98" cy="239" r="21" fill="#A63A2B" stroke="none"/><path d="M98 226v26M85 239h26" stroke="#FAF6EF"/></g>
+</svg>

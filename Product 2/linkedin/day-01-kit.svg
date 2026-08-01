@@ -1,0 +1,12 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="627" viewBox="0 0 1200 627">
+<rect width="1200" height="627" fill="#FAF6EF"/><path d="M64 72h1072M64 555h1072" stroke="#2B2118" stroke-width="1" opacity=".36"/>
+<text x="66" y="51" fill="#2B2118" font-family="Arial, sans-serif" font-size="14" letter-spacing="3">ASKSTEAD  /  DAY 01</text>
+<circle cx="1087" cy="51" r="21" fill="#1F6E63"/><path d="M1077 54c7 8 18 8 23 0M1087 39v11" fill="none" stroke="#FAF6EF" stroke-width="2"/>
+<rect x="66" y="110" width="716" height="385" fill="#FFFDF8" stroke="#2B2118" stroke-width="1"/>
+<path d="M98 148h650M98 454h650" stroke="#D9A441" stroke-width="2"/>
+<text x="98" y="187" fill="#1F6E63" font-family="Arial, sans-serif" font-size="14" letter-spacing="2">THE REVIEW KIT</text>
+<text x="98" y="280" fill="#2B2118" font-family="Georgia, serif" font-size="58">The ask fits on paper.</text>
+<text x="98" y="405" fill="#2B2118" font-family="Arial, sans-serif" font-size="20">A printed card, a direct link, an honest ask.</text>
+<text x="98" y="475" fill="#2B2118" font-family="Arial, sans-serif" font-size="13" letter-spacing="2">ASK WELL. OWN THE TOOLS.</text>
+<g transform="translate(857 154)"><rect width="215" height="290" rx="4" fill="#1F6E63"/><rect x="24" y="24" width="167" height="167" fill="#FAF6EF"/><g fill="#1F6E63"><path d="M42 42h41v41H42zm90 0h41v41h-41zM42 132h41v41H42z"/><path d="M99 99h20v20H99zm33 0h20v20h-20zm-33 33h20v20H99zm33 33h20v20h-20z"/></g><text x="24" y="241" fill="#FAF6EF" font-family="Arial, sans-serif" font-size="13" letter-spacing="2">THE COUNTER CARD</text></g>
+</svg>

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 96" width="420" height="96">
+  <title>Hourstead wordmark</title>
+  <rect x="8" y="8" width="80" height="80" rx="14" fill="#A63A2B"/>
+  <path d="M22 66 H74 M22 74 H74" stroke="#FAF6EF" stroke-opacity=".35" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="48" cy="38" r="19" fill="#FAF6EF"/>
+  <path d="M48 38 L39 32" stroke="#A63A2B" stroke-width="4" stroke-linecap="round"/>
+  <path d="M48 38 L56 28" stroke="#D9A441" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="48" cy="38" r="3" fill="#2B2118"/>
+  <text x="104" y="62" font-family="Georgia, 'Times New Roman', serif" font-size="44" font-weight="bold" fill="#2B2118">Hourstead</text>
+</svg>

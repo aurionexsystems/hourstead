@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Askstead — turn happy customers into Google reviews, without renting a platform</title>
+<meta name="description" content="A print-ready Google review kit — QR counter cards, table tents, a compliant feedback page, and ask scripts. $49 once. No subscription, no contract, nothing to cancel.">
+<style>
+  :root{--teal:#1F6E63; --cream:#FAF6EF; --soil:#2B2118; --gold:#D9A441; --clay:#C96F4A; --line:#E5DDD0; --muted:#8A7F70}
+  *{box-sizing:border-box; margin:0}
+  body{background:var(--cream); color:var(--soil); font:17px/1.65 system-ui,-apple-system,sans-serif}
+  h1,h2,h3{font-family:Georgia,'Times New Roman',serif; line-height:1.15}
+  a{color:var(--teal)}
+  .wrap{max-width:880px; margin:0 auto; padding:0 24px}
+  header{display:flex; align-items:center; gap:10px; padding:20px 0}
+  header .name{font-family:Georgia,serif; font-weight:bold; font-size:20px}
+  header nav{margin-left:auto; display:flex; gap:22px; font-size:15px}
+  header nav a{text-decoration:none}
+
+  .hero{padding:64px 0 56px; border-bottom:1px solid var(--line)}
+  .hero h1{font-size:clamp(32px,5.5vw,52px); max-width:15em}
+  .hero p.lede{font-size:20px; max-width:34em; margin:22px 0 30px; color:#4A3E31}
+  .cta{display:inline-block; background:var(--teal); color:#fff; text-decoration:none; font-weight:600; padding:14px 26px; border-radius:10px}
+  .cta.quiet{background:none; color:var(--soil); border:1px solid var(--soil); margin-left:10px}
+  .fineprint{font-size:13px; color:var(--muted); margin-top:12px}
+  .stars{color:var(--gold); letter-spacing:3px}
+
+  section{padding:56px 0; border-bottom:1px solid var(--line)}
+  section h2{font-size:32px; margin-bottom:18px}
+  .story p{max-width:38em; margin-bottom:14px}
+  .story em{background:#E8F0EE; font-style:normal; padding:0 3px}
+
+  .grid3{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:18px; margin-top:26px}
+  .feat{background:#fff; border:1px solid var(--line); border-radius:12px; padding:20px}
+  .feat h3{font-size:19px; margin-bottom:8px}
+  .feat p{font-size:15px; color:#4A3E31}
+
+  .compare{width:100%; border-collapse:collapse; margin-top:22px; background:#fff; border:1px solid var(--line); border-radius:12px; overflow:hidden; font-size:15px}
+  .compare th,.compare td{padding:12px 14px; border-bottom:1px solid var(--line); text-align:left}
+  .compare th{font-size:12px; text-transform:uppercase; letter-spacing:.05em; color:var(--muted)}
+  .compare td:last-child{font-weight:600}
+
+  .plans{display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:18px; margin-top:26px}
+  .plan{background:#fff; border:1px solid var(--line); border-radius:14px; padding:26px}
+  .plan.featured{border:2px solid var(--teal)}
+  .plan .price{font:700 40px Georgia,serif; margin:6px 0 2px}
+  .plan .per{color:var(--muted); font-size:14px; margin-bottom:16px}
+  .plan ul{list-style:none; padding:0; font-size:15px}
+  .plan li{padding:5px 0 5px 24px; position:relative}
+  .plan li::before{content:'✓'; position:absolute; left:0; color:var(--teal); font-weight:700}
+
+  details{border-bottom:1px solid var(--line); padding:14px 0; max-width:44em}
+  summary{font-weight:600; cursor:pointer; font-size:16px}
+  details p{margin-top:10px; color:#4A3E31; font-size:15px}
+  footer.site{padding:40px 0 60px; font-size:14px; color:var(--muted)}
+  .sig{font-family:Georgia,serif; font-style:italic; margin-top:8px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <svg width="30" height="30" viewBox="0 0 96 96" aria-hidden="true"><path d="M16 14 h64 a8 8 0 0 1 8 8 v40 a8 8 0 0 1 -8 8 H44 l-14 14 v-14 H16 a8 8 0 0 1 -8-8 V22 a8 8 0 0 1 8-8 z" fill="#1F6E63"/><path d="M48 24 l5.9 12 13.2 1.9 -9.6 9.3 2.3 13.1 -11.8-6.2 -11.8 6.2 2.3-13.1 -9.6-9.3 13.2-1.9 z" fill="#D9A441" stroke="#FAF6EF" stroke-width="2.5" stroke-linejoin="round"/></svg>
+    <span class="name">Askstead</span>
+    <nav><a href="#kit">The kit</a><a href="#pricing">Pricing</a><a href="#rules">The rules</a><a href="#faq">FAQ</a></nav>
+  </header>
+
+  <div class="hero">
+    <div class="stars">★★★★★</div>
+    <h1>Your happiest customer is holding a phone. Ask.</h1>
+    <p class="lede">Askstead makes your Google review kit — QR counter cards, table tents, stickers, a feedback page, and word-for-word ask scripts. You buy it once, print it yourself, and own it. No $400-a-month platform. No contract. Nothing to cancel.</p>
+    <a class="cta" href="app/askstead.html">Make my kit free</a>
+    <a class="cta quiet" href="#pricing">Kit License — $49, once</a>
+    <p class="fineprint">The free kit is complete — it just carries a small "Made with Askstead" line. The price is right here on the page, because of course it is.</p>
+  </div>
+
+  <section class="story">
+    <h2>The moment is free. The platforms charge rent for it.</h2>
+    <p>97% of people read reviews before choosing a local business, and most of them check Google. Every owner knows this. So an entire industry sells "reputation management" — <em>hundreds of dollars a month</em>, annual contracts, sales calls to learn the price, and cancellation stories you can read on the BBB.</p>
+    <p>Here's what actually produces a review: a happy customer, a visible ask, and a link that opens the review box. That's a printed card and a QR code. It didn't need a platform. It needed fifteen minutes and a decent printer.</p>
+    <p>Askstead is those fifteen minutes, done properly: print-ready assets in your brand color, a feedback page that plays by Google's rules, and the exact words to say. Paper and a file. <em>Nobody can repossess paper.</em></p>
+  </section>
+
+  <section id="kit">
+    <h2>One kit, six pieces</h2>
+    <div class="grid3">
+      <div class="feat"><h3>Counter card</h3><p>Sits by the register. Scan → your Google review form opens. The highest-converting square foot in your shop.</p></div>
+      <div class="feat"><h3>Table tent</h3><p>Fold-in-half, printed both sides. For tables, waiting rooms, front desks.</p></div>
+      <div class="feat"><h3>Sticker sheet</h3><p>Twelve small QRs for takeout bags, invoices, packaging, the door.</p></div>
+      <div class="feat"><h3>Window poster</h3><p>Bold-border A-size poster for glass and walls. Looks right in grayscale too — office printers welcome.</p></div>
+      <div class="feat"><h3>Counter page</h3><p>A one-file web page: "Review us on Google" and "Tell the owner privately," side by side, for everyone. Host it anywhere free.</p></div>
+      <div class="feat"><h3>Ask scripts</h3><p>The after-visit text, the follow-up email, the receipt footer — written to convert and written to comply.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>The comparison you're already making</h2>
+    <table class="compare">
+      <tr><th></th><th>Review platforms</th><th>Askstead</th></tr>
+      <tr><td>Price</td><td>$300–600/month, annual contract</td><td>$49, once</td></tr>
+      <tr><td>Find out the price</td><td>book a sales call</td><td>it's on this page</td></tr>
+      <tr><td>Cancelling</td><td>30-day notice windows, per BBB complaints, billing that outlives the contract</td><td>nothing to cancel</td></tr>
+      <tr><td>What you own after a year</td><td>nothing</td><td>the kit, forever</td></tr>
+    </table>
+    <p class="fineprint">Fair note: platforms also bundle SMS campaigns, webchat, and AI agents. If you need those, rent them. If you need <i>reviews</i>, ask for them.</p>
+  </section>
+
+  <section id="pricing">
+    <h2>Pricing, out loud</h2>
+    <div class="plans">
+      <div class="plan">
+        <h3>Free kit</h3>
+        <div class="price">$0</div>
+        <div class="per">no account, no card, no catch</div>
+        <ul><li>All six kit pieces</li><li>Your brand color</li><li>Compliant counter page</li><li>Small "Made with Askstead" credit line</li></ul>
+      </div>
+      <div class="plan featured">
+        <h3>Kit License</h3>
+        <div class="price">$49</div>
+        <div class="per">once, per business. that's it.</div>
+        <ul><li>Everything in Free</li><li>Credit line removed everywhere</li><li>All 1.x updates</li><li>Email support from the maker</li><li>Regenerate any time — new colors, new copy</li></ul>
+      </div>
+    </div>
+    <p class="fineprint">Set up funnels for clients? Agency Bundle: 5 kit licenses for $149.</p>
+  </section>
+
+  <section id="rules" class="story">
+    <h2>We follow the rules. Loudly.</h2>
+    <p>Google prohibits <em>review gating</em> — showing the review link only to customers you think are happy. The FTC's reviews rule (in force since October 2024, first enforcement letters sent December 2025) bans suppression and paid-for sentiment. Plenty of tools grew up doing exactly that.</p>
+    <p>Askstead is compliant by construction: every asset shows the public review path to <em>everyone</em>, private feedback is offered <em>alongside</em> it — never as a filter in front of it — and no script ever offers a discount for stars. This isn't just legal hygiene. Asking honestly is why the reviews you get are worth having.</p>
+  </section>
+
+  <section id="faq">
+    <h2>Fair questions</h2>
+    <details><summary>Can't I just make a QR code for free?</summary>
+      <p>Yes — and you'll get a naked QR square. The kit is the part after that: print-ready cards that look professional, a feedback page that follows Google's and the FTC's rules, and asks that are worded to convert. $49 buys not having to become a designer and a compliance reader this weekend.</p></details>
+    <details><summary>Where does my data go?</summary>
+      <p>Nowhere. The generator runs in your browser. We never see your business name, your link, or your customers. There's no account to create.</p></details>
+    <details><summary>What do I need to start?</summary>
+      <p>Your free Google review link (Business Profile → "Ask for reviews"), a browser, and a printer. The kit walks you through finding the link.</p></details>
+    <details><summary>Does asking for reviews actually work?</summary>
+      <p>The ask is the whole game: most customers who'd happily review you simply never think of it. A visible, effortless prompt at the moment of satisfaction is what the $400/month platforms are selling underneath everything else.</p></details>
+    <details><summary>What if Askstead disappears?</summary>
+      <p>Your printed cards keep working — they're paper pointing at Google's own link. Your counter page is a file you host. Like everything we make, the exit is built in.</p></details>
+  </section>
+
+  <footer class="site">
+    <p>Askstead · askstead.com · a stead-family tool — buy once, own outright</p>
+    <p class="sig">— ask well, own the tools</p>
+  </footer>
+</div>
+</body>
+</html>

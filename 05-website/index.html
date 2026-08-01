@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hourstead — time tracking and invoicing you own outright</title>
+<meta name="description" content="Track hours and send invoices from a single file you own. No server, no account, no subscription. $79 once, or free forever.">
+<style>
+  :root{--red:#A63A2B; --cream:#FAF6EF; --soil:#2B2118; --wheat:#D9A441; --sage:#7A8B6F; --line:#E5DDD0; --muted:#8A7F70}
+  *{box-sizing:border-box; margin:0}
+  body{background:var(--cream); color:var(--soil); font:17px/1.65 system-ui,-apple-system,sans-serif}
+  h1,h2,h3{font-family:Georgia,'Times New Roman',serif; line-height:1.15}
+  a{color:var(--red)}
+  .wrap{max-width:880px; margin:0 auto; padding:0 24px}
+  header{display:flex; align-items:center; gap:10px; padding:20px 0}
+  header .name{font-family:Georgia,serif; font-weight:bold; font-size:20px}
+  header nav{margin-left:auto; display:flex; gap:22px; font-size:15px}
+  header nav a{text-decoration:none}
+
+  .hero{padding:64px 0 56px; border-bottom:1px solid var(--line)}
+  .hero h1{font-size:clamp(34px,6vw,56px); max-width:14em}
+  .hero p.lede{font-size:20px; max-width:34em; margin:22px 0 30px; color:#4A3E31}
+  .cta{display:inline-block; background:var(--red); color:#fff; text-decoration:none; font-weight:600; padding:14px 26px; border-radius:10px}
+  .cta.quiet{background:none; color:var(--soil); border:1px solid var(--soil); margin-left:10px}
+  .fineprint{font-size:13px; color:var(--muted); margin-top:12px}
+
+  section{padding:56px 0; border-bottom:1px solid var(--line)}
+  section h2{font-size:32px; margin-bottom:18px}
+  .story p{max-width:38em; margin-bottom:14px}
+  .story em{background:#FBF3E1; font-style:normal; padding:0 3px}
+
+  .grid3{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:18px; margin-top:26px}
+  .feat{background:#fff; border:1px solid var(--line); border-radius:12px; padding:20px}
+  .feat h3{font-size:19px; margin-bottom:8px}
+  .feat p{font-size:15px; color:#4A3E31}
+  .step{counter-increment:step}
+  .step b{display:block; font-family:Georgia,serif; font-size:19px; margin-bottom:6px}
+
+  .plans{display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:18px; margin-top:26px}
+  .plan{background:#fff; border:1px solid var(--line); border-radius:14px; padding:26px}
+  .plan.featured{border:2px solid var(--red)}
+  .plan .price{font:700 40px Georgia,serif; margin:6px 0 2px}
+  .plan .per{color:var(--muted); font-size:14px; margin-bottom:16px}
+  .plan ul{list-style:none; padding:0; font-size:15px}
+  .plan li{padding:5px 0 5px 24px; position:relative}
+  .plan li::before{content:'✓'; position:absolute; left:0; color:var(--sage); font-weight:700}
+
+  details{border-bottom:1px solid var(--line); padding:14px 0; max-width:44em}
+  summary{font-weight:600; cursor:pointer; font-size:16px}
+  details p{margin-top:10px; color:#4A3E31; font-size:15px}
+
+  footer.site{padding:40px 0 60px; font-size:14px; color:var(--muted)}
+  .sig{font-family:Georgia,serif; font-style:italic; margin-top:8px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <svg width="30" height="30" viewBox="0 0 96 96" aria-hidden="true"><rect x="8" y="8" width="80" height="80" rx="14" fill="#A63A2B"/><path d="M22 66 H74 M22 74 H74" stroke="#FAF6EF" stroke-opacity=".35" stroke-width="3" stroke-linecap="round"/><circle cx="48" cy="38" r="19" fill="#FAF6EF"/><path d="M48 38 L39 32" stroke="#A63A2B" stroke-width="4" stroke-linecap="round"/><path d="M48 38 L56 28" stroke="#D9A441" stroke-width="4" stroke-linecap="round"/><circle cx="48" cy="38" r="3" fill="#2B2118"/></svg>
+    <span class="name">Hourstead</span>
+    <nav><a href="#how">How it works</a><a href="#pricing">Pricing</a><a href="#faq">FAQ</a></nav>
+  </header>
+
+  <div class="hero">
+    <h1>Your hours. Your file. Nobody's tenant.</h1>
+    <p class="lede">Hourstead is a time tracker and invoice maker that lives in a single file on your computer. No account. No server. No subscription that doubles when your tool gets acquired.</p>
+    <a class="cta" href="app/hourstead.html">Open Hourstead free</a>
+    <a class="cta quiet" href="#pricing">Founding License — $79, once</a>
+    <p class="fineprint">Free means free: full tracker, full invoicing, up to 3 active clients. Nothing to install, nothing to sign up for.</p>
+  </div>
+
+  <section class="story">
+    <h2>Every tool you rent can be sold out from under you.</h2>
+    <p>If you bill by the hour, your time log and your invoices <em>are</em> your business — the record of everything you've earned. Most tools keep that record on their servers and charge you monthly to visit it. Some now charge per invoice you send.</p>
+    <p>When those tools change owners, you find out what renting really costs: new pricing at renewal, features moved behind higher tiers, your history held politely hostage.</p>
+    <p>Hourstead is built the other way around. Your whole business — hours, clients, invoices — lives in one file we call a <em>stead</em>. It sits on your disk. It opens in any browser. If we vanish tomorrow, your copy keeps working and your file stays readable, because it's plain JSON you can open with a text editor.</p>
+    <p>We sell software the way hardware stores sell hammers: you pay once, and then it's yours.</p>
+  </section>
+
+  <section id="how">
+    <h2>How it works</h2>
+    <div class="grid3">
+      <div class="feat step"><b>1 · Open the file</b><p>Hourstead is one HTML file. Double-click it, or keep it on a USB stick. It works offline, on any machine with a browser.</p></div>
+      <div class="feat step"><b>2 · Track and bill</b><p>Start the timer or log hours by hand. When it's time to bill, one click turns a client's unbilled hours into a numbered invoice — print it or save a PDF.</p></div>
+      <div class="feat step"><b>3 · Keep your stead</b><p>Export everything as one portable file whenever you like. That file is your backup, your archive, and your exit door — no export request, no waiting, no fee.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Small tool, sharp edges</h2>
+    <div class="grid3">
+      <div class="feat"><h3>Live timer + timesheet</h3><p>One-keystroke tracking with per-client hourly rates, weekly totals, and an unbilled ledger that always tells you what you're owed.</p></div>
+      <div class="feat"><h3>Invoices that look sent-by-a-grown-up</h3><p>Auto-numbered, tax-aware, printed clean through your browser. Draft, sent, paid — nothing more, because nothing more is needed.</p></div>
+      <div class="feat"><h3>Data you can read</h3><p>The stead file is human-readable JSON. Your accountant can open it. A script can parse it. Nobody can ransom it.</p></div>
+    </div>
+  </section>
+
+  <section id="pricing">
+    <h2>Pricing that can't creep</h2>
+    <div class="plans">
+      <div class="plan">
+        <h3>Free</h3>
+        <div class="price">$0</div>
+        <div class="per">forever, no account</div>
+        <ul><li>Full timer &amp; timesheet</li><li>Full invoicing</li><li>Up to 3 active clients</li><li>Stead file export &amp; import</li><li>Small "Made with Hourstead" line on invoices</li></ul>
+      </div>
+      <div class="plan featured">
+        <h3>Founding License</h3>
+        <div class="price">$79</div>
+        <div class="per">once. per person. that's the whole model.</div>
+        <ul><li>Everything in Free</li><li>Unlimited clients</li><li>No footer on invoices</li><li>All 1.x updates included</li><li>Priority email support</li><li>Pay again only if you ever want a 2.0</li></ul>
+      </div>
+    </div>
+    <p class="fineprint">No per-seat rent. No usage fees. No "contact sales." If we ever change this page, your license doesn't change with it.</p>
+  </section>
+
+  <section id="faq">
+    <h2>Fair questions</h2>
+    <details><summary>What happens if Hourstead shuts down or gets acquired?</summary>
+      <p>Nothing happens to you. The app is a file on your computer and your data is a file on your computer. There is no server to turn off. That's not a promise of good behavior — it's an architecture that makes good behavior irrelevant.</p></details>
+    <details><summary>Where exactly is my data?</summary>
+      <p>In your browser's local storage on your machine, and in any stead files you export. It is never transmitted anywhere. There is no telemetry, no analytics, no account.</p></details>
+    <details><summary>Can my small team use it?</summary>
+      <p>Each person runs their own copy (one license each). Share work by exchanging stead files. There's no real-time sync — sync needs a server, and a server is a leash. If that's a dealbreaker, we're honestly not your tool.</p></details>
+    <details><summary>Why should I trust a tool this cheap?</summary>
+      <p>Because the economics are boring on purpose: one file, near-zero costs, no investors, no growth targets to hit. Companies rug-pull because they must. We can't — there's nothing to squeeze.</p></details>
+    <details><summary>Is there a trial of the paid version?</summary>
+      <p>The free version <em>is</em> the trial, and it never expires. Buy the license when you outgrow 3 clients or want the footer gone.</p></details>
+  </section>
+
+  <footer class="site">
+    <p>Hourstead · hourstead.com · built by one person, on purpose</p>
+    <p class="sig">— sign your work, own your hours</p>
+  </footer>
+</div>
+</body>
+</html>
