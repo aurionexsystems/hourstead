@@ -1,0 +1,24 @@
+POLYFORM NONCOMMERCIAL LICENSE 1.0.0
+
+Copyright (c) 2026 Eavefile
+
+1. Grant of License
+Subject to the terms of this license, the Licensor grants you a non-exclusive, worldwide, royalty-free license to use, copy, modify, display, and distribute the Software, solely for noncommercial purposes.
+
+2. Strict Noncommercial Restriction
+You MAY NOT monetize the Software in any way. Specifically:
+- You MAY NOT sell, rent, lease, or sublicense the Software, modified versions of it, or forks of it.
+- You MAY NOT offer the Software or any modified version as a paid service, SaaS, or hosted application.
+- You MAY NOT include the Software or modified/forked versions in any commercial product, service, bundle, or offering.
+- You MAY NOT charge fees, request donations, or monetize derivative works built on or derived from the Software.
+
+3. Personal & Internal Use
+Anyone is free to use, run, inspect, and modify the Software for their own personal or internal business operations free of charge.
+
+4. Notice Requirements
+You must retain all copyright notices, license texts, and disclaimers in any copies or substantial portions of the Software.
+
+5. Disclaimer of Warranty & Liability
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY.
+
+Eavefile — show them the ground.

@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Eavefile — show them the ground</title>
+<meta name="description" content="A local-first case file for homeowners answering an aerial-imagery insurance notice. No account. No server. One file you own."/>
+<style>
+  :root {
+    --ink: #1B2430;
+    --muted: #5B6570;
+    --paper: #F6F1E8;
+    --card: #FFFCF7;
+    --copper: #C45C26;
+    --eave: #243140;
+    --line: #D8CFC2;
+    --ok: #2F6B4F;
+    --warn: #9B1C1C;
+    --info: #2B4C7E;
+    --shadow: 0 10px 30px rgba(27,36,48,.08);
+    --serif: Georgia, "Iowan Old Style", "Palatino Linotype", Palatino, serif;
+    --sans: "Segoe UI", system-ui, -apple-system, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--sans); }
+  body { min-height: 100vh; }
+  a { color: var(--copper); }
+  button, input, select, textarea { font: inherit; }
+  h1,h2,h3 { font-family: var(--serif); letter-spacing: -.02em; margin: 0 0 .4em; }
+  .app { max-width: 1180px; margin: 0 auto; padding: 20px 20px 80px; }
+  header.top { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 8px 0 20px; }
+  .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: inherit; }
+  .mark { width: 40px; height: 40px; }
+  .brand b { font-family: var(--serif); font-size: 22px; }
+  .brand span { display: block; font-size: 12px; color: var(--muted); }
+  .row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+  .btn { border: 1px solid var(--ink); background: var(--ink); color: #fff; padding: 9px 14px; border-radius: 8px; cursor: pointer; }
+  .btn.sec { background: transparent; color: var(--ink); }
+  .btn.ghost { background: transparent; border-color: var(--line); color: var(--ink); }
+  .btn.warn { background: var(--warn); border-color: var(--warn); }
+  .btn:disabled { opacity: .45; cursor: not-allowed; }
+  .chip { font-size: 12px; border: 1px solid var(--line); padding: 4px 8px; border-radius: 999px; color: var(--muted); }
+  .chip.ok { border-color: var(--ok); color: var(--ok); }
+  .chip.warn { border-color: var(--warn); color: var(--warn); }
+  .grid { display: grid; gap: 16px; }
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 18px; box-shadow: var(--shadow); }
+  .hero { padding: 28px 0 8px; }
+  .hero h1 { font-size: clamp(34px, 5vw, 56px); line-height: 1.05; }
+  .lede { font-size: 18px; color: var(--muted); max-width: 62ch; }
+  label { display: block; font-size: 12px; color: var(--muted); margin: 10px 0 4px; }
+  input, select, textarea { width: 100%; padding: 9px 10px; border: 1px solid var(--line); border-radius: 8px; background: #fff; }
+  textarea { min-height: 90px; }
+  table { width: 100%; border-collapse: collapse; }
+  th, td { text-align: left; padding: 8px 6px; border-bottom: 1px solid var(--line); font-size: 14px; vertical-align: top; }
+  .tabs { display: flex; gap: 6px; flex-wrap: wrap; margin: 8px 0 16px; }
+  .tab { border: 1px solid var(--line); background: #fff; padding: 8px 12px; border-radius: 999px; cursor: pointer; }
+  .tab.on { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .deadline { font-family: var(--serif); font-size: 42px; line-height: 1; }
+  .deadline.warn { color: var(--warn); }
+  .deadline.ok { color: var(--ok); }
+  .wm { position: relative; }
+  .wm::after { content: "Eavefile draft — unlock to remove watermark"; position: absolute; inset: 20% 8%; color: rgba(196,92,38,.28); font-family: var(--serif); font-size: 28px; transform: rotate(-16deg); pointer-events: none; text-align: center; }
+  .letter { background: #fff; border: 1px solid var(--line); padding: 28px; white-space: pre-wrap; font-family: var(--serif); line-height: 1.45; min-height: 280px; }
+  .hidden { display: none !important; }
+  .disclaimer { font-size: 12px; color: var(--muted); }
+  footer.site { margin-top: 40px; padding-top: 16px; border-top: 1px solid var(--line); color: var(--muted); font-size: 13px; }
+  .modal { position: fixed; inset: 0; background: rgba(27,36,48,.45); display: grid; place-items: center; padding: 20px; z-index: 20; }
+  .modal .card { max-width: 520px; width: 100%; }
+  .check { display: flex; gap: 8px; align-items: flex-start; margin: 8px 0; }
+  .check input { width: auto; margin-top: 3px; }
+  @media print {
+    body { background: #fff; }
+    header.top, .no-print, footer.site, .tabs { display: none !important; }
+    .card, .letter { box-shadow: none; border-color: #bbb; }
+    .app { max-width: none; padding: 0; }
+  }
+</style>
+</head>
+<body>
+<div class="app" id="app"></div>
+<script>
+const PREFIX = "EF1";
+const FREE_CASE_CAP = 1;
+const FREE_EVIDENCE_CAP = 5;
+const DEMO_KEY = "EF1-SHOW-THEM-GR00";
+
+const STATES = {
+  CA: {
+    name: "California",
+    noticeDays: 75,
+    rights: "California Insurance Code § 678(c)(1): for policies expiring on or after July 1, 2020, the insurer must deliver or mail a nonrenewal notice at least 75 days before expiration. If that notice is late, the existing policy stays in force for 75 days from the date the late notice is delivered or mailed. The notice must include the specific reason or reasons for the nonrenewal.",
+    source: "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=INS&sectionNum=678.",
+    complaint: "https://www.insurance.ca.gov/01-consumers/101-help/"
+  },
+  FL: {
+    name: "Florida",
+    noticeDays: 120,
+    rights: "Florida Statutes § 627.4133(2)(b) (2025): for personal lines or commercial residential property insurance, the insurer shall give the first-named insured written notice of nonrenewal, cancellation, or termination at least 120 days before the effective date. The notice must include the reason.",
+    source: "https://www.flsenate.gov/Laws/Statutes/2025/0627.4133",
+    complaint: "https://apps.fldfs.com/eService/Default.aspx"
+  },
+  TX: {
+    name: "Texas",
+    noticeDays: 60,
+    rights: "Texas Department of Insurance consumer page: the company must give 60 days’ notice of a nonrenewal if you bought or renewed the policy in 2024. If you bought or renewed in 2023 or earlier, it must give 30 days’ notice. The company must give you the reason if you ask. After Jan. 1, 2026, the company must give a written statement of the reason it declined, canceled, or nonrenewed. TDI: you may file a complaint if you think the action was unfair. TDI also says companies usually give at least six months to make repairs when the house is in bad condition, instead of nonrenewing immediately.",
+    source: "https://www.tdi.texas.gov/tips/home-insurance-canceled-or-not-renewed.html",
+    complaint: "https://www.tdi.texas.gov/consumer/complaint.html"
+  },
+  CT: {
+    name: "Connecticut",
+    noticeDays: 60,
+    rights: "Connecticut Insurance Department (consumer advisory Feb. 6, 2026, restating its March 2024 notice): insurers must have evidence of material degradation or damage that increases the risk of a claim. Aerial images showing cosmetic conditions such as natural discoloration or streaking should not be used as a reason not to renew. Connecticut law requires at least 60 days’ advance written notice of nonrenewal, including a clear explanation. CID: insurers may reconsider if updated or corrected inspection information is provided.",
+    source: "https://portal.ct.gov/cid/consumer-information-center/consumer-alerts/2026-consumer-alerts/advisory-2026-02-06",
+    complaint: "https://portal.ct.gov/cid/file-a-complaint"
+  },
+  GA: {
+    name: "Georgia",
+    noticeDays: 60,
+    rights: "NerdWallet’s aerial-imagery explainer (fetched 2026-08-20), summarizing state limits: an insurer can cancel or non-renew based on aerial imagery, but the photos may be no more than a year old. The homeowner must have a chance to see the images, plus at least 60 days to fix any issues. This is journalism summarizing regulators, not the statute itself — confirm with the Georgia Office of Insurance and Safety Fire Commissioner.",
+    source: "https://www.nerdwallet.com/insurance/homeowners/learn/aerial-imagery-homeowners-insurance",
+    complaint: "https://content.naic.org/state-insurance-departments"
+  },
+  IN: {
+    name: "Indiana",
+    noticeDays: 60,
+    rights: "NerdWallet (fetched 2026-08-20): when aerial images are the only reason not to renew, the insurer must tell the policyholder how they can see copies. Images can’t be older than two years. The policyholder must have at least 60 days to fix issues identified in the photos. Confirm with the Indiana Department of Insurance.",
+    source: "https://www.nerdwallet.com/insurance/homeowners/learn/aerial-imagery-homeowners-insurance",
+    complaint: "https://content.naic.org/state-insurance-departments"
+  },
+  LA: {
+    name: "Louisiana",
+    noticeDays: null,
+    rights: "NerdWallet (fetched 2026-08-20): insurers may not use aerial images taken more than two years ago as the sole reason for a cancellation or nonrenewal. Confirm with the Louisiana Department of Insurance.",
+    source: "https://www.nerdwallet.com/insurance/homeowners/learn/aerial-imagery-homeowners-insurance",
+    complaint: "https://content.naic.org/state-insurance-departments"
+  },
+  MD: {
+    name: "Maryland",
+    noticeDays: null,
+    rights: "NerdWallet (fetched 2026-08-20): insurers can’t use unclear or outdated images to justify canceling or not renewing. They must perform further investigation. The insurance department encourages insurers to share images and give homeowners a chance to dispute them or make fixes. Confirm with the Maryland Insurance Administration.",
+    source: "https://www.nerdwallet.com/insurance/homeowners/learn/aerial-imagery-homeowners-insurance",
+    complaint: "https://content.naic.org/state-insurance-departments"
+  }
+};
+
+const WALK = [
+  { id: "roof_moss", label: "Roof: moss, broken shingles, or other wear visible from above", source: "NerdWallet aerial-imagery explainer" },
+  { id: "trees", label: "Trees hanging over the house / roof line", source: "NerdWallet; Karl Susman quoted on fire and storm risk" },
+  { id: "debris", label: "Debris in the yard (vermin / trip-and-fall flags)", source: "NerdWallet; Karl Susman" },
+  { id: "pool_tramp", label: "Trampoline or swimming pool the insurer may not have on file", source: "NerdWallet; Bob Passmore / APCIA" },
+  { id: "ponding", label: "Roof ponding, incomplete patching, or a tarp on the roof", source: "Connecticut Insurance Department March 2024 / Feb 2026 advisory" },
+  { id: "discolor", label: "Cosmetic discoloration or streaking that could be mistaken for damage", source: "Connecticut Insurance Department: cosmetic conditions should not support nonrenewal" },
+  { id: "outbuilding", label: "Outbuildings, sheds, or cluttered structures visible from above", source: "United Policyholders / industry writeups on remote reviews" }
+];
+
+const EVIDENCE_TYPES = [
+  "Dated ground photo",
+  "Licensed roofer inspection / certification",
+  "Repair invoice or receipt",
+  "Permit or warranty",
+  "Tree-trimming invoice",
+  "Insurer notice (scan)",
+  "Insurer image (if they sent it)",
+  "Phone-call note",
+  "Other"
+];
+
+function uid(p="id"){ return p + "-" + Math.random().toString(36).slice(2,9); }
+function todayISO(){ return new Date().toISOString().slice(0,10); }
+function daysBetween(a,b){
+  const A = new Date(a+"T00:00:00"); const B = new Date(b+"T00:00:00");
+  return Math.round((B-A)/86400000);
+}
+function escapeHtml(s){ return String(s??"").replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function validKey(k){
+  k = String(k||"").trim().toUpperCase().replace(/\s+/g,"");
+  const m = k.match(/^EF1-([A-Z0-9]{4})-([A-Z0-9]{4})-([A-Z0-9]{2})(\d{2})$/);
+  if (!m) return false;
+  const body = m[1]+m[2]+m[3];
+  const sum = [...body].reduce((a,c)=>a+c.charCodeAt(0),0);
+  return (sum % 97) === parseInt(m[4],10);
+}
+function emptyCase(){
+  return {
+    id: uid("c"),
+    created: todayISO(),
+    address: "", city: "", state: "", zip: "",
+    carrier: "", policyNumber: "", agentName: "", agentEmail: "",
+    noticeDate: todayISO(), coverageEnd: "", noticeKind: "condition",
+    alleged: "", imageDate: "", askedForImages: false,
+    notes: "",
+    evidence: [],
+    letterEdits: { request: "", appeal: "", complaint: "" }
+  };
+}
+function defaultStore(){
+  return { version: 1, licensed: false, licenseKey: "", cases: [], walk: {}, fileName: "myhouse.eave.json" };
+}
+
+let store = defaultStore();
+let view = { page: "home", caseId: null, tab: "notice", modal: null, toast: "" };
+let fileHandle = null;
+
+function saveLocal(){
+  localStorage.setItem("eavefile.v1", JSON.stringify(store));
+  persistLinked();
+}
+function loadLocal(){
+  try {
+    const raw = localStorage.getItem("eavefile.v1");
+    if (raw) store = Object.assign(defaultStore(), JSON.parse(raw));
+  } catch(e) { store = defaultStore(); }
+}
+async function persistLinked(){
+  if (!fileHandle || !window.__eaveCanWrite) return;
+  try {
+    const w = await fileHandle.createWritable();
+    await w.write(JSON.stringify(store, null, 2));
+    await w.close();
+  } catch(e) {}
+}
+
+function currentCase(){ return store.cases.find(c => c.id === view.caseId) || null; }
+function licensed(){ return !!store.licensed; }
+function canAddCase(){ return licensed() || store.cases.length < FREE_CASE_CAP; }
+function canAddEvidence(c){ return licensed() || (c.evidence.length < FREE_EVIDENCE_CAP); }
+
+function deadlineInfo(c){
+  if (!c || !c.coverageEnd) return { days: null, label: "Set a coverage-end date", cls: "" };
+  const d = daysBetween(todayISO(), c.coverageEnd);
+  if (d < 0) return { days: d, label: "Coverage end date has passed", cls: "warn" };
+  if (d <= 14) return { days: d, label: d+" days left", cls: "warn" };
+  return { days: d, label: d+" days left", cls: "ok" };
+}
+
+function stateMeta(st){ return STATES[st] || null; }
+
+function letterRequest(c){
+  if (c.letterEdits.request) return c.letterEdits.request;
+  const st = stateMeta(c.state);
+  return [
+    todayISO(),
+    "",
+    (c.carrier || "[Carrier]") + " Underwriting / Policy Services",
+    "Re: Written reason and imagery request — Policy " + (c.policyNumber || "[policy number]"),
+    "Property: " + [c.address, c.city, c.state, c.zip].filter(Boolean).join(", "),
+    "",
+    "I am the named insured on the policy above. I received a " + (c.noticeKind === "nonrenewal" ? "nonrenewal" : "condition / underwriting") + " notice dated " + (c.noticeDate || "[date]") + ".",
+    (c.alleged ? "The notice states: " + c.alleged : ""),
+    "",
+    "Please send me, in writing:",
+    "1. The specific reason or reasons for the action, including each property condition you are relying on.",
+    "2. A copy of every aerial, satellite, drone, or other remote image used, with the date each image was captured.",
+    "3. The inspection report, scoring output, or underwriting notes that connect those images to your decision.",
+    "4. Confirmation of the date coverage ends and of any repair-or-respond deadline.",
+    "",
+    "I am asking because remote images can be outdated, unclear, or of the wrong house, and because several states require a specific written reason and (in some states) a chance to see the images. " + (st ? "My state card in this file cites: " + st.source + "." : "I will confirm my state's notice rules with my department of insurance."),
+    "",
+    "Please reply in writing within 10 business days. I will send a ground-truth packet once I have the images and the written reason.",
+    "",
+    "Sincerely,",
+    "[Your name]",
+    c.address
+  ].join("\n");
+}
+
+function letterAppeal(c){
+  if (c.letterEdits.appeal) return c.letterEdits.appeal;
+  const ev = c.evidence.map((e,i)=> (i+1)+". "+e.type+" — "+e.title+(e.date?" ("+e.date+")":"")+(e.note?": "+e.note:"")).join("\n") || "1. [Attach your exhibits]";
+  return [
+    todayISO(),
+    "",
+    (c.carrier || "[Carrier]") + " Underwriting",
+    "Re: Appeal / reconsideration — Policy " + (c.policyNumber || "[policy number]"),
+    "Property: " + [c.address, c.city, c.state, c.zip].filter(Boolean).join(", "),
+    "",
+    "I ask you to reconsider the " + (c.noticeKind === "nonrenewal" ? "nonrenewal" : "condition demand") + " dated " + (c.noticeDate || "[date]") + ".",
+    "",
+    "Alleged condition as I understand it:",
+    (c.alleged || "[paste the language from the notice]"),
+    "",
+    "Why the aerial read should not control:",
+    "- I have not been shown the image, or I dispute that it shows material damage on this property, on this date.",
+    (c.imageDate ? "- The image date I have is "+c.imageDate+". If that date is stale, it should not be the sole basis for the action." : "- Please confirm the image date. Stale or unclear images are a known source of error."),
+    "- United Policyholders and news investigations have documented wrong-house flags and skylights read as roofing material. I am submitting ground-level evidence of the actual condition.",
+    "",
+    "Exhibits enclosed:",
+    ev,
+    "",
+    "Requested outcome: withdraw the nonrenewal or condition demand, or schedule an in-person inspection, and confirm coverage in writing through " + (c.coverageEnd || "[date]") + ".",
+    "",
+    "This letter is a homeowner draft, not legal advice. I will also keep a copy for my state insurance department if needed.",
+    "",
+    "Sincerely,",
+    "[Your name]"
+  ].join("\n");
+}
+
+function letterComplaint(c){
+  if (c.letterEdits.complaint) return c.letterEdits.complaint;
+  const st = stateMeta(c.state);
+  return [
+    todayISO(),
+    "",
+    (st ? st.name + " insurance department — consumer complaint" : "[State] Department of Insurance — consumer complaint"),
+    (st ? "Portal (verify before filing): " + st.complaint : "Find your department via the NAIC state map."),
+    "",
+    "Complainant: [Your name], insured at " + [c.address, c.city, c.state, c.zip].filter(Boolean).join(", "),
+    "Insurer: " + (c.carrier || "[carrier]") + "   Policy: " + (c.policyNumber || "[policy]"),
+    "Notice date: " + (c.noticeDate || "[date]") + "   Coverage end: " + (c.coverageEnd || "[date]"),
+    "",
+    "What happened:",
+    "I received a " + (c.noticeKind === "nonrenewal" ? "nonrenewal" : "repair-or-lose-coverage") + " notice. No inspector came to the property. I believe the decision used aerial or remote imagery. Alleged condition: " + (c.alleged || "[as written on the notice]") + ".",
+    "",
+    "What I asked the company for:",
+    "The written reason, the images with capture dates, and the report tying those images to the decision. Asked for images: " + (c.askedForImages ? "yes" : "not yet / not confirmed") + ".",
+    "",
+    "Why I think this should be reviewed:",
+    st ? st.rights : "I want the department to review whether the company gave the required notice, a specific reason, and a fair chance to respond with current evidence.",
+    "",
+    "What I want: a review of the underwriting action, and for the company to accept current ground-truth documentation or perform an in-person inspection.",
+    "",
+    "Attached: notice, my letters, and exhibit list.",
+    "",
+    "I understand a complaint does not guarantee reversal. I am also shopping replacement coverage so I do not have a gap.",
+    "",
+    "[Your name]"
+  ].join("\n");
+}
+
+function packetText(c){
+  const d = deadlineInfo(c);
+  const st = stateMeta(c.state);
+  return [
+    "EAVEFILE PACKET",
+    "Generated " + todayISO() + (licensed() ? "" : "  [draft / free tier]"),
+    "",
+    "Property: " + [c.address, c.city, c.state, c.zip].filter(Boolean).join(", "),
+    "Carrier / policy: " + (c.carrier||"—") + " / " + (c.policyNumber||"—"),
+    "Notice: " + (c.noticeKind) + " dated " + (c.noticeDate||"—") + "   Coverage end: " + (c.coverageEnd||"—") + "   " + d.label,
+    "Alleged condition: " + (c.alleged||"—"),
+    "",
+    "STATE CARD",
+    st ? (st.name + " — " + st.rights + "\nSource: " + st.source) : "No verified state card for this abbreviation. Confirm notice rules with your department of insurance.",
+    "",
+    "EXHIBITS",
+    c.evidence.length ? c.evidence.map((e,i)=> (i+1)+". ["+e.type+"] "+e.title+(e.date?" ("+e.date+")":"")+(e.filename?" file:"+e.filename:"")+(e.note?" — "+e.note:"")).join("\n") : "(none yet)",
+    "",
+    "LETTER 1 — REQUEST FOR REASON AND IMAGERY",
+    letterRequest(c),
+    "",
+    "LETTER 2 — APPEAL / RECONSIDERATION",
+    letterAppeal(c),
+    "",
+    "LETTER 3 — DEPARTMENT COMPLAINT DRAFT",
+    letterComplaint(c),
+    "",
+    "Not a law firm. Not insurance advice. Edit before you send. Keep copies. Shop replacement coverage in parallel."
+  ].join("\n");
+}
+
+function toast(msg){ view.toast = msg; render(); setTimeout(()=>{ if(view.toast===msg){ view.toast=""; render(); } }, 2200); }
+
+function render(){
+  const el = document.getElementById("app");
+  el.innerHTML = headerHTML() + pageHTML() + footerHTML() + (view.modal ? modalHTML() : "");
+  bind();
+}
+
+function headerHTML(){
+  return `<header class="top no-print">
+    <a class="brand" href="#" data-act="home">
+      <svg class="mark" viewBox="0 0 96 96" aria-hidden="true"><rect width="96" height="96" rx="18" fill="#1B2430"/><path d="M18 44 L48 22 L78 44" fill="none" stroke="#C45C26" stroke-width="5"/><path d="M26 44 V70 H70 V44" fill="none" stroke="#F6F1E8" stroke-width="3.5"/><rect x="40" y="50" width="22" height="28" rx="2" fill="#F6F1E8"/><path d="M40 56 H62" stroke="#C45C26" stroke-width="3"/></svg>
+      <div><b>Eavefile</b><span>Show them the ground.</span></div>
+    </a>
+    <div class="row">
+      <span class="chip ${licensed()?'ok':''}" id="lic-chip">${licensed()?'Founding License':'Free tier · 1 case'}</span>
+      <button class="btn ghost" data-act="license">${licensed()?'License':'Unlock'}</button>
+      <button class="btn ghost" data-act="export">Export</button>
+      <button class="btn ghost" data-act="import">Import</button>
+      <input id="import-file" type="file" accept=".json,application/json" class="hidden"/>
+    </div>
+  </header>
+  ${view.toast ? `<div class="chip ok" id="toast">${escapeHtml(view.toast)}</div>` : ""}`;
+}
+
+function footerHTML(){
+  return `<footer class="site">Eavefile is a local file on this device. Nothing is uploaded. Not a law firm, not an insurance agency, not a substitute for a licensed agent or attorney. State cards cite pages fetched on 2026-08-20; confirm before you rely on them. eavefile.com was RDAP-available at build (not purchased — guardrail).</footer>`;
+}
+
+function pageHTML(){
+  if (view.page === "case") return caseHTML();
+  if (view.page === "walk") return walkHTML();
+  return homeHTML();
+}
+
+function homeHTML(){
+  const cards = store.cases.map(c => {
+    const d = deadlineInfo(c);
+    return `<article class="card">
+      <div class="chip ${d.cls}">${escapeHtml(d.label)}</div>
+      <h3 style="margin-top:10px">${escapeHtml(c.address || "Untitled property")}</h3>
+      <p class="disclaimer">${escapeHtml(c.carrier || "No carrier")} · ${escapeHtml(c.policyNumber || "No policy #")} · ${escapeHtml(c.state || "No state")}</p>
+      <div class="row" style="margin-top:12px">
+        <button class="btn" data-act="open" data-id="${c.id}">Open file</button>
+        <button class="btn ghost" data-act="delete" data-id="${c.id}">Delete</button>
+      </div>
+    </article>`;
+  }).join("") || `<article class="card"><p>No case yet. If a letter just arrived, start a file tonight. If it hasn’t, walk the lot first.</p></article>`;
+  return `<section class="hero">
+    <h1>The letter came from the sky.<br/>Your answer is on the ground.</h1>
+    <p class="lede">Carriers are non-renewing and issuing 30–60 day “fix this” letters from aerial photos homeowners were never shown. State Farm’s own statement says recent photos, a roofing invoice, or an inspection report are helpful. Eavefile is that packet — on your machine, paid once.</p>
+    <div class="row" style="margin:18px 0 8px">
+      <button class="btn" data-act="newcase" ${canAddCase()?'':'disabled'}>Start a case file</button>
+      <button class="btn sec" data-act="walk">Walk the lot (free)</button>
+    </div>
+    ${canAddCase()?'':`<p class="disclaimer">Free tier is one case. Unlock a Founding License for unlimited files.</p>`}
+  </section>
+  <div class="cards">${cards}</div>
+  <section class="card" style="margin-top:16px">
+    <h3>What this is</h3>
+    <p>A case file with a deadline clock, a sourced state-rights card, an evidence locker, and three draft letters: (1) demand the images and the written reason, (2) appeal with exhibits, (3) department-of-insurance complaint. Print the packet. Mail it. Keep the file.</p>
+    <p class="disclaimer">Linda Bennett of Santa Ana was told to replace a roof she believed was fine — “My initial thought was it's a mistake. They've got the wrong house.” After she pushed back, State Farm renewed her. Source: ABC7, March 2026. We do not claim Eavefile caused that outcome. We built the paperwork that both the carrier and the advocates say to send.</p>
+  </section>`;
+}
+
+function walkHTML(){
+  const items = WALK.map(w => {
+    const on = !!store.walk[w.id];
+    return `<label class="check"><input type="checkbox" data-act="walk-toggle" data-id="${w.id}" ${on?'checked':''}/><span><b>${escapeHtml(w.label)}</b><br/><span class="disclaimer">Source: ${escapeHtml(w.source)}</span></span></label>`;
+  }).join("");
+  const done = Object.values(store.walk).filter(Boolean).length;
+  return `<section class="hero"><h1>Walk the lot.</h1><p class="lede">About two months before renewal, look at your house the way a satellite does. These flags are copied from fetched consumer explainers — not invented. ${done}/${WALK.length} checked.</p>
+    <div class="row"><button class="btn sec" data-act="home">Back</button><button class="btn" data-act="newcase">Turn this into a case</button></div>
+  </section>
+  <div class="card">${items}<p class="disclaimer" style="margin-top:12px">If something is actually wrong, fix it and keep the invoice. If it isn’t, photograph the true condition with a date. That is the file.</p></div>`;
+}
+
+function caseHTML(){
+  const c = currentCase();
+  if (!c) return homeHTML();
+  const d = deadlineInfo(c);
+  const st = stateMeta(c.state);
+  const tabs = ["notice","rights","evidence","letters","packet"].map(t => `<button class="tab ${view.tab===t?'on':''}" data-act="tab" data-tab="${t}">${t}</button>`).join("");
+  return `<div class="row no-print" style="margin-bottom:10px">
+    <button class="btn ghost" data-act="home">← Files</button>
+    <span class="chip">Case ${escapeHtml(c.id)}</span>
+  </div>
+  <div class="card">
+    <div class="deadline ${d.cls}" id="deadline-days">${d.days === null ? "—" : Math.max(d.days,0)}</div>
+    <p>${escapeHtml(d.label)} · coverage end <b>${escapeHtml(c.coverageEnd || "unset")}</b></p>
+    <h2>${escapeHtml(c.address || "Untitled property")}</h2>
+    <p>${escapeHtml([c.city,c.state,c.zip].filter(Boolean).join(" · "))} · ${escapeHtml(c.carrier || "No carrier")}</p>
+  </div>
+  <div class="tabs no-print">${tabs}</div>
+  ${view.tab==="notice"?noticeHTML(c):""}
+  ${view.tab==="rights"?rightsHTML(c,st):""}
+  ${view.tab==="evidence"?evidenceHTML(c):""}
+  ${view.tab==="letters"?lettersHTML(c):""}
+  ${view.tab==="packet"?packetHTML(c):""}`;
+}
+
+function noticeHTML(c){
+  const opts = Object.keys(STATES).map(k => `<option value="${k}" ${c.state===k?'selected':''}>${STATES[k].name}</option>`).join("");
+  return `<form class="card grid" id="notice-form">
+    <div class="cards">
+      <div><label>Street address</label><input name="address" value="${escapeHtml(c.address)}" required/></div>
+      <div><label>City</label><input name="city" value="${escapeHtml(c.city)}"/></div>
+    </div>
+    <div class="cards">
+      <div><label>State</label><select name="state"><option value="">Choose — sourced cards first</option>${opts}<option value="OTHER" ${c.state==='OTHER'?'selected':''}>Other / not in sourced list</option></select></div>
+      <div><label>ZIP</label><input name="zip" value="${escapeHtml(c.zip)}"/></div>
+    </div>
+    <div class="cards">
+      <div><label>Carrier</label><input name="carrier" value="${escapeHtml(c.carrier)}"/></div>
+      <div><label>Policy number</label><input name="policyNumber" value="${escapeHtml(c.policyNumber)}"/></div>
+    </div>
+    <div class="cards">
+      <div><label>Agent name</label><input name="agentName" value="${escapeHtml(c.agentName)}"/></div>
+      <div><label>Agent email</label><input name="agentEmail" value="${escapeHtml(c.agentEmail)}"/></div>
+    </div>
+    <div class="cards">
+      <div><label>Notice date</label><input type="date" name="noticeDate" value="${escapeHtml(c.noticeDate)}"/></div>
+      <div><label>Coverage end / deadline</label><input type="date" name="coverageEnd" value="${escapeHtml(c.coverageEnd)}"/></div>
+    </div>
+    <div class="cards">
+      <div><label>Notice type</label><select name="noticeKind"><option value="condition" ${c.noticeKind==='condition'?'selected':''}>Condition / repair-or-lose-coverage</option><option value="nonrenewal" ${c.noticeKind==='nonrenewal'?'selected':''}>Nonrenewal</option></select></div>
+      <div><label>Image capture date (if you have it)</label><input type="date" name="imageDate" value="${escapeHtml(c.imageDate)}"/></div>
+    </div>
+    <div><label>Alleged condition — paste their language</label><textarea name="alleged">${escapeHtml(c.alleged)}</textarea></div>
+    <label class="check"><input type="checkbox" name="askedForImages" ${c.askedForImages?'checked':''}/> I have asked the carrier, in writing, for the images and the written reason.</label>
+    <div><label>Notes</label><textarea name="notes">${escapeHtml(c.notes)}</textarea></div>
+    <div class="row"><button class="btn" type="submit">Save notice</button></div>
+  </form>`;
+}
+
+function rightsHTML(c, st){
+  if (!st) return `<div class="card"><h3>No sourced card for this state</h3><p>We only print rules we fetched. Use the NAIC state-regulator directory and your department of insurance. Do not guess notice days.</p><p class="disclaimer">Fallback: ask in writing for the reason and the images; send current photos and a licensed inspection; shop replacement coverage the same day.</p></div>`;
+  return `<div class="card">
+    <h3>${escapeHtml(st.name)} — sourced card</h3>
+    ${st.noticeDays ? `<p><b>Notice period in our card:</b> ${st.noticeDays} days (Texas also has a 30-day track for older policies — read the source).</p>` : ""}
+    <p>${escapeHtml(st.rights)}</p>
+    <p><a href="${st.source}" target="_blank" rel="noopener">Primary source we fetched</a> · <a href="${st.complaint}" target="_blank" rel="noopener">Complaint portal (verify)</a></p>
+    <p class="disclaimer">These are summaries of pages fetched on 2026-08-20. Laws move. Read the source. This is not legal advice.</p>
+  </div>`;
+}
+
+function evidenceHTML(c){
+  const rows = c.evidence.map(e => `<tr>
+    <td>${escapeHtml(e.type)}</td><td>${escapeHtml(e.title)}</td><td>${escapeHtml(e.date||"")}</td>
+    <td>${escapeHtml(e.filename||"")}</td><td>${escapeHtml(e.note||"")}</td>
+    <td class="no-print"><button class="btn ghost" data-act="del-ev" data-id="${e.id}">Remove</button></td>
+  </tr>`).join("") || `<tr><td colspan="6">No exhibits yet. A dated photo and a licensed inspection are the two that carriers themselves ask for.</td></tr>`;
+  return `<div class="card">
+    <h3>Evidence locker</h3>
+    <p class="disclaimer">${c.evidence.length} exhibits${licensed()?"":" · free cap "+FREE_EVIDENCE_CAP}. Files stay on your disk — we store the label, not the bytes.</p>
+    <table><thead><tr><th>Type</th><th>Title</th><th>Date</th><th>Filename</th><th>Note</th><th class="no-print"></th></tr></thead><tbody>${rows}</tbody></table>
+    <form id="ev-form" class="grid" style="margin-top:16px">
+      <div class="cards">
+        <div><label>Type</label><select name="type">${EVIDENCE_TYPES.map(t=>`<option>${t}</option>`).join("")}</select></div>
+        <div><label>Title</label><input name="title" required placeholder="South slope, 2026-08-20"/></div>
+      </div>
+      <div class="cards">
+        <div><label>Date of evidence</label><input type="date" name="date" value="${todayISO()}"/></div>
+        <div><label>Filename on your computer</label><input name="filename" placeholder="roof-south.jpg"/></div>
+      </div>
+      <div><label>Note</label><textarea name="note" placeholder="No ponding. Discoloration only. Contractor says 8–10 years remaining."></textarea></div>
+      <button class="btn" ${canAddEvidence(c)?'':'disabled'}>Add exhibit</button>
+      ${canAddEvidence(c)?'':`<p class="disclaimer">Free tier caps exhibits at ${FREE_EVIDENCE_CAP}. Unlock to add more.</p>`}
+    </form>
+  </div>`;
+}
+
+function lettersHTML(c){
+  const kind = view.letter || "request";
+  const text = kind==="appeal" ? letterAppeal(c) : kind==="complaint" ? letterComplaint(c) : letterRequest(c);
+  const wm = licensed() ? "" : " wm";
+  return `<div class="card">
+    <div class="row no-print">
+      <button class="tab ${kind==='request'?'on':''}" data-act="letter" data-letter="request">1. Demand images</button>
+      <button class="tab ${kind==='appeal'?'on':''}" data-act="letter" data-letter="appeal">2. Appeal</button>
+      <button class="tab ${kind==='complaint'?'on':''}" data-act="letter" data-letter="complaint">3. DOI complaint</button>
+      <button class="btn ghost" data-act="print">Print / PDF</button>
+    </div>
+    <p class="disclaimer no-print">Drafts assembled from the playbook in NerdWallet, United Policyholders, TDI, and State Farm’s own “photos / invoice / inspection report” statement. Edit every bracket. Send in writing. Keep a copy.</p>
+    <div class="letter${wm}" id="letter-box">${escapeHtml(text)}</div>
+    <form id="letter-edit" class="no-print" style="margin-top:12px">
+      <label>Edit this draft (saved on this case)</label>
+      <textarea name="body">${escapeHtml(text)}</textarea>
+      <button class="btn sec">Save edits</button>
+    </form>
+  </div>`;
+}
+
+function packetHTML(c){
+  const wm = licensed() ? "" : " wm";
+  return `<div class="card">
+    <div class="row no-print">
+      <button class="btn" data-act="print">Print the packet</button>
+      <button class="btn sec" data-act="copy-packet">Copy text</button>
+    </div>
+    <pre class="letter${wm}" id="packet-box" style="white-space:pre-wrap; font-size:14px">${escapeHtml(packetText(c))}</pre>
+  </div>`;
+}
+
+function modalHTML(){
+  if (view.modal !== "license") return "";
+  return `<div class="modal" id="lic-modal"><div class="card">
+    <h3>Founding License — $49 once</h3>
+    <p>Unlimited case files, no watermark, no exhibit cap. Validation is on this device (honor system). Demo key for this package: <code>${DEMO_KEY}</code></p>
+    <form id="lic-form"><label>License key</label><input name="key" placeholder="EF1-XXXX-XXXX-XX00" value="${escapeHtml(store.licenseKey||"")}"/>
+    <div class="row" style="margin-top:12px"><button class="btn" type="submit">Unlock</button><button type="button" class="btn ghost" data-act="close-modal">Close</button></div>
+    <p class="disclaimer" id="lic-err"></p></form>
+  </div></div>`;
+}
+
+function bind(){
+  document.querySelectorAll("[data-act]").forEach(n => n.addEventListener("click", onAct));
+  const nf = document.getElementById("notice-form");
+  if (nf) nf.addEventListener("submit", e => {
+    e.preventDefault();
+    const c = currentCase(); if (!c) return;
+    const fd = new FormData(nf);
+    ["address","city","state","zip","carrier","policyNumber","agentName","agentEmail","noticeDate","coverageEnd","noticeKind","imageDate","alleged","notes"].forEach(k => c[k] = fd.get(k) || "");
+    c.askedForImages = nf.askedForImages.checked;
+    saveLocal(); toast("Notice saved"); view.tab = "rights"; render();
+  });
+  const ef = document.getElementById("ev-form");
+  if (ef) ef.addEventListener("submit", e => {
+    e.preventDefault();
+    const c = currentCase(); if (!c) return;
+    if (!canAddEvidence(c)) { view.modal = "license"; render(); return; }
+    const fd = new FormData(ef);
+    c.evidence.push({ id: uid("ev"), type: fd.get("type"), title: fd.get("title"), date: fd.get("date"), filename: fd.get("filename"), note: fd.get("note") });
+    saveLocal(); toast("Exhibit added"); render();
+  });
+  const lf = document.getElementById("letter-edit");
+  if (lf) lf.addEventListener("submit", e => {
+    e.preventDefault();
+    const c = currentCase(); if (!c) return;
+    const kind = view.letter || "request";
+    c.letterEdits[kind] = lf.body.value;
+    saveLocal(); toast("Draft saved"); render();
+  });
+  const lic = document.getElementById("lic-form");
+  if (lic) lic.addEventListener("submit", e => {
+    e.preventDefault();
+    const key = lic.key.value;
+    if (validKey(key)) { store.licensed = true; store.licenseKey = key.trim().toUpperCase(); saveLocal(); view.modal = null; toast("License unlocked"); render(); }
+    else { document.getElementById("lic-err").textContent = "That key does not validate."; }
+  });
+  const imp = document.getElementById("import-file");
+  if (imp) imp.addEventListener("change", async ev => {
+    const f = ev.target.files[0]; if (!f) return;
+    try {
+      const data = JSON.parse(await f.text());
+      if (!data || !Array.isArray(data.cases)) throw new Error("bad");
+      store = Object.assign(defaultStore(), data);
+      if (store.licenseKey && validKey(store.licenseKey)) store.licensed = true;
+      saveLocal(); toast("File imported"); view.page = "home"; render();
+    } catch(err) { toast("Import failed"); }
+  });
+}
+
+async function onAct(ev){
+  ev.preventDefault();
+  const act = ev.currentTarget.getAttribute("data-act");
+  const id = ev.currentTarget.getAttribute("data-id");
+  if (act === "home") { view.page = "home"; view.caseId = null; }
+  if (act === "walk") view.page = "walk";
+  if (act === "newcase") {
+    if (!canAddCase()) { view.modal = "license"; render(); return; }
+    const c = emptyCase();
+    store.cases.push(c);
+    view.page = "case"; view.caseId = c.id; view.tab = "notice";
+    saveLocal();
+  }
+  if (act === "open") { view.page = "case"; view.caseId = id; view.tab = "notice"; }
+  if (act === "delete") { store.cases = store.cases.filter(c => c.id !== id); saveLocal(); }
+  if (act === "tab") view.tab = ev.currentTarget.getAttribute("data-tab");
+  if (act === "letter") { view.tab = "letters"; view.letter = ev.currentTarget.getAttribute("data-letter"); }
+  if (act === "license") view.modal = "license";
+  if (act === "close-modal") view.modal = null;
+  if (act === "print") window.print();
+  if (act === "copy-packet") {
+    const c = currentCase();
+    if (c && navigator.clipboard) { await navigator.clipboard.writeText(packetText(c)); toast("Packet copied"); }
+  }
+  if (act === "del-ev") {
+    const c = currentCase();
+    if (c) { c.evidence = c.evidence.filter(e => e.id !== id); saveLocal(); }
+  }
+  if (act === "walk-toggle") {
+    store.walk[id] = ev.currentTarget.checked;
+    saveLocal();
+    return;
+  }
+  if (act === "export") {
+    const blob = new Blob([JSON.stringify(store, null, 2)], {type:"application/json"});
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = store.fileName || "myhouse.eave.json";
+    a.click();
+    toast("Exported");
+  }
+  if (act === "import") document.getElementById("import-file").click();
+  render();
+}
+
+// public test hooks
+window.Eavefile = {
+  validKey, daysBetween, letterRequest, letterAppeal, letterComplaint, packetText,
+  get store(){ return store; },
+  setStore(s){ store = Object.assign(defaultStore(), s); saveLocal(); },
+  newCase(){ if (!canAddCase()) return null; const c = emptyCase(); store.cases.push(c); view.page="case"; view.caseId=c.id; view.tab="notice"; saveLocal(); render(); return c; },
+  open(id){ view.page="case"; view.caseId=id; render(); },
+  saveNotice(fields){ const c = currentCase(); Object.assign(c, fields); saveLocal(); render(); return c; },
+  addEvidence(ev){ const c = currentCase(); if (!canAddEvidence(c)) return { blocked:true, count:c.evidence.length }; c.evidence.push(Object.assign({id:uid("ev")}, ev)); saveLocal(); render(); return { blocked:false, count:c.evidence.length }; },
+  unlock(key){ if (!validKey(key)) return false; store.licensed=true; store.licenseKey=key; saveLocal(); render(); return true; },
+  render, DEMO_KEY, FREE_CASE_CAP, FREE_EVIDENCE_CAP
+};
+
+loadLocal();
+render();
+</script>
+</body>
+</html>
