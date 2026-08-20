@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Postmark — the cancel file</title>
+<style>
+  :root { --ink:#141414; --paper:#f3efe6; --red:#c1121f; --blue:#1d3557; --line:#d8d0c0; --ok:#2d6a4f; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:#1d3557; color:var(--ink); font:16px/1.45 Palatino, Georgia, serif; }
+  .wrap { max-width:1080px; margin:0 auto; padding:24px 16px 72px; }
+  header.top { color:#f3efe6; display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; align-items:flex-end; margin-bottom:14px; }
+  header.top h1 { margin:0; font-size:13px; letter-spacing:.3em; text-transform:uppercase; }
+  header.top p { margin:4px 0 0; font-size:22px; }
+  .tools { display:flex; gap:8px; flex-wrap:wrap; }
+  .btn { background:var(--paper); border:1px solid #c9c0ae; padding:8px 12px; cursor:pointer; font:inherit; }
+  .btn.red { background:var(--red); color:#fff; border-color:#7f0b14; }
+  .btn.ghost { background:transparent; color:#f3efe6; border-color:#8aa0b8; }
+  .sheet { background:var(--paper); min-height:620px; padding:28px; box-shadow:0 18px 50px rgba(0,0,0,.35); position:relative; }
+  .cancel-stamp { position:absolute; right:24px; top:20px; border:3px solid var(--red); color:var(--red); padding:3px 8px; letter-spacing:.16em; font:12px ui-monospace,Menlo,monospace; transform:rotate(9deg); }
+  .tabs { display:flex; gap:6px; flex-wrap:wrap; margin:0 0 10px; }
+  .tab { background:#0f2744; color:#f3efe6; border:1px solid #8aa0b8; padding:7px 12px; cursor:pointer; font:inherit; }
+  .tab.on { background:var(--paper); color:var(--ink); }
+  h2 { margin:0 0 8px; font-size:28px; font-weight:500; }
+  .lede { color:#5c564a; max-width:62ch; }
+  .grid { display:grid; grid-template-columns:1fr 1fr; gap:12px 16px; }
+  @media(max-width:800px){ .grid{grid-template-columns:1fr;} }
+  label.f { display:flex; flex-direction:column; gap:4px; font-size:13px; color:#5c564a; }
+  input, select, textarea { font:inherit; padding:7px 8px; border:1px solid var(--line); background:#fffdf8; }
+  textarea { min-height:80px; }
+  table { width:100%; border-collapse:collapse; font-size:14px; }
+  th { text-align:left; font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:#5c564a; border-bottom:1px solid var(--line); padding:6px 4px; }
+  td { border-bottom:1px solid #e6dfd0; padding:6px 4px; }
+  .flag { border-left:4px solid #b8860b; background:#efe8d6; padding:12px; margin:0 0 10px; }
+  .flag.high { border-color:var(--red); }
+  .flag a { color:var(--red); }
+  .flag h3 { margin:0 0 4px; font-size:16px; }
+  pre { white-space:pre-wrap; background:#fffdf8; border:1px solid var(--line); padding:14px; font:13px/1.5 ui-monospace,Menlo,monospace; }
+  .warn { background:#ffe8e8; border:1px solid var(--red); padding:10px 12px; margin:0 0 16px; }
+  footer.tiny { color:#c5d0dc; font-size:12px; margin-top:14px; max-width:80ch; }
+  .row { display:flex; gap:8px; flex-wrap:wrap; margin:10px 0; }
+  .letter-col { display:grid; grid-template-columns:200px 1fr; gap:14px; }
+  @media(max-width:800px){ .letter-col{grid-template-columns:1fr;} }
+  @media print { header.top,.tabs,.tools,.btn,footer.tiny { display:none !important; } body{background:#fff;} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div>
+      <h1>Postmark</h1>
+      <p>Date it. Mail it. Stop the charge.</p>
+    </div>
+    <div class="tools">
+      <button class="btn ghost" id="btnNew">New file</button>
+      <button class="btn ghost" id="btnSample">SAMPLE</button>
+      <button class="btn ghost" id="btnOpen">Open</button>
+      <button class="btn ghost" id="btnSave">Save .postmark</button>
+      <button class="btn ghost" id="btnPrint">Print</button>
+      <button class="btn red" id="btnLic">License</button>
+      <input id="fileIn" type="file" accept=".postmark,.json" hidden>
+    </div>
+  </header>
+  <div class="tabs" id="tabs"></div>
+  <div class="sheet">
+    <div class="cancel-stamp" id="stamp">Free tier</div>
+    <div id="view"></div>
+  </div>
+  <footer class="tiny">
+    Postmark never receives this file. There is no server. Do not type a Social Security number or a full card number — the engine will flag them.
+    Not a law firm. Not Rocket Money. Not medical. Not affiliated with the FTC.
+  </footer>
+</div>
+<script src="engine.js"></script>
+<script>
+(function(){
+  const P = window.Postmark;
+  const STORE = "postmark.v1";
+  const FREE = new Set(["cancel"]);
+  const TABS = [["you","You"],["subs","Subscriptions"],["match","Flags"],["letters","Letters"],["log","Log"]];
+  let state = load() || { tab:"you", letter:"cancel", license:"", sub:0, file:P.emptyFile() };
+  if (!state.file) state.file = P.emptyFile();
+  if (!state.file.subs) state.file.subs = [];
+
+  function licensed(){ return P.checkLicense(state.license); }
+  function persist(){ localStorage.setItem(STORE, JSON.stringify(state)); }
+  function load(){ try { return JSON.parse(localStorage.getItem(STORE)||""); } catch(e){ return null; } }
+  function esc(s){ return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+  function sub(){ return state.file.subs[state.sub] || null; }
+
+  function bind(root, keys, obj){
+    keys.forEach((k)=>{
+      const n = root.querySelector("#"+k);
+      if(!n) return;
+      n.addEventListener("input", ()=>{
+        obj[k] = n.type==="checkbox" ? n.checked : n.value;
+        persist();
+      });
+    });
+  }
+
+  function renderTabs(){
+    const el = document.getElementById("tabs");
+    el.innerHTML = "";
+    TABS.forEach(([id,label])=>{
+      const b=document.createElement("button");
+      b.className="tab"+(state.tab===id?" on":"");
+      b.textContent=label;
+      b.onclick=()=>{ state.tab=id; persist(); render(); };
+      el.appendChild(b);
+    });
+    document.getElementById("stamp").textContent = licensed() ? "Founding" : "Free tier";
+  }
+
+  function forbiddenBanner(hits){
+    if(!hits.length) return "";
+    return `<div class="warn"><strong>Stop.</strong> Something in this file looks like a Social Security number or a full card number. Delete it. Postmark will not help you store that, and we never want it sent to us.</div>`;
+  }
+
+  function renderYou(root){
+    const f=state.file;
+    const hits=P.scanObject(f,[]);
+    root.innerHTML = `
+      ${forbiddenBanner(hits)}
+      <h2>Who is mailing this</h2>
+      <p class="lede">Name and address go on the letter you print. They stay in this browser unless you save a file to your own disk. We do not get a copy.</p>
+      <div class="grid">
+        <label class="f">Your name<input id="yourName" value="${esc(f.yourName)}"></label>
+        <label class="f">Street<input id="address1" value="${esc(f.address1)}"></label>
+        <label class="f">City<input id="city" value="${esc(f.city)}"></label>
+        <label class="f">State<input id="region" maxlength="2" value="${esc(f.region)}"></label>
+        <label class="f">ZIP<input id="zip" value="${esc(f.zip)}"></label>
+        <label class="f">Card issuer (for your notes, not for us)<input id="issuerName" value="${esc(f.issuerName)}"></label>
+        <label class="f">As-of date<input id="asOfDate" type="date" value="${esc(f.asOfDate)}"></label>
+      </div>
+      <p class="lede">Forbidden in every field: Social Security numbers, full card numbers, bank passwords. Last four digits of a card are enough.</p>`;
+    bind(root,["yourName","address1","city","region","zip","issuerName","asOfDate"], f);
+  }
+
+  function renderSubs(root){
+    const rows = state.file.subs.map((s,i)=>`<tr>
+      <td><button class="btn" data-pick="${i}">${esc(s.merchant||"(untitled)")}</button></td>
+      <td>${esc(P.moneyFmt(s.amount))}</td>
+      <td>${esc(s.nextCharge||"—")}</td>
+      <td><button class="btn" data-del="${i}">×</button></td>
+    </tr>`).join("") || `<tr><td colspan="4">None yet.</td></tr>`;
+    const s = sub() || P.emptySub();
+    root.innerHTML = `
+      <h2>Subscriptions</h2>
+      <p class="lede">Merchant, amount, dates. Not your bank feed.</p>
+      <table><thead><tr><th>Merchant</th><th>Amount</th><th>Next charge</th><th></th></tr></thead><tbody>${rows}</tbody></table>
+      <div class="row"><button class="btn" id="addSub">Add subscription</button></div>
+      ${state.file.subs.length?`
+      <h3>Selected</h3>
+      <div class="grid">
+        <label class="f">Merchant<input id="merchant" value="${esc(s.merchant)}"></label>
+        <label class="f">Amount<input id="amount" inputmode="decimal" value="${esc(s.amount)}"></label>
+        <label class="f">Cycle
+          <select id="cycle">
+            <option${s.cycle==="monthly"?" selected":""}>monthly</option>
+            <option${s.cycle==="annual"?" selected":""}>annual</option>
+            <option${s.cycle==="weekly"?" selected":""}>weekly</option>
+          </select>
+        </label>
+        <label class="f">Signed up
+          <select id="signedUpHow">
+            <option value="online"${s.signedUpHow==="online"?" selected":""}>online</option>
+            <option value="phone"${s.signedUpHow==="phone"?" selected":""}>phone</option>
+            <option value="in person"${s.signedUpHow==="in person"?" selected":""}>in person</option>
+          </select>
+        </label>
+        <label class="f">Signed up on<input id="signedUpOn" type="date" value="${esc(s.signedUpOn)}"></label>
+        <label class="f">Next charge<input id="nextCharge" type="date" value="${esc(s.nextCharge)}"></label>
+        <label class="f">Last charge<input id="lastCharge" type="date" value="${esc(s.lastCharge)}"></label>
+        <label class="f">Account email<input id="accountEmail" value="${esc(s.accountEmail)}"></label>
+        <label class="f">Card last four only<input id="last4" maxlength="4" value="${esc(s.last4)}"></label>
+        <label class="f">Cancel tried on<input id="cancelTriedOn" type="date" value="${esc(s.cancelTriedOn)}"></label>
+        <label class="f">Your state (ARL screen)<input id="state" maxlength="2" value="${esc(s.state)}"></label>
+      </div>
+      <label class="f">What happened when you tried to cancel<textarea id="cancelHow">${esc(s.cancelHow)}</textarea></label>
+      <label><input type="checkbox" id="stillCharging"${s.stillCharging?" checked":""}> They are still charging me</label>
+      <label class="f">Notes (no card numbers)<textarea id="notes">${esc(s.notes)}</textarea></label>`:""}`;
+    root.querySelector("#addSub").onclick=()=>{
+      state.file.subs.push(P.emptySub());
+      state.sub=state.file.subs.length-1;
+      persist(); render();
+    };
+    root.querySelectorAll("[data-pick]").forEach(b=>b.onclick=()=>{ state.sub=Number(b.getAttribute("data-pick")); persist(); render(); });
+    root.querySelectorAll("[data-del]").forEach(b=>b.onclick=()=>{
+      state.file.subs.splice(Number(b.getAttribute("data-del")),1);
+      state.sub=0; persist(); render();
+    });
+    if(sub()){
+      const o=sub();
+      bind(root,["merchant","amount","cycle","signedUpHow","signedUpOn","nextCharge","lastCharge","accountEmail","last4","cancelTriedOn","state","cancelHow","notes"], o);
+      const c=root.querySelector("#stillCharging");
+      if(c) c.onchange=()=>{ o.stillCharging=c.checked; persist(); };
+    }
+  }
+
+  function renderMatch(root){
+    const s=sub();
+    const fl=P.flags(state.file, s);
+    root.innerHTML = `
+      <h2>Flags</h2>
+      <p class="lede">Screens, not findings. Each cites a page we fetched. We still have not seen your file.</p>
+      ${fl.map(f=>`<div class="flag ${esc(f.severity)}"><h3>${esc(f.title)}</h3><p>${esc(f.detail)}</p><a href="${esc(f.cite)}" target="_blank" rel="noopener">Source</a></div>`).join("") || "<p>Add a subscription.</p>"}`;
+  }
+
+  function renderLetters(root){
+    const s=sub();
+    if(!s){ root.innerHTML="<p>Add a subscription first.</p>"; return; }
+    const locked = !licensed() && !FREE.has(state.letter);
+    let title, to, body;
+    if(locked){
+      title="Founding file required";
+      to="";
+      body="Free tier writes the first cancel notice — the dated letter.\n\nUnlock the rest: $29 once. Demo key: "+P.DEMO_KEY+"\nChecked on this computer only. We never receive the key's accompanying file.";
+    } else {
+      const L=P.letters(state.file,s,state.letter);
+      title=L.title; to=L.to; body=L.body;
+    }
+    const nav=P.letterTypes().map(([id,label])=>{
+      const need=!licensed() && !FREE.has(id);
+      return `<button class="btn${state.letter===id?" red":""}" data-l="${id}">${esc(label)}${need?" · paid":""}</button>`;
+    }).join("");
+    root.innerHTML=`
+      <h2>Letters</h2>
+      <p class="lede">Print. Sign. Certified mail. The postmark is the product.</p>
+      <div class="letter-col">
+        <div>${nav}</div>
+        <div>
+          <h3>${esc(title)}</h3>
+          <p>${esc(to)}</p>
+          <pre id="letterBody">${esc(body)}</pre>
+          <div class="row">
+            <button class="btn" id="copy">Copy</button>
+            <button class="btn" id="pr">Print letter</button>
+          </div>
+        </div>
+      </div>`;
+    root.querySelectorAll("[data-l]").forEach(b=>b.onclick=()=>{ state.letter=b.getAttribute("data-l"); persist(); render(); });
+    root.querySelector("#copy").onclick=async()=>{ try{ await navigator.clipboard.writeText(body);}catch(e){} };
+    root.querySelector("#pr").onclick=()=>window.print();
+  }
+
+  function renderLog(root){
+    const lines=(state.file.log||[]).map((l,i)=>`
+      <div class="grid">
+        <input data-i="${i}" data-k="date" type="date" value="${esc(l.date)}">
+        <input data-i="${i}" data-k="note" value="${esc(l.note)}">
+      </div>`).join("");
+    root.innerHTML=`<h2>Attempt log</h2><p class="lede">What you clicked, who you emailed. Keep screenshots on your disk, not in our imaginary cloud.</p>${lines||"<p>Empty.</p>"}
+      <div class="row"><button class="btn" id="addLog">Add</button></div>`;
+    root.querySelectorAll("input[data-i]").forEach(inp=>inp.oninput=()=>{
+      state.file.log[Number(inp.getAttribute("data-i"))][inp.getAttribute("data-k")]=inp.value; persist();
+    });
+    root.querySelector("#addLog").onclick=()=>{ state.file.log=state.file.log||[]; state.file.log.push({date:P.todayISO(),note:""}); persist(); render(); };
+  }
+
+  function render(){
+    renderTabs();
+    const root=document.getElementById("view");
+    if(state.tab==="you") renderYou(root);
+    else if(state.tab==="subs") renderSubs(root);
+    else if(state.tab==="match") renderMatch(root);
+    else if(state.tab==="letters") renderLetters(root);
+    else renderLog(root);
+  }
+
+  document.getElementById("btnNew").onclick=()=>{ if(confirm("Blank file?")){ state.file=P.emptyFile(); persist(); render(); } };
+  document.getElementById("btnSample").onclick=()=>{ state.file=P.sampleFile(); state.tab="match"; persist(); render(); };
+  document.getElementById("btnOpen").onclick=()=>document.getElementById("fileIn").click();
+  document.getElementById("fileIn").onchange=(ev)=>{
+    const file=ev.target.files&&ev.target.files[0]; if(!file) return;
+    const r=new FileReader();
+    r.onload=()=>{ try{ const d=JSON.parse(String(r.result)); state.file=d.file||d; persist(); render(); }catch(e){ alert("Could not read."); } };
+    r.readAsText(file); ev.target.value="";
+  };
+  document.getElementById("btnSave").onclick=()=>{
+    const blob=new Blob([JSON.stringify({kind:"postmark-file",v:1,file:state.file},null,2)],{type:"application/json"});
+    const a=document.createElement("a"); a.href=URL.createObjectURL(blob);
+    a.download=(state.file.yourName||"postmark").replace(/\s+/g,"-")+".postmark"; a.click();
+    URL.revokeObjectURL(a.href);
+  };
+  document.getElementById("btnPrint").onclick=()=>{ state.tab="letters"; render(); setTimeout(()=>window.print(),50); };
+  document.getElementById("btnLic").onclick=()=>{
+    const next=prompt("Founding key (PMK-XXXX-XXXX-XX). Demo: "+P.DEMO_KEY, state.license||"");
+    if(next==null) return;
+    state.license=next.trim(); persist();
+    alert(licensed()?"License accepted on this computer.":"Key did not verify.");
+    render();
+  };
+  render();
+})();
+</script>
+</body>
+</html>

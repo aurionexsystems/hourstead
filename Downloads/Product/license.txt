@@ -1,29 +1,24 @@
-MANILA FILE — LICENSE (draft, not counsel-reviewed)
+POSTMARK FILE — LICENSE (draft, not counsel-reviewed)
 
-Copyright (c) 2026 Manila File Co. (entity not formed in this run).
+Copyright (c) 2026 Postmark File Co. (entity not formed).
 
-1. The software in Downloads/Product/04-product and the copy under
-   05-website/app is proprietary. You may run it on machines you control.
+1. You may run 04-product / 05-website/app on machines you control.
 
-2. FREE TIER. You may use one open file and the itemized-bill request
-   letter without a key.
+2. FREE TIER: one first-notice cancel letter, no key.
 
-3. FOUNDING FILE. A valid key (format MNL-XXXX-XXXX-XX) grants one
-   natural person a perpetual, non-transferable license to the paid
-   letter pack and unlimited local files. The key is an honor-system
-   checksum. Circumventing it is a breach of this license, not a
-   technical puzzle we pretend to have solved.
+3. FOUNDING FILE: a valid PMK-XXXX-XXXX-XX key grants one person a
+   perpetual, non-transferable license to the paid letter pack.
+   The checksum is an honor system.
 
-4. You may not redistribute the paid letter pack, sell keys, or offer
-   Manila as a hosted service that receives other people’s medical bills.
+4. Do not redistribute the paid pack or host Postmark as a service
+   that receives other people’s subscription files.
 
-5. Your data is yours. This license does not claim copyright in the
-   contents of your .manila file, your bills, or your letters.
+5. We claim no copyright in the contents of your .postmark file.
 
-6. NO WARRANTY. The software is provided as-is. It is not legal advice
-   and not a promise that any collector, hospital, insurer, or bureau
-   will do anything.
+6. NO WARRANTY. Not legal advice. No promise a charge will stop.
 
-7. Demo key MNL-DEM0-F1LE-NV is for evaluating this package only.
+7. Do not send us bank statements, full card numbers, Social Security
+   numbers, or medical records. Demo key PMK-DEM0-F1LE-K8 is for
+   evaluating this package only.
 
-Have counsel review this before money changes hands.
+Counsel before money changes hands.

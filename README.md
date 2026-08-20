@@ -1,8 +1,8 @@
 # Run #2 lives in Downloads/Product/
 
-**Manila** (2026-08-20) — local medical-bill file. Start at [Downloads/Product/README.md](Downloads/Product/README.md).
+**Postmark** (2026-08-20) — local subscription-cancellation file. No bank connection. No medical data. Start at [Downloads/Product/README.md](Downloads/Product/README.md).
 
-Hourstead (Run #1) remains below.
+Manila (medical bills) was killed in-run: HIPAA / we cannot store that file. Hourstead (Run #1) remains below.
 
 ---
 

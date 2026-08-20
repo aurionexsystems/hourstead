@@ -1,38 +1,37 @@
-# Manila — the finished package (Run #2)
+# Postmark — the finished package (Run #2)
 
-**A company built from scratch in one autonomous run, 2026-08-20.**  
-A local medical-bill file: match the statement to the EOB, run the thirty-day clock, print the letters. One-time $39 Founding File. No server, no account, no percentage of your savings. Built for people the CFPB is still hearing from — collectors on bills they say they do not owe — after the 2025 rule that would have wiped medical debt off credit reports was vacated.
+**Killed first:** Manila, a medical-bill file. HIPAA / we cannot store that customer data. **Nothing with medicine.**
 
-Hourstead (Run #1) stays in the repo root. This company lives here.
+**Shipped instead (2026-08-20):** a local subscription-cancellation file. Dated letters. No bank connection. No PHI.
 
-## Try it in 20 seconds
-Open **[04-product/manila.html](04-product/manila.html)** (keep `engine.js` beside it). Click **Load SAMPLE**. Read **The match**. Open **Letters**.  
-Demo key: `MNL-DEM0-F1LE-NV`
-
-Or the full site:
+## Try it
+Open **[04-product/postmark.html](04-product/postmark.html)** (keep `engine.js` beside it). Click **SAMPLE**.  
+Demo key: `PMK-DEM0-F1LE-K8`
 
 ```bash
-python3 -m http.server 8765 --directory Downloads/Product/05-website
+python3 -m http.server 8766 --directory Downloads/Product/05-website
 ```
 
-http://localhost:8765 · http://localhost:8765/app/manila.html
+http://localhost:8766 · http://localhost:8766/app/postmark.html
 
-## The package
+`node Downloads/Product/04-product/test.js` — 9 passed.
 
-| | What | Where |
-|---|---|---|
-| 0 | Build log — every decision + self-answered question | [00-buildlog/BUILDLOG.md](00-buildlog/BUILDLOG.md) |
-| 1 | Evidence — every claim traced to a fetched URL | [01-research/EVIDENCE.md](01-research/EVIDENCE.md) |
-| 2 | Business — ICP, model, $39, competition | [02-business/BUSINESS.md](02-business/BUSINESS.md) |
-| 3 | Brand — Manila, logos, voice (`manilafile.com` RDAP 404) | [03-brand/BRAND.md](03-brand/BRAND.md) |
-| 4 | **The product** — working file + 15 green tests | [04-product/](04-product/README.md) |
-| 5 | Marketing website — static, local | [05-website/index.html](05-website/index.html) |
-| 6 | Go-to-market — 30-day calendar, nothing posted | [06-gtm/GTM.md](06-gtm/GTM.md) |
-| 7 | Proof memo — verified vs inferred | [07-proof/PROOF.md](07-proof/PROOF.md) |
-| — | License draft | [license.txt](license.txt) |
+## Package
 
-## The thesis in one paragraph
-Medical bills are the most ordinary collector contact in America, and a slice of them are not owed — the CFPB has been saying so for years, and consumers were still filing that sentence in July 2026. The expert workflow (itemize, match the EOB, write, certified mail) is public and unpackaged as an object you keep. Paid advocates take 18–25% and the PDF; Dollar For is free and hospital-charity-care only; Goodbill’s own FAQ refuses collections and already-paid accounts. Manila is the folder those people would have opened the night of the text. Cost to launch ≈ one domain; break-even ≈ one sale; every launch channel is free and already mapped. Bounded downside. Real legal hooks. Unproven conversion.
+| | |
+|---|---|
+| 0 | [BUILDLOG.md](00-buildlog/BUILDLOG.md) — Manila kill + this lock |
+| 1 | [EVIDENCE.md](01-research/EVIDENCE.md) — CFPB Jun–Jul 2026, ROSCA, CA 17602, Amazon order, Rocket Money |
+| 2 | [BUSINESS.md](02-business/BUSINESS.md) — $29, no feed |
+| 3 | [BRAND.md](03-brand/BRAND.md) — postmarkfile.com RDAP 404 |
+| 4 | [04-product/](04-product/README.md) — working file |
+| 5 | [05-website/index.html](05-website/index.html) |
+| 6 | [GTM.md](06-gtm/GTM.md) |
+| 7 | [PROOF.md](07-proof/PROOF.md) |
+| — | [license.txt](license.txt) |
 
-## Two gaps before anyone can pay
-**(1)** No payment processor — guardrail, not an oversight. **(2)** The license check is an honor-system checksum. Both are in the proof memo on the first writing.
+## Thesis
+Click-to-cancel is not federal law this year. Recurring charges still are. ROSCA and California’s ARL still give you a written handle. The apps that “just cancel it” want your transactions. We sell a postmark you keep.
+
+## Gaps
+No checkout (guardrail). Honor-system key. Owner must not accept customer files by email.

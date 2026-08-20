@@ -1,23 +1,13 @@
-# Draft posts — DO NOT PUBLISH THIS RUN
-
-Guardrail 2: these stay in the repo. Owner pastes after checkout exists.
+# Drafts — DO NOT PUBLISH
 
 ## Show HN
+Show HN: Postmark – write a dated cancel letter without linking your bank
 
-**Title:** Show HN: Manila – match a medical bill to an EOB without uploading it
+The federal click-to-cancel rule was vacated 8 July 2025. ROSCA (15 U.S.C. § 8403) still requires a simple way to stop internet negative-option charges. California BPC 17602 still requires an online cancel if you signed up online.
 
-I kept seeing CFPB complaints from this summer that read “the hospital says I owe $0 and the collector is still reporting it.”
+This is a static HTML file. Merchant, amount, dates. It refuses Social Security numbers and full card numbers. I do not get a copy.
 
-Manila is a static HTML folder. You type the bill lines and the EOB lines. It flags mismatches, a 15 U.S.C. § 1692g thirty-day clock, a 2026 HHS FPL charity screen, and prints letters. Nothing is uploaded because there is no server.
+$29 for the follow-up / issuer / FTC pack. Demo key in the repo. No checkout in this package.
 
-I am not a lawyer. I refused the “80% of bills have errors” line because I could not defend it.
-
-$39 one-time for the full letter pack; itemized-request letter is free. Demo key in the repo. Checkout is not wired in the public-less package I can ship under my constraints.
-
-## Day-4 personal finance (facts only)
-
-In February 2025 NBC Connecticut reported that Lisa Horan paid a $2,206 ER bill; the check was cashed; a collector texted her anyway.
-
-If that happens to you: do not pay the collector first. Request an itemized bill. Match it to the EOB. If a collector has written, the Fair Debt Collection Practices Act gives a thirty-day written validation window (15 U.S.C. § 1692g).
-
-I built a local file that holds those pieces. I do not want your PDF.
+## Why not Rocket Money
+Their security page says the Plaid token lets them view your transaction data. That is a reasonable product. It is not this one.
