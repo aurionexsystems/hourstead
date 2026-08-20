@@ -1,13 +1,10 @@
-# Drafts — DO NOT PUBLISH
+# Draft posts — do not publish from this run
+
+## ContractorTalk / forum
+Joist moved change orders to Elite ($32/mo on their pricing page this month). I got tired of renting a signature line. Dayticket is a local HTML file: scope, dollars, schedule effect, two lines to sign. California jobs print the BPC 7159 note. I never see your file.
 
 ## Show HN
-Show HN: Postmark – write a dated cancel letter without linking your bank
+Show HN: Dayticket — extra-work tickets that live in one file you keep. $49 once, or one free extra. Not a field-service subscription.
 
-The federal click-to-cancel rule was vacated 8 July 2025. ROSCA (15 U.S.C. § 8403) still requires a simple way to stop internet negative-option charges. California BPC 17602 still requires an online cancel if you signed up online.
-
-This is a static HTML file. Merchant, amount, dates. It refuses Social Security numbers and full card numbers. I do not get a copy.
-
-$29 for the follow-up / issuer / FTC pack. Demo key in the repo. No checkout in this package.
-
-## Why not Rocket Money
-Their security page says the Plaid token lets them view your transaction data. That is a reasonable product. It is not this one.
+## What not to post
+No invented contractor testimonials. No medical anything. No “HIPAA compliant.”

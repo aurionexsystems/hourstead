@@ -1,18 +1,17 @@
-# GTM — Postmark
+# GTM — Dayticket
 
-Do not post this run.
+No spend. No posting from this run.
 
-## Channels
-HN (Show HN), personal-finance forums, “I can’t cancel Adobe/streaming” threads. No medical groups. No paid medical keywords.
+## Where the buyers already talk
+ContractorTalk (the Buildertrend hike thread is still getting 2026 comments). r/Contractor, r/Construction, Facebook “remodeler” groups. Not medical groups. Not consumer-finance cancel threads.
 
-## 7-day script (after checkout exists)
-1. Plumbing: buy `postmarkfile.com` if still free; merchant of record; keys via `makeLicense`.  
-2. Show HN: local cancel file; ROSCA still law; click-to-cancel is not.  
-3. Albert / AmEx CFPB quotes, linked, redacted as published.  
-4. Honest competitor: Rocket Money views transactions (their page). We do not get a feed.  
-5. CA § 17602 for Californians only — do not invent other states.  
-6. FAQ: not lawyers; $29; we will not take your `.postmark` file by email.  
-7. Recap with real numbers or silence.
+## 30 days after checkout exists (owner)
+1. Show HN / ContractorTalk: “I was tired of paying Elite to print a change order. It’s a file.” Link the SAMPLE ticket. Cite Joist’s page and § 7159.6. Do not fake reviews.
+2. Answer “what do you use instead of Buildertrend / Joist” threads with the file, once, without sockpuppets.
+3. One-page site on `dayticketfile.com` when the domain is bought.
+
+## Do not
+Do not take job files by email. Do not add photo upload “to be helpful.” Do not add medicine. Do not add bank login. Do not claim 50-state compliance.
 
 ## Kill
-See BUSINESS.md. Never add Plaid to “fix” conversion.
+No paid keys 60 days after real checkout, or anyone asks us to hold their jobs. Stop.

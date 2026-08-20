@@ -1,20 +1,17 @@
-# Brand — Postmark
+# Brand — Dayticket
 
-**Name:** Postmark  
-**Domain checked:** `postmarkfile.com` — Verisign RDAP HTTP 404 on 2026-08-20.  
-**Also 404 the same day:** `stoprenew.com`, `cancelnotice.com`.  
-**Tagline:** Date it. Mail it. Stop the charge.  
-**Marks:** [logo.svg](logo.svg), [logo-wordmark.svg](logo-wordmark.svg)
+**Name:** Dayticket  
+**Domain:** `dayticketfile.com` — Verisign RDAP HTTP 404 on 2026-08-20 (not purchased).  
+`dayticket.com` is registered (RDAP 200). Do not claim it.
 
-## Voice
-Postal, not fintech. Short. Cite ROSCA or BPC 17602, not “empower.”  
-Never “HIPAA.” Never a hospital. Never “connect your bank.”  
-**Yes:** The postmark is the evidence.  
-**No:** We’ll handle cancel so you can relax.
+**Tagline:** Sign the extra before you buy the materials.
 
-## Visual
-Ink `#141414`, paper `#f3efe6`, cancel red `#c1121f`, post blue `#1d3557`.  
-A red CANCELLED stamp. Not a purple SaaS card. Not a manila folder (that brand is dead).
+**Voice:** Jobsite short. Dated. No “AI receptionist.” No hospital. No “connect your bank.”
 
-## Trademark
-**UNVERIFIED.** “Postmark” is ordinary English. Counsel before ads.
+**Look:** Kraft paper, safety orange, perforated stub. Not a purple SaaS card. Not a manila folder. Not a postage stamp.
+
+**Never say on the homepage:** HIPAA, PHI, EOB, medical, cancel-the-subscription.
+
+**Do say:** extra work, change order, signed, local file, no card processing.
+
+**Demo key:** `DTK-DEM0-F1LE-D0`

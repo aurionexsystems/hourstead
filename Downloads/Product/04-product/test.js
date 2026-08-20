@@ -1,62 +1,39 @@
-#!/usr/bin/env node
-"use strict";
 const assert = require("assert");
-const P = require("./engine.js");
+const D = require("./engine.js");
+
 let n = 0;
-function ok(name, fn) {
-  try {
-    fn();
-    n++;
-    console.log("  ok  " + name);
-  } catch (e) {
-    console.error("  FAIL  " + name + "\n       " + e.message);
-    process.exitCode = 1;
-  }
+function ok(name, cond) {
+  assert(cond, name);
+  n += 1;
+  console.log("  ok  " + name);
 }
-console.log("Postmark engine");
-ok("demo license", () => {
-  assert.strictEqual(P.checkLicense(P.DEMO_KEY), true);
-  assert.strictEqual(P.checkLicense("PMK-FAKE-FAKE-FAKE"), false);
-  assert.ok(P.checkLicense(P.makeLicense("FOUNDING")));
-});
-ok("refuses SSN-shaped text", () => {
-  assert.strictEqual(P.looksForbidden("123-45-6789"), "ssn");
-});
-ok("refuses PAN-shaped text", () => {
-  assert.strictEqual(P.looksForbidden("4111111111111111"), "pan");
-});
-ok("allows last four and email", () => {
-  assert.strictEqual(P.looksForbidden("1111"), null);
-  assert.strictEqual(P.looksForbidden("sample@example.com"), null);
-});
-ok("sample flags charge-soon, still-charging, CA, ROSCA", () => {
-  const f = P.sampleFile();
-  const ids = P.flags(f, f.subs[0]).map((x) => x.id);
-  assert.ok(ids.includes("CHARGE_SOON"), ids.join(","));
-  assert.ok(ids.includes("STILL_CHARGING"));
-  assert.ok(ids.includes("CA_ARL"));
-  assert.ok(ids.includes("ROSCA"));
-});
-ok("forbidden scan on file with SSN", () => {
-  const f = P.emptyFile();
-  f.yourName = "123-45-6789";
-  const ids = P.flags(f, P.emptySub()).map((x) => x.id);
-  assert.ok(ids.includes("FORBIDDEN_ID"));
-});
-ok("all letters cite no-PAN rule and render", () => {
-  const f = P.sampleFile();
-  for (const [id] of P.letterTypes()) {
-    const L = P.letters(f, f.subs[0], id);
-    assert.ok(L.body.includes("Not legal advice"), id);
-    assert.ok(/full card|card number/i.test(L.body), id);
-  }
-  assert.throws(() => P.letters(f, f.subs[0], "nope"));
-});
-ok("cancel letter cites 8403", () => {
-  const L = P.letters(P.sampleFile(), P.sampleFile().subs[0], "cancel");
-  assert.ok(L.body.includes("8403"));
-});
-ok("daysBetween", () => {
-  assert.strictEqual(P.daysBetween("2026-08-20", "2026-09-01"), 12);
-});
-if (!process.exitCode) console.log(n + " passed");
+
+console.log("Dayticket engine");
+ok("demo license", D.checkLicense(D.DEMO_KEY) && D.DEMO_KEY.indexOf("DTK-") === 0);
+ok("refuses SSN-shaped text", D.looksForbidden("123-45-6789") === "ssn");
+ok("refuses PAN-shaped text", D.looksForbidden("4111111111111111") === "pan");
+ok("allows last four and email", D.looksForbidden("1111 shop@example.com") === null);
+
+const f = D.sampleFile();
+const extra = f.extras[0];
+const fl = D.flags(f, extra).map((x) => x.id);
+ok("sample flags unsigned + CA schedule present", fl.indexOf("UNSIGNED") >= 0 && fl.indexOf("NO_SCOPE") < 0);
+ok(
+  "forbidden scan on file with SSN",
+  D.flags({ ...f, shopName: "123-45-6789" }, extra).some((x) => x.id === "FORBIDDEN_ID")
+);
+
+const t = D.ticket(f, extra, true);
+ok("ticket cites 7159.6 and prints amount", /7159\.6/.test(t.body) && /\$1,860/.test(t.body));
+ok("ticket has three statutory blanks", /Scope/.test(t.body) && /Amount added/.test(t.body) && /progress payments/.test(t.body));
+ok("revised total", D.revisedTotal(f, f.jobs[0]) === 20260);
+ok("free limit counts", D.freeLimits(f).jobs === 1 && D.freeLimits(f).extrasOk);
+
+const started = { ...extra, workStartedOn: "2026-08-19", status: "draft" };
+ok(
+  "work-before-sign flag",
+  D.flags(f, started).some((x) => x.id === "WORK_BEFORE_SIGN")
+);
+
+console.log(n + " passed");
+console.log("DEMO_KEY " + D.DEMO_KEY);

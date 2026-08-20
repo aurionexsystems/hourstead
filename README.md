@@ -1,8 +1,8 @@
 # Run #2 lives in Downloads/Product/
 
-**Postmark** (2026-08-20) — local subscription-cancellation file. No bank connection. No medical data. Start at [Downloads/Product/README.md](Downloads/Product/README.md).
+**Dayticket** (2026-08-20) — local extra-work / change-order ticket for trades. No card processing. No job file on our servers. Start at [Downloads/Product/README.md](Downloads/Product/README.md).
 
-Manila (medical bills) was killed in-run: HIPAA / we cannot store that file. Hourstead (Run #1) remains below.
+Manila and Postmark were dumped: HIPAA is expensive; nothing with medicine; no consumer-complaint identity file. Hourstead (Run #1) remains below.
 
 ---
 

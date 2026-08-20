@@ -1,7 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 140" role="img" aria-label="Postmark wordmark">
-  <rect width="640" height="140" fill="#1d3557"/>
-  <rect x="24" y="36" width="88" height="68" fill="none" stroke="#c1121f" stroke-width="3"/>
-  <text x="68" y="76" text-anchor="middle" fill="#c1121f" font-size="12" font-family="ui-monospace,monospace">STOP</text>
-  <text x="140" y="82" fill="#f3efe6" font-size="48" font-family="Palatino,Georgia,serif">POSTMARK</text>
-  <text x="144" y="108" fill="#c5d0dc" font-size="13" font-family="ui-monospace,monospace" letter-spacing="3">DATE IT · MAIL IT · STOP THE CHARGE</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 64" role="img" aria-label="Dayticket">
+  <rect width="360" height="64" fill="#1c1917"/>
+  <text x="24" y="42" fill="#fff8eb" font-size="28" font-family="Georgia,serif">Dayticket</text>
+  <text x="200" y="40" fill="#c2410c" font-size="12" font-family="ui-monospace,monospace" letter-spacing="2">SIGN THE EXTRA</text>
 </svg>

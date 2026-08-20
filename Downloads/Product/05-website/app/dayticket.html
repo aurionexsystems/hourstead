@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dayticket — extra work, in writing</title>
+<style>
+  :root { --ink:#1c1917; --kraft:#e7d3b0; --paper:#fff8eb; --orange:#c2410c; --line:#c4b49a; --muted:#6b5e4e; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--kraft); color:var(--ink); font:16px/1.45 "Iowan Old Style", Palatino, Georgia, serif; }
+  header { display:flex; flex-wrap:wrap; gap:10px; align-items:center; padding:14px 18px; background:#1c1917; color:#fff8eb; }
+  header b { letter-spacing:.2em; font-size:13px; text-transform:uppercase; }
+  header .grow { flex:1; }
+  nav button, .btn { font:inherit; background:var(--orange); color:#fff; border:0; padding:8px 12px; cursor:pointer; }
+  nav button.ghost, .btn.ghost { background:transparent; color:#fff8eb; border:1px solid #a8a29e; }
+  main { max-width:980px; margin:0 auto; padding:18px; }
+  .card { background:var(--paper); border:1px solid var(--line); padding:16px 18px; margin:0 0 14px; }
+  label { display:block; font-size:13px; color:var(--muted); margin:10px 0 4px; }
+  input, textarea, select { width:100%; font:inherit; padding:8px; border:1px solid var(--line); background:#fff; }
+  textarea { min-height:72px; }
+  table { width:100%; border-collapse:collapse; font-size:15px; }
+  th, td { text-align:left; padding:6px 4px; border-bottom:1px solid var(--line); vertical-align:top; }
+  .row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  @media (max-width:700px){ .row { grid-template-columns:1fr; } }
+  .flag { border-left:4px solid var(--orange); padding:8px 12px; margin:8px 0; background:#fff; }
+  .flag.med { border-color:#a16207; }
+  .muted { color:var(--muted); font-size:13px; }
+  .ticket { white-space:pre-wrap; font:14px/1.4 ui-monospace, Menlo, monospace; background:#fff; padding:16px; border:1px dashed #444; }
+  .stat { display:inline-block; margin-right:16px; }
+  footer { padding:24px 18px 48px; color:var(--muted); font-size:13px; max-width:980px; margin:0 auto; }
+  .hidden { display:none; }
+  @media print {
+    header, nav, .no-print, footer { display:none !important; }
+    body { background:#fff; }
+    .ticket { border:0; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <b>Dayticket</b>
+  <div class="grow">Sign the extra before you buy the materials.</div>
+  <nav>
+    <button data-tab="shop">Shop</button>
+    <button data-tab="jobs">Jobs</button>
+    <button data-tab="extras">Extras</button>
+    <button data-tab="flags">Flags</button>
+    <button data-tab="print">Print</button>
+  </nav>
+  <button class="ghost no-print" id="sample">SAMPLE</button>
+  <button class="ghost no-print" id="save">SAVE</button>
+  <button class="ghost no-print" id="load">LOAD</button>
+</header>
+<main>
+  <p class="muted no-print">This file never leaves this computer. No card processing. No photos. Not a health product. Demo key <code>DTK-DEM0-F1LE-D0</code></p>
+
+  <section id="shop" class="card">
+    <h2>Shop</h2>
+    <label>Company name <input id="shopName"></label>
+    <div class="row">
+      <label>Contractor license # <input id="licenseNo" placeholder="not a medical license"></label>
+      <label>Phone <input id="phone"></label>
+    </div>
+    <label>Email <input id="email" type="email"></label>
+    <label>As-of date <input id="asOfDate" type="date"></label>
+    <label>License key <input id="key" placeholder="DTK-XXXX-XXXX-XX"></label>
+    <p class="muted" id="paidState"></p>
+  </section>
+
+  <section id="jobs" class="card hidden">
+    <h2>Jobs</h2>
+    <p class="muted">A job nickname is enough. We do not want a Social Security number or a card number.</p>
+    <div id="jobList"></div>
+    <button class="btn" id="addJob">Add job</button>
+    <div id="jobEdit"></div>
+  </section>
+
+  <section id="extras" class="card hidden">
+    <h2>Extras</h2>
+    <div id="extraList"></div>
+    <button class="btn" id="addExtra">Add extra</button>
+    <div id="extraEdit"></div>
+  </section>
+
+  <section id="flags" class="card hidden">
+    <h2>Flags</h2>
+    <div id="flagList"></div>
+  </section>
+
+  <section id="print" class="card hidden">
+    <h2>Print ticket</h2>
+    <label>Extra <select id="printPick"></select></label>
+    <p class="no-print"><button class="btn" id="doPrint">Print / save PDF</button></p>
+    <div class="ticket" id="ticketOut"></div>
+  </section>
+</main>
+<footer>
+  Local HTML. Not a law firm. California BPC §§ 7159, 7159.6. Joist gates change orders behind Elite ($32/mo, their pricing page, Aug 2026). Housecall Pro starts at $59/mo billed annually. We do not take the file.
+</footer>
+<script src="engine.js"></script>
+<script>
+(function () {
+  const D = window.Dayticket;
+  const KEY = "dayticket.file";
+  let file = D.emptyFile();
+  let paid = false;
+  let tab = "shop";
+  let jobId = null;
+  let extraId = null;
+
+  function $(id) { return document.getElementById(id); }
+  function val(id, v) { if (v !== undefined) $(id).value = v == null ? "" : v; return $(id).value; }
+  function showTab(name) {
+    tab = name;
+    ["shop","jobs","extras","flags","print"].forEach((t) => $(t).classList.toggle("hidden", t !== name));
+    render();
+  }
+  function readShop() {
+    file.shopName = val("shopName");
+    file.licenseNo = val("licenseNo");
+    file.phone = val("phone");
+    file.email = val("email");
+    file.asOfDate = val("asOfDate") || D.todayISO();
+    paid = D.checkLicense(val("key"));
+  }
+  function persist() {
+    readShop();
+    localStorage.setItem(KEY, JSON.stringify(file));
+  }
+  function limitsOk() {
+    if (paid) return true;
+    const lim = D.freeLimits(file);
+    return lim.jobsOk && lim.extrasOk;
+  }
+
+  function renderJobs() {
+    $("jobList").innerHTML = (file.jobs || []).map((j) => {
+      const tot = D.extrasTotal(file, j.id);
+      return `<div><a href="#" data-job="${j.id}">${j.name || "(untitled job)"}</a> · original ${D.moneyFmt(j.originalAmount)} · extras ${D.moneyFmt(tot)}</div>`;
+    }).join("") || "<p class='muted'>No jobs yet.</p>";
+    const j = file.jobs.find((x) => x.id === jobId);
+    if (!j) { $("jobEdit").innerHTML = ""; return; }
+    $("jobEdit").innerHTML = `
+      <label>Job name <input id="jName" value="${esc(j.name)}"></label>
+      <div class="row">
+        <label>Owner name <input id="jOwner" value="${esc(j.ownerName)}"></label>
+        <label>Original contract $ <input id="jAmt" value="${esc(j.originalAmount)}"></label>
+      </div>
+      <label>Site (optional) <input id="jSite" value="${esc(j.site)}"></label>
+      <div class="row">
+        <label>Started <input id="jStart" type="date" value="${esc(j.startedOn)}"></label>
+        <label>California home-improvement job?
+          <select id="jCA"><option value="1"${j.inCalifornia?" selected":""}>Yes — print § 7159.6</option><option value="0"${j.inCalifornia?"":" selected"}>No</option></select>
+        </label>
+      </div>
+      <label>Notes <textarea id="jNotes">${esc(j.notes)}</textarea></label>
+      <button class="btn ghost" id="delJob" style="color:#1c1917;border-color:#c4b49a">Remove job</button>`;
+    ["jName","jOwner","jAmt","jSite","jStart","jCA","jNotes"].forEach((id) => {
+      $(id).oninput = $(id).onchange = () => {
+        j.name = val("jName"); j.ownerName = val("jOwner"); j.originalAmount = val("jAmt");
+        j.site = val("jSite"); j.startedOn = val("jStart"); j.inCalifornia = val("jCA") === "1";
+        j.notes = val("jNotes"); persist();
+      };
+    });
+    $("delJob").onclick = () => {
+      file.jobs = file.jobs.filter((x) => x.id !== j.id);
+      file.extras = file.extras.filter((x) => x.jobId !== j.id);
+      jobId = null; persist(); render();
+    };
+  }
+
+  function renderExtras() {
+    $("extraList").innerHTML = (file.extras || []).map((x) => {
+      const job = D.jobById(file, x.jobId);
+      return `<div><a href="#" data-extra="${x.id}">${x.dated} · ${D.moneyFmt(x.amount)} · ${x.status}</a> — ${(job && job.name) || "no job"}</div>`;
+    }).join("") || "<p class='muted'>No extras yet.</p>";
+    const x = file.extras.find((e) => e.id === extraId);
+    if (!x) { $("extraEdit").innerHTML = ""; return; }
+    const jobOpts = file.jobs.map((j) => `<option value="${j.id}"${j.id===x.jobId?" selected":""}>${esc(j.name)||j.id}</option>`).join("");
+    $("extraEdit").innerHTML = `
+      <label>Job <select id="xJob">${jobOpts}</select></label>
+      <div class="row">
+        <label>Dated <input id="xDated" type="date" value="${esc(x.dated)}"></label>
+        <label>Amount $ <input id="xAmt" value="${esc(x.amount)}"></label>
+      </div>
+      <label>Scope of extra work <textarea id="xScope">${esc(x.scope)}</textarea></label>
+      <div class="row">
+        <label>Labor <input id="xLabor" value="${esc(x.labor)}"></label>
+        <label>Materials <input id="xMat" value="${esc(x.materials)}"></label>
+      </div>
+      <label>Effect on progress payments or completion date <textarea id="xSched">${esc(x.scheduleEffect)}</textarea></label>
+      <div class="row">
+        <label>Status
+          <select id="xStatus">
+            <option${x.status==="draft"?" selected":""}>draft</option>
+            <option${x.status==="printed"?" selected":""}>printed</option>
+            <option${x.status==="signed"?" selected":""}>signed</option>
+          </select>
+        </label>
+        <label>Signed on <input id="xSigned" type="date" value="${esc(x.signedOn)}"></label>
+      </div>
+      <label>Work started on (leave blank until signed) <input id="xWork" type="date" value="${esc(x.workStartedOn)}"></label>
+      <button class="btn ghost" id="delExtra" style="color:#1c1917;border-color:#c4b49a">Remove extra</button>`;
+    const bind = () => {
+      x.jobId = val("xJob"); x.dated = val("xDated"); x.amount = val("xAmt");
+      x.scope = val("xScope"); x.labor = val("xLabor"); x.materials = val("xMat");
+      x.scheduleEffect = val("xSched"); x.status = val("xStatus");
+      x.signedOn = val("xSigned"); x.workStartedOn = val("xWork");
+      persist();
+    };
+    $("extraEdit").querySelectorAll("input,textarea,select").forEach((el) => { el.oninput = el.onchange = bind; });
+    $("delExtra").onclick = () => {
+      file.extras = file.extras.filter((e) => e.id !== x.id);
+      extraId = null; persist(); render();
+    };
+  }
+
+  function renderFlags() {
+    const all = [];
+    (file.extras || []).forEach((x) => {
+      D.flags(file, x).forEach((fl) => all.push({ extra: x, fl }));
+    });
+    if (!all.length) { $("flagList").innerHTML = "<p>No flags on current extras.</p>"; return; }
+    $("flagList").innerHTML = all.map(({ extra, fl }) =>
+      `<div class="flag ${fl.severity==="med"?"med":""}"><strong>${fl.title}</strong><div>${esc(fl.detail)}</div><div class="muted">${extra.dated} · ${esc((D.jobById(file, extra.jobId)||{}).name||"")}</div></div>`
+    ).join("");
+  }
+
+  function renderPrint() {
+    $("printPick").innerHTML = (file.extras || []).map((x) => {
+      const job = D.jobById(file, x.jobId);
+      return `<option value="${x.id}">${x.dated} · ${D.moneyFmt(x.amount)} · ${(job && job.name) || ""}</option>`;
+    }).join("");
+    if (extraId) $("printPick").value = extraId;
+    const x = file.extras.find((e) => e.id === $("printPick").value);
+    $("ticketOut").textContent = x ? D.ticket(file, x, paid).body : "Add an extra first.";
+  }
+
+  function render() {
+    val("shopName", file.shopName);
+    val("licenseNo", file.licenseNo);
+    val("phone", file.phone);
+    val("email", file.email);
+    val("asOfDate", file.asOfDate || D.todayISO());
+    paid = D.checkLicense(val("key"));
+    $("paidState").textContent = paid
+      ? "Founding File unlocked. Unlimited jobs and extras on this computer."
+      : "Free: one job, one extra. Key unlocks the rest. Honor system. We never see this file.";
+    if (tab === "jobs") renderJobs();
+    if (tab === "extras") renderExtras();
+    if (tab === "flags") renderFlags();
+    if (tab === "print") renderPrint();
+  }
+
+  function esc(s) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, (c) => ({ "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;" }[c]));
+  }
+
+  document.querySelectorAll("nav button").forEach((b) => b.onclick = () => { persist(); showTab(b.dataset.tab); });
+  ["shopName","licenseNo","phone","email","asOfDate","key"].forEach((id) => { $(id).oninput = persist; $(id).onchange = () => { persist(); render(); }; });
+  $("sample").onclick = () => { file = D.sampleFile(); jobId = file.jobs[0].id; extraId = file.extras[0].id; persist(); showTab("extras"); };
+  $("save").onclick = () => {
+    persist();
+    const blob = new Blob([JSON.stringify(file, null, 2)], { type: "application/json" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "job.dayticket.json";
+    a.click();
+  };
+  $("load").onclick = () => {
+    const inp = document.createElement("input");
+    inp.type = "file";
+    inp.accept = "application/json,.json,.dayticket";
+    inp.onchange = () => {
+      const fr = new FileReader();
+      fr.onload = () => { file = JSON.parse(fr.result); persist(); render(); };
+      fr.readAsText(inp.files[0]);
+    };
+    inp.click();
+  };
+  $("addJob").onclick = () => {
+    readShop();
+    if (!paid && file.jobs.length >= 1) { alert("Free file holds one job. Unlock for more."); return; }
+    const j = D.emptyJob();
+    file.jobs.push(j); jobId = j.id; persist(); renderJobs();
+  };
+  $("addExtra").onclick = () => {
+    readShop();
+    if (!paid && file.extras.length >= 1) { alert("Free file holds one extra. Unlock for more."); return; }
+    if (!file.jobs.length) { alert("Add a job first."); return; }
+    const x = D.emptyExtra();
+    x.jobId = jobId || file.jobs[0].id;
+    file.extras.push(x); extraId = x.id; persist(); renderExtras();
+  };
+  $("jobList").onclick = (e) => {
+    const id = e.target.getAttribute && e.target.getAttribute("data-job");
+    if (id) { e.preventDefault(); jobId = id; renderJobs(); }
+  };
+  $("extraList").onclick = (e) => {
+    const id = e.target.getAttribute && e.target.getAttribute("data-extra");
+    if (id) { e.preventDefault(); extraId = id; renderExtras(); }
+  };
+  $("printPick").onchange = () => { extraId = $("printPick").value; renderPrint(); };
+  $("doPrint").onclick = () => {
+    const x = file.extras.find((e) => e.id === $("printPick").value);
+    if (x && x.status === "draft") x.status = "printed";
+    persist();
+    window.print();
+  };
+
+  try {
+    const raw = localStorage.getItem(KEY);
+    if (raw) file = Object.assign(D.emptyFile(), JSON.parse(raw));
+  } catch (e) {}
+  val("asOfDate", file.asOfDate || D.todayISO());
+  render();
+})();
+</script>
+</body>
+</html>

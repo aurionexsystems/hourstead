@@ -1,19 +1,22 @@
 /**
- * Postmark engine — local only. No network. No medical fields.
- * We do not receive this file. Sources cited in 01-research/EVIDENCE.md.
+ * Dayticket engine — local only. No network.
+ * Extra-work tickets for trades. Not a health product.
+ * We do not receive this file.
  */
 (function (root, factory) {
   if (typeof module === "object" && module.exports) module.exports = factory();
-  else root.Postmark = factory();
+  else root.Dayticket = factory();
 })(typeof globalThis !== "undefined" ? globalThis : this, function () {
   "use strict";
 
   const CHARSET = "0123456789ABCDEFGHJKLMNPQRSTUVWXYZ";
-  const PREFIX = "PMK";
+  const PREFIX = "DTK";
   const FORBIDDEN = {
     ssn: /\b\d{3}-?\d{2}-?\d{4}\b/,
     pan: /\b(?:\d[ -]?){13,19}\b/,
   };
+  const CA_NOTE =
+    "Note About Extra Work and Change Orders. Extra Work and Change Orders become part of the contract once the order is prepared in writing and signed by the parties prior to the commencement of work covered by the new change order. The order must describe the scope of the extra work or change, the cost to be added or subtracted from the contract, and the effect the order will have on the schedule of progress payments. (Cal. Bus. & Prof. Code § 7159(d)(13); enforceability: § 7159.6.)";
 
   function money(n) {
     const x = Number(n);
@@ -40,10 +43,8 @@
   function looksForbidden(s) {
     const t = String(s || "");
     if (FORBIDDEN.ssn.test(t)) return "ssn";
-    if (FORBIDDEN.pan.test(t.replace(/[^\d]/g, "").length >= 13 ? t : "")) {
-      const digits = t.replace(/\D/g, "");
-      if (digits.length >= 13 && digits.length <= 19) return "pan";
-    }
+    const digits = t.replace(/\D/g, "");
+    if (digits.length >= 13 && digits.length <= 19 && FORBIDDEN.pan.test(t)) return "pan";
     return null;
   }
   function scanObject(obj, hits) {
@@ -58,38 +59,44 @@
     return hits;
   }
 
-  function emptySub() {
+  function emptyJob() {
     return {
-      id: "s_" + Math.random().toString(36).slice(2, 10),
-      merchant: "",
-      amount: "",
-      cycle: "monthly",
-      signedUpHow: "online",
-      signedUpOn: "",
-      nextCharge: "",
-      lastCharge: "",
-      accountEmail: "",
-      last4: "",
-      cancelTriedOn: "",
-      cancelHow: "",
-      stillCharging: false,
-      state: "CA",
+      id: "j_" + Math.random().toString(36).slice(2, 10),
+      name: "",
+      ownerName: "",
+      site: "",
+      originalAmount: "",
+      startedOn: "",
+      inCalifornia: true,
       notes: "",
     };
   }
-
+  function emptyExtra() {
+    return {
+      id: "x_" + Math.random().toString(36).slice(2, 10),
+      jobId: "",
+      dated: todayISO(),
+      scope: "",
+      labor: "",
+      materials: "",
+      amount: "",
+      scheduleEffect: "",
+      status: "draft",
+      signedOn: "",
+      workStartedOn: "",
+    };
+  }
   function emptyFile() {
     return {
       id: "f_" + Math.random().toString(36).slice(2, 10),
       created: todayISO(),
-      yourName: "",
-      address1: "",
-      city: "",
-      region: "",
-      zip: "",
+      shopName: "",
+      licenseNo: "",
+      phone: "",
+      email: "",
       asOfDate: todayISO(),
-      issuerName: "",
-      subs: [],
+      jobs: [],
+      extras: [],
       log: [],
     };
   }
@@ -97,245 +104,186 @@
   function sampleFile() {
     const f = emptyFile();
     f.id = "f_sample";
-    f.yourName = "A. Sample";
-    f.address1 = "1 Example Street";
-    f.city = "Oakland";
-    f.region = "CA";
-    f.zip = "94612";
-    f.issuerName = "Example Card (SAMPLE)";
+    f.shopName = "Oak Street Build (SAMPLE)";
+    f.licenseNo = "CSLB-000000";
+    f.phone = "(510) 555-0100";
+    f.email = "shop@example.com";
     f.asOfDate = "2026-08-20";
-    f.subs = [
+    f.jobs = [
       {
-        id: "s_sample",
-        merchant: "Example Stream Co. (SAMPLE)",
-        amount: 19.99,
-        cycle: "monthly",
-        signedUpHow: "online",
-        signedUpOn: "2025-11-02",
-        nextCharge: "2026-08-25",
-        lastCharge: "2026-08-01",
-        accountEmail: "sample@example.com",
-        last4: "1111",
-        cancelTriedOn: "2026-08-10",
-        cancelHow: "clicked every settings page; no cancel control (SAMPLE)",
-        stillCharging: true,
-        state: "CA",
-        notes: "SAMPLE — invented merchant. Pattern taken from public CFPB/HN cancel complaints, not a real account.",
+        id: "j_sample",
+        name: "Kitchen — 14 Oak (SAMPLE)",
+        ownerName: "A. Homeowner (SAMPLE)",
+        site: "14 Oak St, Oakland CA",
+        originalAmount: 18400,
+        startedOn: "2026-07-08",
+        inCalifornia: true,
+        notes: "SAMPLE job. Invented. Pattern: verbal extras on a remodel.",
       },
     ];
-    f.log = [{ date: "2026-08-10", note: "SAMPLE: attempted in-app cancel; no control found." }];
+    f.extras = [
+      {
+        id: "x_sample",
+        jobId: "j_sample",
+        dated: "2026-08-18",
+        scope: "Move gas range 18 inches; patch floor; relocate shutoff (SAMPLE)",
+        labor: "6 hours carpenter + plumber assist",
+        materials: "Gas flex, flange, plywood patch",
+        amount: 1860,
+        scheduleEffect: "Adds 1 working day; no change to next progress payment date.",
+        status: "draft",
+        signedOn: "",
+        workStartedOn: "",
+      },
+    ];
+    f.log = [{ date: "2026-08-18", note: "SAMPLE: owner asked for the range move on site." }];
     return f;
   }
 
-  function flags(file, sub) {
+  function jobById(file, jobId) {
+    return (file.jobs || []).find((j) => j.id === jobId) || null;
+  }
+  function extrasForJob(file, jobId) {
+    return (file.extras || []).filter((x) => x.jobId === jobId);
+  }
+  function extrasTotal(file, jobId) {
+    return extrasForJob(file, jobId).reduce((s, x) => s + money(x.amount), 0);
+  }
+  function revisedTotal(file, job) {
+    return money(job && job.originalAmount) + extrasTotal(file, job && job.id);
+  }
+
+  function flags(file, extra) {
     const out = [];
-    const asOf = file.asOfDate || todayISO();
-    const hits = scanObject({ file, sub }, []);
+    const hits = scanObject({ file, extra }, []);
     if (hits.length) {
       out.push({
         id: "FORBIDDEN_ID",
         severity: "high",
         title: "This file looks like it contains a Social Security number or a full card number",
-        detail:
-          "Postmark refuses those fields. Delete them. We do not want them, and you should not keep a full PAN in a letter file. Last four digits are enough for an issuer note.",
-        cite: "https://www.rocketmoney.com/privacy-notice",
+        detail: "Dayticket refuses those fields. Delete them. A contractor ticket does not need either.",
+        cite: "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=BPC&sectionNum=7159.6",
       });
     }
-    if (!sub) return out;
-
-    const until = daysBetween(asOf, sub.nextCharge);
-    if (until != null && until >= 0 && until <= 10) {
+    if (!extra) return out;
+    const job = jobById(file, extra.jobId);
+    if (!String(extra.scope || "").trim()) {
       out.push({
-        id: "CHARGE_SOON",
+        id: "NO_SCOPE",
         severity: "high",
-        title: "Next charge in " + until + " day(s)",
-        detail: "A dated written cancel before the next draft is the paper trail issuers ask for when a merchant keeps billing.",
-        cite: "https://www.law.cornell.edu/uscode/text/15/8403",
+        title: "No scope on this extra",
+        detail: "California BPC § 7159.6: an extra is not enforceable against a buyer unless it sets forth the scope of work.",
+        cite: "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=BPC&sectionNum=7159.6",
       });
     }
-    if (sub.signedUpHow === "online" && /phone|chat|mail|cannot|can't|no cancel/i.test(sub.cancelHow || "")) {
+    if (!money(extra.amount)) {
       out.push({
-        id: "HARDER_THAN_SIGNUP",
+        id: "NO_AMOUNT",
         severity: "high",
-        title: "You signed up online; cancel is not online (as you described it)",
-        detail:
-          "ROSCA (15 U.S.C. § 8403) requires a simple mechanism to stop recurring internet negative-option charges. The vacated 2024 FTC click-to-cancel rule is not in force (Eighth Circuit, 2025-07-08). ROSCA and state automatic-renewal laws still are. California BPC § 17602(d) requires an online, at-will cancel when signup was online (contracts on/after 2025-07-01 for the AB 2863 amendments).",
-        cite: "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=BPC&sectionNum=17602",
+        title: "No dollar amount on this extra",
+        detail: "§ 7159.6 also wants the amount added or subtracted from the contract, in writing, before the extra starts.",
+        cite: "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=BPC&sectionNum=7159.6",
       });
     }
-    if (sub.stillCharging && sub.cancelTriedOn) {
+    if (job && job.inCalifornia && !String(extra.scheduleEffect || "").trim()) {
       out.push({
-        id: "STILL_CHARGING",
-        severity: "high",
-        title: "You already asked to cancel and they are still charging",
-        detail:
-          "That is the CFPB pattern from summer 2026 (e.g. Albert recurring fee after repeated cancel attempts, complaint received 2026-07-13). Write again, then take the paper to the issuer and to ReportFraud.ftc.gov.",
-        cite: "https://www.consumerfinance.gov/data-research/consumer-complaints/",
-      });
-    }
-    if ((sub.state || file.region) === "CA") {
-      out.push({
-        id: "CA_ARL",
+        id: "NO_SCHEDULE",
         severity: "med",
-        title: "California automatic-renewal screen",
-        detail:
-          "Cal. Bus. & Prof. Code § 17602: a business that lets a consumer accept an automatic renewal online must let them terminate online, at will, without steps that obstruct or delay immediate termination. Retention offers must sit next to a live “click to cancel” (or words to that effect) for contracts entered, amended, or extended on or after July 1, 2025 (subdivision (j)). This is a screen, not a finding that the merchant is in California or that your contract date qualifies.",
-        cite: "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=BPC&sectionNum=17602",
+        title: "No schedule / payment effect (California job)",
+        detail: "§ 7159.6(a)(3): the effect on progress payments or the completion date.",
+        cite: "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=BPC&sectionNum=7159.6",
       });
     }
-    if (sub.signedUpHow === "online") {
+    if (extra.status !== "signed") {
       out.push({
-        id: "ROSCA",
-        severity: "med",
-        title: "ROSCA simple-mechanism screen (internet negative option)",
-        detail:
-          "15 U.S.C. § 8403: unlawful to charge an internet negative-option sale unless the seller clearly discloses material terms before taking billing information, gets express informed consent, and provides simple mechanisms to stop recurring charges. The FTC used ROSCA against Amazon Prime (stipulated order filed 2025-09-25) after a court found Prime subject to ROSCA.",
-        cite: "https://www.law.cornell.edu/uscode/text/15/8403",
+        id: "UNSIGNED",
+        severity: "high",
+        title: "Not signed yet",
+        detail: "Print it. Get both names. Do the work after. A handshake on the driveway is how extras disappear.",
+        cite: "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=BPC&sectionNum=7159.6",
       });
+    }
+    if (extra.workStartedOn && extra.status !== "signed") {
+      out.push({
+        id: "WORK_BEFORE_SIGN",
+        severity: "high",
+        title: "Work date is set, ticket is not signed",
+        detail: "§ 7159(c)(5): a change-order form becomes part of the contract only if it is in writing and signed before that work starts.",
+        cite: "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=BPC&sectionNum=7159",
+      });
+    }
+    if (job && money(job.originalAmount) > 0) {
+      const pct = extrasTotal(file, job.id) / money(job.originalAmount);
+      if (pct >= 0.2) {
+        out.push({
+          id: "EXTRAS_HEAVY",
+          severity: "med",
+          title: "Signed and unsigned extras are " + Math.round(pct * 100) + "% of the original contract",
+          detail: "INFERENCE, not a statute: a pile of extras is where owners fight. Get the next one signed before material.",
+          cite: "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=BPC&sectionNum=7159.6",
+        });
+      }
     }
     return out;
   }
 
-  function addr(file) {
-    return [file.yourName || "[Your name]", file.address1, [file.city, file.region, file.zip].filter(Boolean).join(", ")]
-      .filter(Boolean)
+  function ticket(file, extra, paid) {
+    const job = jobById(file, extra && extra.jobId) || emptyJob();
+    const shop = (file && file.shopName) || "[Shop name]";
+    const date = (extra && extra.dated) || todayISO();
+    const amt = moneyFmt(extra && extra.amount);
+    const orig = moneyFmt(job.originalAmount);
+    const rev = moneyFmt(revisedTotal(file, job));
+    const ca = !!(job && job.inCalifornia);
+    const header = paid ? shop : shop + " (unsigned shop block — unlock the file to print your name)";
+    const body = [
+      "DAYTICKET — extra work / change order",
+      header,
+      (file && file.licenseNo ? "License " + file.licenseNo : "") +
+        (file && file.phone ? "  ·  " + file.phone : ""),
+      "",
+      "Dated: " + date,
+      "Job: " + (job.name || "[job]"),
+      "Owner: " + (job.ownerName || "[owner]"),
+      "Site: " + (job.site || "[site]"),
+      "Original contract: " + orig,
+      "This extra: " + amt,
+      "Revised contract if this extra is signed: " + rev,
+      "",
+      "1. Scope of extra work or change",
+      (extra && extra.scope) || "[scope required]",
+      "",
+      "Labor: " + ((extra && extra.labor) || "—"),
+      "Materials: " + ((extra && extra.materials) || "—"),
+      "",
+      "2. Amount added or subtracted from the contract",
+      amt,
+      "",
+      "3. Effect on progress payments or completion date",
+      (extra && extra.scheduleEffect) || "[required on California home-improvement jobs]",
+      "",
+      ca ? CA_NOTE : "Get this signed before the extra starts. Keep a copy with the job.",
+      "",
+      "Owner signature _________________________ date ________",
+      "Contractor signature ____________________ date ________",
+      "",
+      "Not a law firm. Not a payment app. This ticket stays on this computer unless you print it.",
+    ]
+      .filter((line, i, arr) => !(line === "" && arr[i - 1] === ""))
       .join("\n");
-  }
-
-  function disclaimer() {
-    return (
-      "\n\n—\nDrafted in Postmark, a local file. Not legal advice. Not a representation that ROSCA, " +
-      "any state automatic-renewal law, or a card-network rule applies to these facts. Send only what is true. " +
-      "Do not put a full card number or Social Security number in this letter."
-    );
-  }
-
-  function letters(file, sub, type) {
-    const today = file.asOfDate || todayISO();
-    const you = addr(file);
-    const m = (sub && sub.merchant) || "[Merchant legal name]";
-    const amt = moneyFmt((sub && sub.amount) || 0);
-    const email = (sub && sub.accountEmail) || "[account email]";
-    const name = file.yourName || "[Your name]";
-    const last4 = (sub && sub.last4) || "[last four only]";
-
-    const types = {
-      cancel: {
-        title: "Written cancellation notice",
-        to: m,
-        body:
-          you +
-          "\n\n" +
-          today +
-          "\n\nTo: " +
-          m +
-          "\n\nI cancel this subscription, effective immediately.\n\nAccount email: " +
-          email +
-          "\nAmount I have been charged: " +
-          amt +
-          " (" +
-          ((sub && sub.cycle) || "recurring") +
-          ")\nHow I enrolled (as I recall it): " +
-          ((sub && sub.signedUpHow) || "[online/phone]") +
-          "\n\nThis is a written request to stop all recurring charges. If you offer an internet negative-option, 15 U.S.C. § 8403 requires a simple mechanism to stop recurring charges. If this account is a California automatic renewal accepted online, see Cal. Bus. & Prof. Code § 17602.\n\nConfirm cancellation in writing to the address above. Do not reply by asking me to call a retention desk if I enrolled online.\n\nSincerely,\n" +
-          name +
-          disclaimer(),
-      },
-      followup: {
-        title: "Second notice — still charging",
-        to: m,
-        body:
-          you +
-          "\n\n" +
-          today +
-          "\n\nTo: " +
-          m +
-          "\n\nI already requested cancellation on " +
-          ((sub && sub.cancelTriedOn) || "[date]") +
-          " by " +
-          ((sub && sub.cancelHow) || "[method]") +
-          ". Charges have continued.\n\nI repeat: cancel the subscription on account " +
-          email +
-          ". Refund any charge posted after that first request. Confirm in writing.\n\nIf charges continue I will dispute them with my card issuer as a cancelled recurring transaction and I will file with the FTC at ReportFraud.ftc.gov and with my state attorney general.\n\nSincerely,\n" +
-          name +
-          disclaimer(),
-      },
-      issuer: {
-        title: "Notes for your card issuer (you send this — we never see it)",
-        to: file.issuerName || "[Issuer / bank]",
-        body:
-          today +
-          "\n\nTo: " +
-          (file.issuerName || "[Issuer]") +
-          "\n\nPlease treat this as a dispute of a cancelled recurring transaction.\n\nMerchant: " +
-          m +
-          "\nAmount: " +
-          amt +
-          "\nCard last four only: " +
-          last4 +
-          "\nI requested cancellation on: " +
-          ((sub && sub.cancelTriedOn) || "[date]") +
-          "\nI am enclosing a copy of my written notice. I am not sending you my full card number in this note.\n\nI want the posting reversed and future recurring drafts from this merchant blocked.\n\nSincerely,\n" +
-          name +
-          disclaimer(),
-      },
-      ftc: {
-        title: "FTC ReportFraud draft (facts only)",
-        to: "ReportFraud.ftc.gov — file only what is true",
-        body:
-          today +
-          "\n\nMerchant: " +
-          m +
-          "\nAmount / cycle: " +
-          amt +
-          " / " +
-          ((sub && sub.cycle) || "") +
-          "\nEnrolled: " +
-          ((sub && sub.signedUpHow) || "") +
-          " on " +
-          ((sub && sub.signedUpOn) || "[unknown]") +
-          "\nCancel attempt: " +
-          ((sub && sub.cancelTriedOn) || "[none]") +
-          " — " +
-          ((sub && sub.cancelHow) || "") +
-          "\nStill charging: " +
-          (sub && sub.stillCharging ? "yes" : "no / unknown") +
-          "\n\nWhat happened:\n" +
-          ((sub && sub.notes) || "[Dates only. No full card number. No Social Security number.]") +
-          "\n\nWhat I want: cancellation confirmed; recurring charges stopped; refund of post-cancel drafts.\n" +
-          disclaimer(),
-      },
-      ag: {
-        title: "State attorney general draft",
-        to: "[Your state AG consumer division]",
-        body:
-          you +
-          "\n\n" +
-          today +
-          "\n\nI am writing about a subscription I cannot cancel in the same way I started it.\n\nMerchant: " +
-          m +
-          "\nState I am in: " +
-          ((sub && sub.state) || file.region || "[state]") +
-          "\nEnrolled: " +
-          ((sub && sub.signedUpHow) || "") +
-          "\nCancel attempt: " +
-          ((sub && sub.cancelTriedOn) || "[none]") +
-          "\n\nPlease see my enclosed written notice. I am not attaching a bank statement or a full card number.\n" +
-          disclaimer(),
-      },
+    return {
+      title: "Dayticket " + date + " — " + (job.name || "job"),
+      body: body,
     };
-    if (!types[type]) throw new Error("unknown letter: " + type);
-    return types[type];
   }
 
-  function letterTypes() {
-    return [
-      ["cancel", "Cancel notice"],
-      ["followup", "Still charging"],
-      ["issuer", "Issuer notes"],
-      ["ftc", "FTC draft"],
-      ["ag", "State AG draft"],
-    ];
+  function freeLimits(file) {
+    return {
+      jobs: (file.jobs || []).length,
+      extras: (file.extras || []).length,
+      jobsOk: (file.jobs || []).length <= 1,
+      extrasOk: (file.extras || []).length <= 1,
+    };
   }
 
   function normalizeKey(key) {
@@ -374,15 +322,21 @@
     daysBetween,
     looksForbidden,
     scanObject,
-    emptySub,
+    emptyJob,
+    emptyExtra,
     emptyFile,
     sampleFile,
+    jobById,
+    extrasForJob,
+    extrasTotal,
+    revisedTotal,
     flags,
-    letters,
-    letterTypes,
+    ticket,
+    freeLimits,
     checkLicense,
     makeLicense,
     DEMO_KEY,
+    CA_NOTE,
     FORBIDDEN,
   };
 });

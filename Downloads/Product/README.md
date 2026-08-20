@@ -1,29 +1,29 @@
-# Postmark — the finished package (Run #2)
+# Dayticket — the finished package (Run #2)
 
-**Killed first:** Manila, a medical-bill file. HIPAA / we cannot store that customer data. **Nothing with medicine.**
+**Dumped:** Manila (medicine) and Postmark (cancel letters). HIPAA is expensive. Nothing with medicine. No consumer-complaint identity file.
 
-**Shipped instead (2026-08-20):** a local subscription-cancellation file. Dated letters. No bank connection. No PHI.
+**Shipped (2026-08-20):** a local extra-work / change-order ticket for trades. Signed extras. No card processing. No job file on our servers.
 
 ## Try it
-Open **[04-product/postmark.html](04-product/postmark.html)** (keep `engine.js` beside it). Click **SAMPLE**.  
-Demo key: `PMK-DEM0-F1LE-K8`
+Open **[04-product/dayticket.html](04-product/dayticket.html)** (keep `engine.js` beside it). Click **SAMPLE**.  
+Demo key: `DTK-DEM0-F1LE-D0`
 
 ```bash
 python3 -m http.server 8766 --directory Downloads/Product/05-website
 ```
 
-http://localhost:8766 · http://localhost:8766/app/postmark.html
+http://localhost:8766 · http://localhost:8766/app/dayticket.html
 
-`node Downloads/Product/04-product/test.js` — 9 passed.
+`node Downloads/Product/04-product/test.js` — 11 passed.
 
 ## Package
 
 | | |
 |---|---|
-| 0 | [BUILDLOG.md](00-buildlog/BUILDLOG.md) — Manila kill + this lock |
-| 1 | [EVIDENCE.md](01-research/EVIDENCE.md) — CFPB Jun–Jul 2026, ROSCA, CA 17602, Amazon order, Rocket Money |
-| 2 | [BUSINESS.md](02-business/BUSINESS.md) — $29, no feed |
-| 3 | [BRAND.md](03-brand/BRAND.md) — postmarkfile.com RDAP 404 |
+| 0 | [BUILDLOG.md](00-buildlog/BUILDLOG.md) — two dumps + this lock |
+| 1 | [EVIDENCE.md](01-research/EVIDENCE.md) — BPC 7159/7159.6, Joist, Housecall Pro, ContractorTalk |
+| 2 | [BUSINESS.md](02-business/BUSINESS.md) — $49, no feed |
+| 3 | [BRAND.md](03-brand/BRAND.md) — dayticketfile.com RDAP 404 |
 | 4 | [04-product/](04-product/README.md) — working file |
 | 5 | [05-website/index.html](05-website/index.html) |
 | 6 | [GTM.md](06-gtm/GTM.md) |
@@ -31,7 +31,7 @@ http://localhost:8766 · http://localhost:8766/app/postmark.html
 | — | [license.txt](license.txt) |
 
 ## Thesis
-Click-to-cancel is not federal law this year. Recurring charges still are. ROSCA and California’s ARL still give you a written handle. The apps that “just cancel it” want your transactions. We sell a postmark you keep.
+The extra is where a remodel loses money. California already requires a signed writing. The apps rent you that signature line. We sell the pad.
 
 ## Gaps
-No checkout (guardrail). Honor-system key. Owner must not accept customer files by email.
+No checkout (guardrail). Honor-system key. Owner must not accept job files by email.

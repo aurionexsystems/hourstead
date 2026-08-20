@@ -1,24 +1,16 @@
-POSTMARK FILE — LICENSE (draft, not counsel-reviewed)
+DAYTICKET — FOUNDING FILE (honor system)
 
-Copyright (c) 2026 Postmark File Co. (entity not formed).
+This package is a local HTML program. You may run it on computers you control.
 
-1. You may run 04-product / 05-website/app on machines you control.
+Free use: one job and one extra-work ticket.
 
-2. FREE TIER: one first-notice cancel letter, no key.
+A Founding File key ($49, when checkout exists) unlocks unlimited local jobs
+and extras on those computers. The key is checked only on your machine.
 
-3. FOUNDING FILE: a valid PMK-XXXX-XXXX-XX key grants one person a
-   perpetual, non-transferable license to the paid letter pack.
-   The checksum is an honor system.
+We do not receive your .dayticket file. Do not email us job tickets, house
+photos, card numbers, or health records. Demo key DTK-DEM0-F1LE-D0 is for
+trying the SAMPLE job.
 
-4. Do not redistribute the paid pack or host Postmark as a service
-   that receives other people’s subscription files.
+Not a law firm. Not legal advice. California citations are to public statutes.
 
-5. We claim no copyright in the contents of your .postmark file.
-
-6. NO WARRANTY. Not legal advice. No promise a charge will stop.
-
-7. Do not send us bank statements, full card numbers, Social Security
-   numbers, or medical records. Demo key PMK-DEM0-F1LE-K8 is for
-   evaluating this package only.
-
-Counsel before money changes hands.
+No warranty. Provided as-is.

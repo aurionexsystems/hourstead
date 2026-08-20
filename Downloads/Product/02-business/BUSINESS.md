@@ -1,39 +1,36 @@
-# Business — Postmark
+# Business — Dayticket
 
-## Sentence
-A $29 file on your computer that writes the dated cancellation the issuer and the FTC still understand — after the federal click-to-cancel rule was vacated — without taking your bank feed.
-
-## Why this, after Manila died
-The owner cannot store sensitive customer files safely. Medical bills are the wrong object. Recurring-charge fights need: merchant name, amount, dates, how you signed up. Not a diagnosis, not an EOB, not a member ID. We still **never receive the file**.
-
-## ICP
-US adult with a card or debit draft they already tried to stop. Can print a letter. Will not link Plaid.
-
-**Anti-ICP:** People who want Rocket Money to find the charge for them. Send them there.
+## Why this, after two dumps
+The owner will not pay for HIPAA and will not store customer health files. Consumer-complaint letter kits still look like an identity product. A contractor extra-work ticket is a **shop tool**: job nickname, scope, dollars, two signature lines. We never see it.
 
 ## Offer
-| Free | First written cancel notice |
-|---|---|
-| **$29 Founding File** | Follow-up, issuer notes, FTC + AG drafts, unlimited local subs |
-| We never get | Bank login, full PAN, SSN, medical data, the `.postmark` file |
+A local HTML file that writes a dated extra-work / change-order ticket, flags unsigned extras, and prints. California jobs get the statutory “Note About Extra Work and Change Orders” from BPC § 7159.
 
-## Why $29
-Rocket Money is a subscription that views transactions (their security page). BillShark takes 40% of household-bill savings. A one-time $29 letter pack is an impulse the week before the draft. **INFERENCE:** untested. Lever: $19 before raising.
+| | |
+|---|---|
+| Buyer | Solo or small-crew remodeler, handyman, electrician, plumber who already writes extras on the truck notepad |
+| Job-to-be-done | Get the extra signed before buying material |
+| We never get | The file, card numbers, photos, health data, bank login |
+| Price | $0 = 1 job + 1 extra. **$49 once** = Founding File (unlimited local tickets, shop block on the printout) |
+
+Joist wants $32/mo before change orders (their page). Housecall Pro wants $59/mo+ and $100/mo per extra Essentials user (their page). A $49 file is one month of Elite, kept.
+
+**INFERENCE:** untested willingness to pay. Lever: $29 if $49 stalls.
+
+## Not the job
+Dispatch, GPS, reviews, financing, photo reports, taking the homeowner’s card. Those are why the incumbents cost rent. We do not take payments, so we do not hold card data.
+
+## Competition (fetched)
+
+| Incumbent | What they sell | What we are not |
+|---|---|---|
+| Joist | Estimates/invoices; change orders on Elite $32/mo; free plan gone | Another estimate SaaS |
+| Housecall Pro | Full FSM, $59–$329/mo, photo reports, 2.59% cards | A field-service platform |
+| Buildertrend | CPM; contractors on ContractorTalk report 65% / 122% hikes | A project portal |
+| Excel + macros | One ContractorTalk user stays there to avoid hikes | A spreadsheet they have to design |
 
 ## Unit
-COGS ≈ $0 after domain. Break-even = one sale. Checkout is the owner’s remaining paid signup.
+Cost to ship this package: $0 under the run guardrails. Live checkout is the owner’s step. Break-even: one sale after a domain.
 
-## Position
-```
-                 holds your transactions / logins
-                          ▲
-              Rocket Money │  Pine-class “we’ll cancel”
-                          │
-              BillShark ──┼── FTC/AG forms (DIY, unstructured)
-                          │
-                          └──────── local dated letter
-                                 POSTMARK
-```
-
-## Kill
-90 days after a real listing: no keys sold and no “they stopped after the letter” reports → stop. Do not “add bank sync” to save it. That is a different company and a different liability.
+## Kill criteria
+No paid keys in 60 days after a real checkout exists, or the owner is asked to hold job files. Then stop. Do not add medicine. Do not add bank login.

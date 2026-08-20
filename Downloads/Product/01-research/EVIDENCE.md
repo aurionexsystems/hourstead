@@ -1,55 +1,87 @@
-# Evidence — Postmark
+# Evidence — Dayticket
 
-Fetch window 2026-08-20. No medical claims. Manila research discarded.
+Fetch window 2026-08-20. No medical claims. Manila and Postmark research discarded.
 
-## 1. People cannot cancel — this summer
+Every quote below was read from the URL next to it.
 
-**CFPB API** `https://www.consumerfinance.gov/data-research/consumer-complaints/search/api/v1/`  
-Query: `subscription cancel recurring`, `date_received_min=2026-06-01`. Total **7** hits. Excerpts:
+## The extra has to be in writing (California)
 
-| Date | Company | Quote (redactions theirs) |
-|---|---|---|
-| 2026-07-13 | Albert Corporation | “charged my account a recurring monthly subscription fee and has increased it over time, without honoring my repeated requests to cancel… each time I have been unable to complete cancellation due to the companys account interface” |
-| 2026-06-18 | CITIBANK, N.A. | Recurring digital subscription; issuer called the dispute a “friendly fraud attempt” |
-| 2026-06-17 | Wells Fargo | Unauthorized recurring **$9.00** drafts, many dates |
-| 2026-06-15 | American Express | “unauthorized {$1000.00} autorenewal charge” — “without sending any renewal notice to the email address I specifically instructed them to use” |
-| 2026-06-06 | Goldman Sachs Bank USA | “charged {$700.00} … annual subscription renewal … I was not clearly informed this was a recurring annual subscription… merchant never responded” |
+**California BPC § 7159.6** (official legislative text):  
+https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=BPC&sectionNum=7159.6
 
-**HN** https://news.ycombinator.com/item?id=40935348 — hate of subscriptions; card-updater follows you to a new card.  
-https://news.ycombinator.com/item?id=40619770 — `chimen` (2024-06-08): “I have an old payment subscription at [Adobe] that I cannot cancel even after calling the bank.”  
-https://news.ycombinator.com/item?id=44518347 — `chrisandchris` (2025-07-10) on the FTC nullification thread: Swiss carriers exclude cancel-by-mail.  
-https://news.ycombinator.com/item?id=41644881 — `verst`: can start Seattle Times online, cannot cancel online (WA).
+Fetched 2026-08-20. The section says an extra work or change order **is not enforceable against a buyer** unless it sets forth (1) the scope of work, (2) the amount added or subtracted from the contract, and (3) the effect on progress payments or the completion date. The buyer may not require extra work without written authorization. Failure to comply does not wipe out unjust-enrichment remedies.
 
-## 2. The federal click died; the statutes did not
+**California BPC § 7159** (official legislative text):  
+https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=BPC&sectionNum=7159
 
-**Vacatur:** Eighth Circuit, *Custom Communications, Inc. v. FTC*, **July 8, 2025** — described on fetched firm pages (WilmerHale 2025-08-01; Mayer Brown; Gibson Dunn). The 2024 Negative Option / click-to-cancel amendments are not in force. **INFERENCE:** do not tell users “click-to-cancel is federal law.”
+Fetched 2026-08-20 (same session). Among the requirements:
 
-**ROSCA still is.** 15 U.S.C. § 8403 (LII: https://www.law.cornell.edu/uscode/text/15/8403 ; FTC enrolled PDF https://search.ftc.gov/system/files/documents/statutes/restore-online-shoppers-confidence-act/online-shoppers-enrolled.pdf ): internet negative-option charges require (1) clear material terms before billing info, (2) express informed consent, (3) **simple mechanisms to stop recurring charges**.
+- A change-order form for changes or extra work becomes part of the contract **only if it is in writing and signed by the parties prior to the commencement of any work covered by a change order**.
+- Required heading and statement: “Note About Extra Work and Change Orders…” (quoted in the product ticket when the job is marked California).
+- Home improvement contract definition includes agreements over $500 for work on a residence.
 
-**FTC still uses ROSCA.** Stipulated Amazon Prime order, filed **2025-09-25**: https://search.ftc.gov/system/files/ftc_gov/pdf/Amazon-ROSCA-Order-Filed_0.pdf — court found Prime subject to ROSCA; order requires simple cancellation “through the same medium the consumer used to consent.” Goodwin (2026-02) summarizes FTC v. Uber One: cancel path alleged as **23 screens / 32 actions**.
+CSLB consumer page on written contracts was requested; the host returned “Request Rejected.” We do **not** cite CSLB prose. Statute text above is enough.
 
-**FTC 2024 explainer** (describes the *then-final* rule, later vacated): https://www.ftc.gov/business-guidance/blog/2024/10/click-cancel-ftcs-amended-negative-option-rule-what-it-means-your-business — “as easy … as it was to sign up.” Use only as history of what the Commission wanted, not as current CFR.
+**INFERENCE (labeled):** other states have their own writing rules. The product prints the California note only when the job is marked California. It is not a 50-state lawyer.
 
-**Rulemaking restart:** FTC draft ANPRM to OIRA **2026-01-30** (Gibson Dunn). No new final rule fetched as in force.
+## The apps that print change orders charge rent
 
-## 3. California still has a click
+**Joist pricing** — https://www.joist.com/pricing/ — fetched 2026-08-20.
 
-https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=BPC&sectionNum=17602  
-Cal. Bus. & Prof. Code **§ 17602(d)**: online accept → terminate **exclusively online, at will**, without steps that obstruct or delay immediate termination. Retention offers must sit with a live “click to cancel” (or words to that effect). **(j):** AB 2863 amendments apply to contracts entered, amended, or extended **on or after July 1, 2025**. Page fetched 2026-08-20 (contains “17602” and “click to cancel”).
+- Basics **$10/mo** — up to 5 documents / month.
+- Pro **$17/mo** — unlimited documents; **no change orders on this tier** (comparison table: “Send change orders” is not on Basics/Pro).
+- Elite **$32/mo** — “Add change orders” is listed under Elite.
+- FAQ: “Joist’s free plan is no longer available.”
+- FAQ: Elite “adds advanced tools like reporting, **change orders**, and deeper client organization.”
+- Page reviews marked “Last Updated **August 2026**.”
+- New “Run” tier advertised at **$70/mo** (strikethrough $100).
 
-## 4. Incumbents hold the feed
+**Housecall Pro pricing** — https://www.housecallpro.com/pricing/ — fetched 2026-08-20.
 
-**Rocket Money security** https://www.rocketmoney.com/security — Plaid token “allows Rocket Money to view your transaction data.”  
-**Rocket Money privacy notice** https://www.rocketmoney.com/privacy-notice — collects “account balances and bank account information, transaction history, and credit card information.”  
-That is the thing we refuse to receive.
+- Header: “Trusted by 200,000+ Pros.”
+- Basic: **$59/mo billed annually**, **$79/mo** monthly; 1 user.
+- Essentials: **$149/mo** annual / **$189/mo** monthly; 5 users; **additional users $100/mo each**.
+- MAX: **$299/mo** annual / **$329/mo** monthly; 8 users; additional users $75/mo.
+- Who it is for (their FAQ): “home service businesses like HVAC, plumbing, electrical, cleaning, landscaping.”
+- Card processing “as low as 2.59%.”
+- Photo reports appear on Essentials, not Basic.
 
-**BillShark** (from prior official fetch): household bills, 40% of savings — not this product’s lane.
+**Jobber** official pricing page returned HTTP 403 from this environment on 2026-08-20. **Not cited.** Competitor blogs that quote Jobber prices are not used.
 
-## 5. What we will not claim
-- That ROSCA applies to every gym or newspaper (it is an **internet negative option** statute).
-- That click-to-cancel is federal law in 2026.
-- Any recovered-dollar figure.
-- Anything medical.
+## Contractors are already complaining about the rent
 
-## Dropped
-X/Twitter: pay-per-use. Reddit: not relied on.
+**ContractorTalk — “Buildertrend price hike”**  
+https://www.contractortalk.com/threads/buildertrend-price-hike.447579/  
+Fetched 2026-08-20.
+
+- Leonardo Construction, 2022-12-06: “They’ve recently submitted another round of rate increases. **Ours went up 65%.**”
+- Same thread, 2022-12-07: started at “$199x mo,” then “raised our subscription price **2X+** to a base fee plus per user fee.”
+- 2022-12-14: Core plan user “Started off at $299usd/month” then “email stating my plan will be increasing **122% to $699usd/month**.”
+- 2022-12-07: “I do it all in Excel, with macros… I don’t have price increases coming at me for no apparent reason.”
+- **2026-02-27:** “Price hikes with no real improvements is frustrating.”
+- **2026-03-04:** “The price hikes are a pattern with all these platforms once they hit a certain size. Buildertrend, Procore, CoConstruct… they know switching costs are painful… Some of these platforms make it easy to get in and hard to get out.”
+
+That is a live 2026 conversation on a contractor forum, not a marketing page.
+
+## Why this is not a HIPAA company
+
+**HHS — Covered Entities and Business Associates**  
+https://www.hhs.gov/hipaa/for-professionals/covered-entities/index.html  
+Fetched 2026-08-20. Last reviewed on the page: August 21, 2024.
+
+“The HIPAA Rules apply to covered entities and business associates.”  
+“If an entity does not meet the definition of a covered entity or business associate, it does not have to comply with the HIPAA Rules.”
+
+Covered entities listed: health care providers (when they do standard electronic transactions), health plans, health care clearinghouses.
+
+Dayticket is a ticket pad for trades. We do not receive the file. We do not do medicine.
+
+Consultant blogs that price HIPAA programs at thousands of dollars per year were found in search. We do **not** need them. The owner’s instruction is enough: HIPAA is expensive; do not enter that market.
+
+## What we will not claim
+
+- We did not fetch Jobber’s live prices (403).
+- We did not fetch the CSLB HTML (rejected).
+- We do not claim Dayticket makes a change order “legal” in every state.
+- We do not claim Housecall Pro’s “35% revenue” marketing number as our result.
+- Sample job in the app is invented and labeled SAMPLE.
