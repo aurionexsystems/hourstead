@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Manila — the file</title>
+<style>
+  :root {
+    --desk: #2b241c;
+    --desk2: #3a3126;
+    --folder: #e6c27a;
+    --folder-dark: #c9a45a;
+    --folder-edge: #8a6b32;
+    --paper: #f6efe0;
+    --paper2: #efe6d2;
+    --ink: #1b140e;
+    --muted: #5c4e3d;
+    --stamp: #b42318;
+    --ok: #2f6b3a;
+    --high: #9b1c1c;
+    --med: #8a5a12;
+    --low: #3d5a6c;
+    --line: #d3c4a4;
+    --shadow: 0 18px 50px rgba(0,0,0,.35);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background:
+      radial-gradient(1200px 600px at 20% -10%, #4a3d2c 0%, transparent 50%),
+      var(--desk);
+    color: var(--ink);
+    font: 16px/1.45 "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+    min-height: 100vh;
+  }
+  button, input, select, textarea {
+    font: inherit;
+  }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 28px 18px 80px; }
+  header.top {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    color: #f3e6c8; margin-bottom: 18px; gap: 16px; flex-wrap: wrap;
+  }
+  header.top h1 {
+    font-size: 13px; letter-spacing: .28em; text-transform: uppercase;
+    margin: 0 0 4px; font-weight: 600;
+  }
+  header.top p { margin: 0; font-size: 22px; color: #fff8e8; }
+  header.top .tools { display: flex; gap: 8px; flex-wrap: wrap; }
+  .btn {
+    background: var(--paper); color: var(--ink); border: 1px solid #c9b48a;
+    padding: 8px 12px; border-radius: 2px; cursor: pointer;
+    box-shadow: 0 1px 0 #fff8e4 inset;
+  }
+  .btn:hover { background: #fff8ea; }
+  .btn.primary { background: var(--stamp); color: #fff8e8; border-color: #7f140f; }
+  .btn.ghost { background: transparent; color: #f3e6c8; border-color: #8a7a5c; }
+  .folder {
+    background: linear-gradient(#d7b36a, var(--folder));
+    border-radius: 0 8px 8px 8px;
+    box-shadow: var(--shadow);
+    position: relative;
+    padding: 14px 14px 22px;
+  }
+  .tabs {
+    display: flex; gap: 4px; margin: 0 0 0 8px; position: relative; top: 0;
+  }
+  .tab {
+    background: var(--folder-dark); border: 0; color: var(--ink);
+    padding: 8px 14px 10px; border-radius: 8px 8px 0 0; cursor: pointer;
+    font-size: 13px; letter-spacing: .04em;
+  }
+  .tab.on { background: var(--folder); font-weight: 700; }
+  .paper {
+    background: var(--paper);
+    min-height: 640px;
+    padding: 28px 28px 40px;
+    box-shadow: inset 0 0 0 1px #e7d7b4, 0 0 0 1px var(--folder-edge);
+    position: relative;
+  }
+  .paper:before {
+    content: "";
+    position: absolute; left: 36px; top: 0; bottom: 0; width: 1px;
+    background: #e2b3b0;
+  }
+  .stamp {
+    position: absolute; right: 28px; top: 22px;
+    border: 3px solid var(--stamp); color: var(--stamp);
+    padding: 4px 8px; font-size: 12px; letter-spacing: .16em;
+    text-transform: uppercase; transform: rotate(8deg);
+    font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  }
+  h2 { font-size: 28px; margin: 0 0 6px; }
+  .lede { color: var(--muted); margin: 0 0 22px; max-width: 62ch; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 18px; }
+  @media (max-width: 800px) { .grid { grid-template-columns: 1fr; } .paper:before { display: none; } }
+  label.f { display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: var(--muted); }
+  label.f input, label.f select, label.f textarea {
+    background: #fffdf7; border: 1px solid var(--line); padding: 7px 8px; color: var(--ink);
+  }
+  label.f textarea { min-height: 90px; resize: vertical; }
+  .checks { display: flex; flex-wrap: wrap; gap: 12px 18px; margin: 12px 0 18px; font-size: 14px; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th { text-align: left; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); padding: 6px 4px; border-bottom: 1px solid var(--line); }
+  td { padding: 4px; border-bottom: 1px solid #eadfb8; }
+  td input { width: 100%; background: transparent; border: 0; padding: 4px 2px; }
+  .row-actions { display: flex; gap: 8px; margin: 10px 0 20px; }
+  .flag { border-left: 4px solid var(--med); background: var(--paper2); padding: 12px 14px; margin: 0 0 10px; }
+  .flag.high { border-color: var(--high); }
+  .flag.low { border-color: var(--low); }
+  .flag h3 { margin: 0 0 4px; font-size: 16px; }
+  .flag p { margin: 0 0 6px; }
+  .flag a { color: var(--stamp); }
+  .sev { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+  .letter-col { display: grid; grid-template-columns: 220px 1fr; gap: 16px; }
+  @media (max-width: 800px) { .letter-col { grid-template-columns: 1fr; } }
+  .letter-nav button { display: block; width: 100%; text-align: left; margin: 0 0 6px; }
+  pre.letter {
+    white-space: pre-wrap; background: #fffdf7; border: 1px solid var(--line);
+    padding: 16px; min-height: 360px; font-family: ui-monospace, Menlo, Consolas, monospace;
+    font-size: 13px; line-height: 1.5;
+  }
+  .clock {
+    font-family: ui-monospace, Menlo, Consolas, monospace;
+    font-size: 42px; letter-spacing: .08em; margin: 8px 0 0;
+  }
+  .note { font-size: 13px; color: var(--muted); }
+  .locked { opacity: .55; }
+  .bar { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin: 0 0 16px; align-items: center; }
+  .sum { font-family: ui-monospace, Menlo, Consolas, monospace; }
+  footer.tiny { color: #cbb892; font-size: 12px; margin-top: 16px; max-width: 80ch; }
+  .logline { display: grid; grid-template-columns: 140px 1fr auto; gap: 8px; margin-bottom: 6px; }
+  @media print {
+    body { background: #fff; }
+    header.top, .tabs, .row-actions, .tools, .btn, footer.tiny { display: none !important; }
+    .folder, .paper { box-shadow: none; background: #fff; }
+    .paper:before { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div>
+      <h1>Manila</h1>
+      <p>The medical bill file that stays on this computer.</p>
+    </div>
+    <div class="tools">
+      <button class="btn ghost" id="btnNew">New file</button>
+      <button class="btn ghost" id="btnSample">Load SAMPLE</button>
+      <button class="btn ghost" id="btnOpen">Open .manila</button>
+      <button class="btn ghost" id="btnSave">Save .manila</button>
+      <button class="btn ghost" id="btnPrint">Print packet</button>
+      <button class="btn primary" id="btnLicense">License</button>
+      <input id="fileIn" type="file" accept=".manila,.json,application/json" hidden>
+    </div>
+  </header>
+
+  <div class="tabs" id="tabs"></div>
+  <div class="folder">
+    <div class="paper" id="paper">
+      <div class="stamp" id="stamp">Unlicensed</div>
+      <div id="view"></div>
+    </div>
+  </div>
+  <footer class="tiny">
+    Manila is a local folder, not a law firm, not a medical-billing company, and not affiliated with CMS, CFPB, or any hospital.
+    Letters are templates. Send only what is true. Nothing on this page is uploaded anywhere — there is no server.
+    CPT/HCPCS codes are whatever is printed on <em>your</em> bill; this file does not ship a codebook.
+  </footer>
+</div>
+<script src="engine.js"></script>
+<script>
+(function () {
+  const M = window.Manila;
+  const STORE = "manila.v1";
+  const FREE_LETTERS = new Set(["itemized"]);
+  const TABS = [
+    ["cover", "Cover"],
+    ["bill", "The bill"],
+    ["eob", "The EOB"],
+    ["match", "The match"],
+    ["clocks", "Clocks"],
+    ["letters", "Letters"],
+    ["log", "Log"],
+  ];
+
+  let state = load() || { tab: "cover", letter: "itemized", license: "", file: M.emptyCase() };
+  if (!state.file) state.file = M.emptyCase();
+
+  function licensed() { return M.checkLicense(state.license); }
+  function persist() { localStorage.setItem(STORE, JSON.stringify(state)); }
+  function load() {
+    try { return JSON.parse(localStorage.getItem(STORE) || ""); } catch (e) { return null; }
+  }
+
+  function el(html) {
+    const d = document.createElement("div");
+    d.innerHTML = html.trim();
+    return d.firstElementChild;
+  }
+  function esc(s) {
+    return String(s == null ? "" : s)
+      .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+  }
+  function val(obj, key, def) {
+    const v = obj[key];
+    return v == null ? (def || "") : v;
+  }
+
+  function bindField(root, sel, key, type) {
+    const node = root.querySelector(sel);
+    if (!node) return;
+    node.addEventListener("input", () => {
+      let v = node.type === "checkbox" ? node.checked : node.value;
+      if (type === "num" && v !== "") v = Number(v);
+      state.file[key] = v;
+      persist();
+      if (state.tab === "match" || state.tab === "clocks") render();
+    });
+  }
+
+  function lineTable(kind) {
+    const rows = state.file[kind === "bill" ? "billLines" : "eobLines"];
+    const isBill = kind === "bill";
+    let head = isBill
+      ? "<th>Code</th><th>Date</th><th>Description (from your bill)</th><th>Charged</th><th></th>"
+      : "<th>Code</th><th>Date</th><th>Description</th><th>Allowed</th><th>Plan paid</th><th>Patient resp.</th><th></th>";
+    const body = rows.map((l, i) => {
+      if (isBill) {
+        return `<tr>
+          <td><input data-k="code" data-i="${i}" value="${esc(l.code)}"></td>
+          <td><input data-k="date" data-i="${i}" type="date" value="${esc(l.date)}"></td>
+          <td><input data-k="description" data-i="${i}" value="${esc(l.description)}"></td>
+          <td><input data-k="charged" data-i="${i}" inputmode="decimal" value="${esc(l.charged)}"></td>
+          <td><button class="btn" data-del="${i}">×</button></td>
+        </tr>`;
+      }
+      return `<tr>
+        <td><input data-k="code" data-i="${i}" value="${esc(l.code)}"></td>
+        <td><input data-k="date" data-i="${i}" type="date" value="${esc(l.date)}"></td>
+        <td><input data-k="description" data-i="${i}" value="${esc(l.description)}"></td>
+        <td><input data-k="allowed" data-i="${i}" inputmode="decimal" value="${esc(l.allowed)}"></td>
+        <td><input data-k="planPaid" data-i="${i}" inputmode="decimal" value="${esc(l.planPaid)}"></td>
+        <td><input data-k="patientResp" data-i="${i}" inputmode="decimal" value="${esc(l.patientResp)}"></td>
+        <td><button class="btn" data-del="${i}">×</button></td>
+      </tr>`;
+    }).join("");
+    return `<table><thead><tr>${head}</tr></thead><tbody>${body}</tbody></table>`;
+  }
+
+  function wireLines(root, kind) {
+    const key = kind === "bill" ? "billLines" : "eobLines";
+    root.querySelectorAll("td input").forEach((inp) => {
+      inp.addEventListener("input", () => {
+        const i = Number(inp.getAttribute("data-i"));
+        const k = inp.getAttribute("data-k");
+        state.file[key][i][k] = inp.value;
+        persist();
+      });
+    });
+    root.querySelectorAll("[data-del]").forEach((b) => {
+      b.addEventListener("click", () => {
+        state.file[key].splice(Number(b.getAttribute("data-del")), 1);
+        persist(); render();
+      });
+    });
+  }
+
+  function renderTabs() {
+    const tabs = document.getElementById("tabs");
+    tabs.innerHTML = "";
+    TABS.forEach(([id, label]) => {
+      const b = document.createElement("button");
+      b.className = "tab" + (state.tab === id ? " on" : "");
+      b.textContent = label;
+      b.addEventListener("click", () => { state.tab = id; persist(); render(); });
+      tabs.appendChild(b);
+    });
+    document.getElementById("stamp").textContent = licensed() ? "Founding file" : "Free tier";
+  }
+
+  function renderCover(root) {
+    const f = state.file;
+    root.innerHTML = `
+      <h2>Cover sheet</h2>
+      <p class="lede">Fill this like a folder tab. Then type the bill and the EOB. Manila matches them here, on this machine.</p>
+      <div class="grid">
+        <label class="f">Patient name<input id="patientName" value="${esc(f.patientName)}"></label>
+        <label class="f">Date of service<input id="dateOfService" type="date" value="${esc(f.dateOfService)}"></label>
+        <label class="f">Street<input id="patientAddress1" value="${esc(f.patientAddress1)}"></label>
+        <label class="f">City<input id="patientCity" value="${esc(f.patientCity)}"></label>
+        <label class="f">State<input id="patientState" value="${esc(f.patientState)}" maxlength="2"></label>
+        <label class="f">ZIP<input id="patientZip" value="${esc(f.patientZip)}"></label>
+        <label class="f">Provider / hospital billing<input id="providerName" value="${esc(f.providerName)}"></label>
+        <label class="f">Insurer / plan<input id="insurerName" value="${esc(f.insurerName)}"></label>
+        <label class="f">Member ID<input id="memberId" value="${esc(f.memberId)}"></label>
+        <label class="f">Claim number<input id="claimNumber" value="${esc(f.claimNumber)}"></label>
+        <label class="f">Account / statement #<input id="accountNumber" value="${esc(f.accountNumber)}"></label>
+        <label class="f">Collector legal name<input id="collectorName" value="${esc(f.collectorName)}"></label>
+        <label class="f">Bill total (if not summing lines)<input id="billTotal" inputmode="decimal" value="${esc(f.billTotal)}"></label>
+        <label class="f">EOB patient-responsibility total<input id="eobPatientTotal" inputmode="decimal" value="${esc(f.eobPatientTotal)}"></label>
+        <label class="f">Already paid<input id="alreadyPaid" inputmode="decimal" value="${esc(f.alreadyPaid)}"></label>
+        <label class="f">Good-faith estimate (self-pay)<input id="goodFaithEstimate" inputmode="decimal" value="${esc(f.goodFaithEstimate)}"></label>
+        <label class="f">Household size<input id="householdSize" type="number" min="1" value="${esc(f.householdSize)}"></label>
+        <label class="f">Household annual income<input id="householdIncome" inputmode="decimal" value="${esc(f.householdIncome)}"></label>
+        <label class="f">FPL region
+          <select id="fplRegion">
+            <option value="contiguous"${f.fplRegion==="contiguous"?" selected":""}>48 states + D.C.</option>
+            <option value="alaska"${f.fplRegion==="alaska"?" selected":""}>Alaska</option>
+            <option value="hawaii"${f.fplRegion==="hawaii"?" selected":""}>Hawaii</option>
+          </select>
+        </label>
+        <label class="f">First collector contact<input id="collectorFirstContact" type="date" value="${esc(f.collectorFirstContact)}"></label>
+        <label class="f">Validation letter sent<input id="validationSentOn" type="date" value="${esc(f.validationSentOn)}"></label>
+        <label class="f">As-of date<input id="asOfDate" type="date" value="${esc(f.asOfDate)}"></label>
+      </div>
+      <div class="checks">
+        <label><input type="checkbox" id="emergency"${f.emergency?" checked":""}> Emergency visit</label>
+        <label><input type="checkbox" id="outOfNetwork"${f.outOfNetwork?" checked":""}> Out-of-network (as you understand it)</label>
+        <label><input type="checkbox" id="uninsured"${f.uninsured?" checked":""}> Uninsured / self-pay</label>
+        <label><input type="checkbox" id="inCollections"${f.inCollections?" checked":""}> In collections</label>
+        <label><input type="checkbox" id="creditReported"${f.creditReported?" checked":""}> On a credit report</label>
+        <label><input type="checkbox" id="nonprofitHospital"${f.nonprofitHospital?" checked":""}> Nonprofit hospital (if known)</label>
+      </div>
+      <label class="f">What happened (dates, only facts)
+        <textarea id="narrative">${esc(f.narrative)}</textarea>
+      </label>
+    `;
+    [
+      "patientName","dateOfService","patientAddress1","patientCity","patientState","patientZip",
+      "providerName","insurerName","memberId","claimNumber","accountNumber","collectorName",
+      "billTotal","eobPatientTotal","alreadyPaid","goodFaithEstimate","householdSize","householdIncome",
+      "fplRegion","collectorFirstContact","validationSentOn","asOfDate","narrative"
+    ].forEach((k) => bindField(root, "#"+k, k, ["billTotal","eobPatientTotal","alreadyPaid","goodFaithEstimate","householdIncome","householdSize"].includes(k) ? "num" : null));
+    ["emergency","outOfNetwork","uninsured","inCollections","creditReported","nonprofitHospital"].forEach((k) => bindField(root, "#"+k, k));
+  }
+
+  function renderLines(root, kind) {
+    const title = kind === "bill" ? "The bill" : "The EOB";
+    const lede = kind === "bill"
+      ? "Type what is printed on the provider statement. Request an itemized bill if you only have a lump sum."
+      : "Type what the Explanation of Benefits lists as allowed, plan paid, and patient responsibility. The EOB is not a bill.";
+    root.innerHTML = `<h2>${title}</h2><p class="lede">${lede}</p>${lineTable(kind)}
+      <div class="row-actions"><button class="btn" id="add">Add line</button></div>
+      <p class="note">Official CPT descriptors are AMA copyright. Manila never ships them. Copy the words from your paper.</p>`;
+    wireLines(root, kind);
+    root.querySelector("#add").addEventListener("click", () => {
+      state.file[kind === "bill" ? "billLines" : "eobLines"].push(M.newLine(kind === "bill" ? "bill" : "eob"));
+      persist(); render();
+    });
+  }
+
+  function renderMatch(root) {
+    const r = M.flags(state.file);
+    const flags = r.flags.map((f) => `
+      <div class="flag ${esc(f.severity)}">
+        <div class="sev">${esc(f.severity)}</div>
+        <h3>${esc(f.title)}</h3>
+        <p>${esc(f.detail)}</p>
+        <a href="${esc(f.cite)}" target="_blank" rel="noopener">Source</a>
+      </div>`).join("") || `<p class="lede">No flags yet. Add bill and EOB lines, or a collector date.</p>`;
+    const pairs = r.match.pairs.map((p) => `
+      <tr>
+        <td>${esc(p.bill.code)}</td>
+        <td class="sum">${M.moneyFmt(p.billed)}</td>
+        <td class="sum">${M.moneyFmt(p.patient)}</td>
+        <td class="sum">${M.moneyFmt(p.billMinusPatient)}</td>
+      </tr>`).join("");
+    root.innerHTML = `
+      <div class="bar">
+        <h2>The match</h2>
+        <div class="sum">Bill ${M.moneyFmt(r.billTotal)} · EOB patient ${M.moneyFmt(r.eobPatient)}</div>
+      </div>
+      <p class="lede">Flags are screens, not findings. Each one cites a page we fetched. Read the source before you send anything.</p>
+      ${flags}
+      <h3>Matched lines</h3>
+      <table><thead><tr><th>Code</th><th>Billed</th><th>EOB patient</th><th>Bill − patient</th></tr></thead>
+      <tbody>${pairs || "<tr><td colspan=4>None matched yet.</td></tr>"}</tbody></table>
+      <p class="note">${r.match.unmatchedBill.length} unmatched bill line(s) · ${r.match.unmatchedEob.length} unmatched EOB line(s)</p>
+    `;
+  }
+
+  function renderClocks(root) {
+    const f = state.file;
+    const days = M.daysBetween(f.collectorFirstContact, f.asOfDate || M.todayISO());
+    let clock = "—";
+    let note = "Enter the collector's first contact (or the date you received the validation notice).";
+    if (days != null) {
+      const left = 30 - days;
+      clock = left >= 0 ? String(left) : "0";
+      note = left >= 0
+        ? "Days remaining on a 30-day count from the date you typed. 15 U.S.C. § 1692g uses receipt of the notice, not our guess."
+        : "Window appears closed. You can still dispute; it is not an admission of liability (§ 1692g(c)).";
+    }
+    const pct = (f.householdIncome !== "" && f.householdIncome != null && f.householdSize)
+      ? M.fplPercent(f.householdIncome, f.fplRegion || "contiguous", f.householdSize)
+      : null;
+    root.innerHTML = `
+      <h2>Clocks</h2>
+      <p class="lede">The only timer that matters the week a collector writes is thirty days.</p>
+      <div class="clock">${esc(clock)}</div>
+      <p class="note">${esc(note)}</p>
+      <p>Validation sent: <strong>${esc(f.validationSentOn || "not yet")}</strong></p>
+      <h3>2026 HHS poverty guideline (this household)</h3>
+      <p class="sum">${M.moneyFmt(M.fplFor(f.fplRegion || "contiguous", f.householdSize || 1))} at 100% FPL
+        ${pct != null ? " · this file is " + pct + "% of FPL" : ""}</p>
+      <p class="note">Source: Federal Register 2026-01-15, FR Doc. 2026-00755. Charity care is the hospital's policy, not this number.</p>
+      <p class="note">Credit-report aside: Equifax/Experian/TransUnion said (2023-04-11) medical collections under $500 are off U.S. files. Collectors can still call. The 2025 CFPB rule that would have removed all medical debt from reports was vacated 2025-07-11.</p>
+    `;
+  }
+
+  function renderLetters(root) {
+    const locked = !licensed();
+    const nav = M.letterTypes().map(([id, label]) => {
+      const need = locked && !FREE_LETTERS.has(id);
+      return `<button class="btn${state.letter===id?" primary":""}${need?" locked":""}" data-l="${id}">${esc(label)}${need?" · paid":""}</button>`;
+    }).join("");
+    let body, title, to;
+    if (locked && !FREE_LETTERS.has(state.letter)) {
+      title = "Founding File required";
+      to = "";
+      body = "The free tier writes the itemized-bill request — the letter almost every guide says to send first.\n\nUnlock the rest with a Founding File license ($39, one time). Demo key for this package: " + M.DEMO_KEY + "\n\nNo account. The key is checked on this computer only.";
+    } else {
+      const L = M.letters(state.file, state.letter);
+      title = L.title; to = L.to; body = L.body;
+    }
+    root.innerHTML = `
+      <h2>Letters</h2>
+      <p class="lede">Print. Sign. Certified mail, return receipt. Keep the green card in this folder.</p>
+      <div class="letter-col">
+        <div class="letter-nav">${nav}</div>
+        <div>
+          <h3>${esc(title)}</h3>
+          <p class="note">To: ${esc(to)}</p>
+          <pre class="letter" id="letterBody">${esc(body)}</pre>
+          <div class="row-actions">
+            <button class="btn" id="copyL">Copy</button>
+            <button class="btn" id="printL">Print this letter</button>
+          </div>
+        </div>
+      </div>`;
+    root.querySelectorAll("[data-l]").forEach((b) => {
+      b.addEventListener("click", () => { state.letter = b.getAttribute("data-l"); persist(); render(); });
+    });
+    root.querySelector("#copyL").addEventListener("click", async () => {
+      try { await navigator.clipboard.writeText(body); } catch (e) {}
+    });
+    root.querySelector("#printL").addEventListener("click", () => window.print());
+  }
+
+  function renderLog(root) {
+    const lines = (state.file.log || []).map((l, i) => `
+      <div class="logline">
+        <input data-i="${i}" data-k="date" type="date" value="${esc(l.date)}">
+        <input data-i="${i}" data-k="note" value="${esc(l.note)}">
+        <button class="btn" data-del="${i}">×</button>
+      </div>`).join("");
+    root.innerHTML = `
+      <h2>Call and mail log</h2>
+      <p class="lede">Consumer Reports and CFPB-facing guides agree: paper trail beats phone memories.</p>
+      ${lines || "<p class='note'>Empty.</p>"}
+      <div class="row-actions"><button class="btn" id="addLog">Add line</button></div>`;
+    root.querySelectorAll(".logline input").forEach((inp) => {
+      inp.addEventListener("input", () => {
+        state.file.log[Number(inp.getAttribute("data-i"))][inp.getAttribute("data-k")] = inp.value;
+        persist();
+      });
+    });
+    root.querySelectorAll("[data-del]").forEach((b) => {
+      b.addEventListener("click", () => { state.file.log.splice(Number(b.getAttribute("data-del")), 1); persist(); render(); });
+    });
+    root.querySelector("#addLog").addEventListener("click", () => {
+      state.file.log = state.file.log || [];
+      state.file.log.push({ date: M.todayISO(), note: "" });
+      persist(); render();
+    });
+  }
+
+  function render() {
+    renderTabs();
+    const root = document.getElementById("view");
+    const tab = state.tab;
+    if (tab === "cover") renderCover(root);
+    else if (tab === "bill") renderLines(root, "bill");
+    else if (tab === "eob") renderLines(root, "eob");
+    else if (tab === "match") renderMatch(root);
+    else if (tab === "clocks") renderClocks(root);
+    else if (tab === "letters") renderLetters(root);
+    else renderLog(root);
+  }
+
+  document.getElementById("btnNew").onclick = () => {
+    if (!confirm("Replace the open file with a blank cover?")) return;
+    state.file = M.emptyCase(); persist(); render();
+  };
+  document.getElementById("btnSample").onclick = () => {
+    state.file = M.sampleCase(); persist(); state.tab = "match"; render();
+  };
+  document.getElementById("btnOpen").onclick = () => document.getElementById("fileIn").click();
+  document.getElementById("fileIn").onchange = (ev) => {
+    const file = ev.target.files && ev.target.files[0];
+    if (!file) return;
+    const r = new FileReader();
+    r.onload = () => {
+      try {
+        const data = JSON.parse(String(r.result));
+        state.file = data.file || data;
+        persist(); render();
+      } catch (e) { alert("Could not read that file."); }
+    };
+    r.readAsText(file);
+    ev.target.value = "";
+  };
+  document.getElementById("btnSave").onclick = () => {
+    const blob = new Blob([JSON.stringify({ kind: "manila-file", v: 1, file: state.file }, null, 2)], { type: "application/json" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = (state.file.patientName || "manila").replace(/\s+/g, "-") + ".manila";
+    a.click();
+    URL.revokeObjectURL(a.href);
+  };
+  document.getElementById("btnPrint").onclick = () => {
+    state.tab = "letters"; render();
+    setTimeout(() => window.print(), 50);
+  };
+  document.getElementById("btnLicense").onclick = () => {
+    const next = prompt("Founding File key (format MNL-XXXX-XXXX-XX). Demo: " + M.DEMO_KEY, state.license || "");
+    if (next == null) return;
+    state.license = next.trim();
+    persist();
+    alert(licensed() ? "License accepted on this computer." : "That key did not verify. Free tier stays on.");
+    render();
+  };
+
+  render();
+})();
+</script>
+</body>
+</html>

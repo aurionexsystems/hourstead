@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 140" role="img" aria-label="Manila folder mark">
+  <rect width="160" height="140" fill="#2b241c"/>
+  <path d="M18 42h44l10 10h70v70H18z" fill="#e6c27a"/>
+  <path d="M18 52h124v60H18z" fill="#d7b36a"/>
+  <rect x="36" y="68" width="88" height="64" fill="#f6efe0"/>
+  <path d="M36 68h88v8H36z" fill="#efe6d2"/>
+  <rect x="108" y="74" width="28" height="16" fill="none" stroke="#b42318" stroke-width="2" transform="rotate(12 122 82)"/>
+  <text x="110" y="86" fill="#b42318" font-size="7" font-family="ui-monospace,monospace" transform="rotate(12 122 82)">HOLD</text>
+</svg>

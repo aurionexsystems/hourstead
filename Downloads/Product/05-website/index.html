@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Manila — Don't pay the first number</title>
+<meta name="description" content="A local medical-bill file. Match the bill to the EOB. Run the thirty-day clock. Print the letters. Nothing uploads.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect fill='%232b241c' width='64' height='64'/><path fill='%23e6c27a' d='M8 18h18l6 6h24v28H8z'/></svg>">
+<style>
+  :root {
+    --desk: #241e18;
+    --paper: #f6efe0;
+    --folder: #e6c27a;
+    --ink: #1b140e;
+    --stamp: #b42318;
+    --muted: #6a5b45;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--desk); color: var(--paper); }
+  body { font: 20px/1.5 "Iowan Old Style", Palatino, Georgia, serif; }
+  a { color: var(--folder); }
+  .wrap { max-width: 860px; margin: 0 auto; padding: 48px 22px 100px; }
+  .mark { font-size: 12px; letter-spacing: .32em; text-transform: uppercase; color: var(--folder); }
+  h1 { font-size: clamp(40px, 8vw, 72px); line-height: 1.05; margin: 12px 0 16px; font-weight: 500; }
+  .sub { font-size: 22px; color: #e8d9b4; max-width: 28ch; }
+  .cta { display: flex; gap: 12px; flex-wrap: wrap; margin: 28px 0 8px; }
+  .btn {
+    display: inline-block; padding: 12px 18px; text-decoration: none;
+    border: 1px solid var(--folder); color: var(--desk); background: var(--folder);
+  }
+  .btn.ghost { background: transparent; color: var(--folder); }
+  .note { font-size: 14px; color: #b7a888; }
+  .folder-hero {
+    margin: 40px 0 56px; background: linear-gradient(#d7b36a, #e6c27a);
+    color: var(--ink); padding: 22px 22px 28px; box-shadow: 0 24px 60px rgba(0,0,0,.4);
+  }
+  .folder-hero h2 { margin: 0 0 8px; font-size: 28px; }
+  .folder-hero ol { margin: 0; padding-left: 20px; }
+  h2 { font-size: 32px; margin: 48px 0 12px; font-weight: 500; }
+  blockquote {
+    margin: 16px 0; padding: 8px 0 8px 18px; border-left: 3px solid var(--stamp);
+    font-size: 22px;
+  }
+  cite { display: block; font-size: 13px; color: #b7a888; font-style: normal; margin-top: 8px; }
+  table { width: 100%; border-collapse: collapse; font-size: 16px; }
+  th, td { text-align: left; padding: 8px 6px; border-bottom: 1px solid #3d3428; vertical-align: top; }
+  .price {
+    display: flex; gap: 20px; flex-wrap: wrap; margin: 20px 0;
+  }
+  .card {
+    flex: 1 1 240px; border: 1px solid #3d3428; padding: 18px;
+    background: #2b241c;
+  }
+  .card strong { display: block; font-size: 34px; margin: 8px 0; }
+  footer { margin-top: 64px; font-size: 13px; color: #9a8b70; }
+  .stamp {
+    display: inline-block; border: 2px solid var(--stamp); color: var(--stamp);
+    padding: 2px 8px; letter-spacing: .14em; font-size: 12px;
+    font-family: ui-monospace, Menlo, monospace; transform: rotate(-6deg);
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="mark">Manila File · manilafile.com</div>
+  <h1>Don't pay the first number.</h1>
+  <p class="sub">A manila folder for the bill, the EOB, and the thirty-day clock. It never leaves this computer.</p>
+  <div class="cta">
+    <a class="btn" href="app/manila.html">Open the file</a>
+    <a class="btn ghost" href="#price">$39 Founding File</a>
+  </div>
+  <p class="note">Local HTML. No account. Demo key inside the file. Checkout is not connected in this package — see the proof memo.</p>
+
+  <div class="folder-hero">
+    <h2>What you do tonight</h2>
+    <ol>
+      <li>Type the provider bill. Type the Explanation of Benefits. (The EOB is not a bill.)</li>
+      <li>Read the flags. Each one cites a page we actually fetched — CFPB, CMS, IRS, the Federal Register.</li>
+      <li>Print a letter. Certified mail. Keep the green card in the same folder as the <code>.manila</code> file.</li>
+    </ol>
+  </div>
+
+  <h2>This is not a 2021 PDF.</h2>
+  <p>On 29 July 2026 a person told the Consumer Financial Protection Bureau that a collector was still reporting medical debt after the original provider confirmed the balance was <strong>$0.00</strong>.</p>
+  <blockquote>
+    “attempting to collect and report medical debt that I do not owe … even though the original medical provider confirmed that my balance is {$0.00}.”
+    <cite>CFPB Consumer Complaint Database, complaint received 2026-07-29, Ability Recovery Services, LLC — public API extract, redactions theirs.</cite>
+  </blockquote>
+  <p>In February 2025, NBC Connecticut named Lisa Horan of Somers: she paid a <strong>$2,206</strong> ER invoice; the check was cashed; a collector texted her anyway.</p>
+  <p>The CFPB’s own (archived) newsroom line is the category:</p>
+  <blockquote>
+    “Many Americans feel forced to pay medical bills that they have already paid or never owed to begin with.”
+    <cite>Rohit Chopra, CFPB — consumerfinance.gov newsroom, medical billing bulletin.</cite>
+  </blockquote>
+
+  <h2>What changed in 2025, and did not un-change</h2>
+  <p>A CFPB rule that would have pulled medical debt off credit reports was <strong>vacated on 11 July 2025</strong> (Eastern District of Texas; the Bureau’s own rule page says so). Equifax, Experian, and TransUnion still say medical collections <em>under $500</em> stay off U.S. files — a 2023 policy, not a law. Collectors still write. The thirty-day validation window in <strong>15 U.S.C. § 1692g</strong> still exists.</p>
+
+  <h2>Who this is for</h2>
+  <p>You have a statement, an EOB that does not match it, or a collector text. You can type. You will not upload your member ID to a startup so their model can “handle it.”</p>
+  <p>If your income may qualify at a <em>nonprofit hospital</em>, start with <a href="https://dollarfor.org/">Dollar For</a> (free; hospital charity care only; they say so). If you want a human to call, and the bill is unpaid and not in collections, Goodbill’s published consumer fee is <strong>20% of savings, capped at $1,000</strong>. If the bill is already paid, or already at a collector, those doors are often closed. That is the gap.</p>
+
+  <h2 id="price">Price</h2>
+  <div class="price">
+    <div class="card">
+      <span class="stamp">FREE</span>
+      <strong>$0</strong>
+      One file. The itemized-bill request — the letter almost every guide says to send first.
+    </div>
+    <div class="card">
+      <span class="stamp">FOUNDING</span>
+      <strong>$39</strong>
+      Once. The rest of the pack: EOB mismatch, insurer, FDCPA validation, FCRA, financial assistance, No Surprises notes, CFPB narrative. Forever, on your machine.
+    </div>
+  </div>
+  <p class="note">No percentage of your savings. We never see the savings. We never see the file. A payment link is the owner’s remaining step; this build did not create a merchant account.</p>
+
+  <h2>What we refuse to say</h2>
+  <table>
+    <tr><th>Tempting line</th><th>Why it is not on this page</th></tr>
+    <tr><td>“80% of hospital bills have errors”</td><td>Advocate-trade-group figure. Not our fact.</td></tr>
+    <tr><td>“We’ll recover $X”</td><td>We have not collected a dollar for anyone.</td></tr>
+    <tr><td>“AI reads your bill”</td><td>That requires your bill. The point is that it doesn’t.</td></tr>
+    <tr><td>Customer initials and 5 stars</td><td>Invented social proof is a lie. We have none yet.</td></tr>
+  </table>
+
+  <h2>Open it</h2>
+  <div class="cta">
+    <a class="btn" href="app/manila.html">Launch Manila</a>
+    <a class="btn ghost" href="legal.html">Not legal advice</a>
+  </div>
+  <p class="note">Demo Founding key, for this package only: <code>MNL-DEM0-F1LE-NV</code></p>
+
+  <footer>
+    Manila File. Not a law firm, not a medical provider, not affiliated with CMS or the CFPB.
+    Sources: CFPB complaint API; CFPB newsroom; NBC Connecticut 2025-02-10; CMS Medical Bill Rights; 15 U.S.C. § 1692g; Federal Register 2026-00755; Equifax IR 2023-04-11; CFPB Regulation V page (vacatur 2025-07-11). Full citations in the research dossier shipped with this package.
+  </footer>
+</div>
+</body>
+</html>

@@ -1,3 +1,11 @@
+# Run #2 lives in Downloads/Product/
+
+**Manila** (2026-08-20) — local medical-bill file. Start at [Downloads/Product/README.md](Downloads/Product/README.md).
+
+Hourstead (Run #1) remains below.
+
+---
+
 # Hourstead — the finished package (Run #1)
 
 **A company built from scratch in one autonomous run, 2026-07-10.**
