@@ -1,3 +1,11 @@
+# Run #2 lives in Downloads/Product/
+
+**Dayticket** (2026-08-20) — local extra-work / change-order ticket for trades. No card processing. No job file on our servers. Start at [Downloads/Product/README.md](Downloads/Product/README.md).
+
+Manila and Postmark were dumped: HIPAA is expensive; nothing with medicine; no consumer-complaint identity file. Hourstead (Run #1) remains below.
+
+---
+
 # Hourstead — the finished package (Run #1)
 
 **A company built from scratch in one autonomous run, 2026-07-10.**

@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 64" role="img" aria-label="Dayticket">
+  <rect width="360" height="64" fill="#1c1917"/>
+  <text x="24" y="42" fill="#fff8eb" font-size="28" font-family="Georgia,serif">Dayticket</text>
+  <text x="200" y="40" fill="#c2410c" font-size="12" font-family="ui-monospace,monospace" letter-spacing="2">SIGN THE EXTRA</text>
+</svg>
