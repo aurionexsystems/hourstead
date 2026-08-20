@@ -25,10 +25,18 @@
 - A 50-state statute table. If we didn’t fetch it, it is not in the app.
 - Any “we will email the carrier for you.” That would be publishing + unauthorized practice.
 
-## Verify
+## Verify (2026-08-20)
 
 ```bash
 python3 04-product/test_eavefile.py
 ```
 
-Assertions: license math, free-tier caps, deadline arithmetic, CA 75 / FL 120 / TX 60 cards, letter merge fields, packet contents, export round-trip, watermark present then gone after unlock.
+Chromium (system Chrome) via Playwright. All assertions green, zero `pageerror`:
+
+- static: demo key, brand, fetched URLs present, invented FL complaint URL absent
+- license math: `EF1-SHOW-THEM-GR00` valid; bad checksum and Hourstead key rejected
+- deadline arithmetic: 75 / 120 day spans
+- free tier: 2nd case blocked; 6th exhibit blocked
+- letters: address, policy, carrier, alleged condition, CA source merge into request + packet
+- unlock: second case allowed; `[draft / free tier]` mark removed
+- export JSON `version: 1` with both cases

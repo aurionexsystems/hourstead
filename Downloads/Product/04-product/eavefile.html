@@ -183,7 +183,7 @@ function validKey(k){
 }
 function emptyCase(){
   return {
-    id: uid("case"),
+    id: uid("c"),
     created: todayISO(),
     address: "", city: "", state: "", zip: "",
     carrier: "", policyNumber: "", agentName: "", agentEmail: "",
@@ -247,6 +247,7 @@ function letterRequest(c){
     "Property: " + [c.address, c.city, c.state, c.zip].filter(Boolean).join(", "),
     "",
     "I am the named insured on the policy above. I received a " + (c.noticeKind === "nonrenewal" ? "nonrenewal" : "condition / underwriting") + " notice dated " + (c.noticeDate || "[date]") + ".",
+    (c.alleged ? "The notice states: " + c.alleged : ""),
     "",
     "Please send me, in writing:",
     "1. The specific reason or reasons for the action, including each property condition you are relying on.",
@@ -672,7 +673,7 @@ window.Eavefile = {
   validKey, daysBetween, letterRequest, letterAppeal, letterComplaint, packetText,
   get store(){ return store; },
   setStore(s){ store = Object.assign(defaultStore(), s); saveLocal(); },
-  newCase(){ const c = emptyCase(); store.cases.push(c); view.page="case"; view.caseId=c.id; view.tab="notice"; saveLocal(); render(); return c; },
+  newCase(){ if (!canAddCase()) return null; const c = emptyCase(); store.cases.push(c); view.page="case"; view.caseId=c.id; view.tab="notice"; saveLocal(); render(); return c; },
   open(id){ view.page="case"; view.caseId=id; render(); },
   saveNotice(fields){ const c = currentCase(); Object.assign(c, fields); saveLocal(); render(); return c; },
   addEvidence(ev){ const c = currentCase(); if (!canAddEvidence(c)) return { blocked:true, count:c.evidence.length }; c.evidence.push(Object.assign({id:uid("ev")}, ev)); saveLocal(); render(); return { blocked:false, count:c.evidence.length }; },

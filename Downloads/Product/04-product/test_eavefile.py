@@ -98,7 +98,10 @@ def browser_tests() -> None:
     url = f"http://127.0.0.1:{port}/eavefile.html"
     try:
         with sync_playwright() as p:
-            browser = p.chromium.launch()
+            browser = p.chromium.launch(
+                executable_path="/usr/local/bin/google-chrome",
+                args=["--no-sandbox", "--disable-gpu"],
+            )
             page = browser.new_page()
             errs: list[str] = []
             page.on("pageerror", lambda e: errs.append(str(e)))

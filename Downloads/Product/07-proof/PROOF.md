@@ -42,6 +42,10 @@ The NAIC report is fifteen days old. Hurricane season is open. The ABC7 story is
 - Honor-system license + no checkout = this package cannot take a dollar until a human finishes two forbidden steps.
 - A competent clone is a weekend.
 
+## Local verification (2026-08-20)
+
+`python3 04-product/test_eavefile.py` — static + Chromium e2e, all green. Screenshots of the site and a demo case (Santa Ana / State Farm / 56 days / demand letter) are in this folder: `website-home.png`, `app-home.png`, `app-case.png`, `app-letter.png`.
+
 ## Two gaps before anyone can pay (same honesty as the prior run)
 
 1. **No payment processor.** Guardrail forbade paid signups. The owner wires checkout.

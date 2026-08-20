@@ -90,3 +90,17 @@ Shipped: case, clock, sourced state cards, walk-the-lot, evidence locker, 3 lett
 
 We claim the packet is the known instrument (State Farm's own words; NerdWallet; TDI; CID). We do **not** claim Eavefile caused Bennett's renewal. ABC7 did.
 
+---
+
+## Phase 5 — verification
+
+**Q: Playwright not installed?** Installed the free Python package and pointed it at system Chrome (`/usr/local/bin/google-chrome`). No paid service.
+
+First e2e fail: test hook `newCase()` ignored the free-tier cap. Fixed so the cap is real, not just a disabled button.
+
+Second e2e fail: alleged-condition text was in the packet/appeal but not the demand letter. Added it. That is a better letter anyway.
+
+Re-run: all assertions green, zero `pageerror`. Screenshots in `07-proof/`.
+
+**Still cut:** File System Access auto-save. Export is the 1.0 exit door.
+
