@@ -1,0 +1,705 @@
+
+
+Insurance companies using aerial imagery to determine if they'll renew home coverage : NPR
+
+ 
+ 
+
+ Accessibility links 
+ Skip to main content
+
+ Keyboard shortcuts for audio player
+
+ 
+
+ 
+ 
+
+ 
+ 
+
+ 
+ 
+ 
+ 
+ 
+ Open Navigation Menu
+ 
+ 
+
+ 
+ 
+
+ 
+ 
+ 
+
+ 
+
+ 
+ 
+ 
+ 
+ Newsletters
+ 
+ 
+
+ 
+
+ 
+
+ 
+ 
+ 
+ NPR Shop
+ 
+ 
+
+ 
+ 
+ 
+ Get NPR+
+ 
+ 
+
+ 
+
+ 
+ 
+
+ 
+ 
+ 
+ 
+ 
+ Close Navigation Menu
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ Home
+ 
+ 
+
+ 
+
+ 
+ 
+ 
+ 
+ News
+ 
+ 
+ 
+ 
+ Expand/collapse submenu for News
+ 
+ 
+
+ 
+ National
+
+ World
+
+ Politics
+
+ Business
+
+ Health
+
+ Science
+
+ Climate
+
+ Race
+
+ 
+ 
+
+ 
+ 
+ 
+ 
+ Culture
+ 
+ 
+ 
+ 
+ Expand/collapse submenu for Culture
+ 
+ 
+
+ 
+ Books
+
+ Movies
+
+ Television
+
+ Pop Culture
+
+ Food
+
+ Art & Design 
+
+ Performing Arts
+
+ Life Kit
+
+ Gaming
+
+ 
+ 
+
+ 
+ 
+ 
+ 
+ Music
+ 
+ 
+ 
+ 
+ Expand/collapse submenu for Music
+ 
+ 
+
+ 
+ 
+ Tiny Desk
+ 
+
+ 
+ New Music Friday
+ 
+
+ 
+ All Songs Considered
+ 
+
+ 
+ Music Features
+ 
+
+ 
+ Live Sessions
+ 
+
+ 
+
+ 
+ 
+ 
+ 
+ Podcasts & Shows
+ 
+ 
+ 
+ 
+ Expand/collapse submenu for Podcasts & Shows
+ 
+ 
+
+ 
+ Daily
+ 
+ 
+ 
+ 
+ Morning Edition
+ 
+ 
+
+ 
+ 
+ 
+ Weekend Edition Saturday
+ 
+ 
+
+ 
+ 
+ 
+ Weekend Edition Sunday
+ 
+ 
+
+ 
+ 
+ 
+ All Things Considered
+ 
+ 
+
+ 
+ 
+ 
+ Up First
+ 
+ 
+
+ 
+ 
+ 
+ Here & Now
+ 
+ 
+
+ 
+ 
+ 
+ NPR Politics Podcast
+ 
+ 
+
+ 
+ Featured
+
+ 
+ 
+ 
+ Wait Wait...Don't Tell Me!
+ 
+
+ 
+ 
+ Fresh Air
+ 
+
+ 
+ 
+ Wild Card with Rachel Martin
+ 
+
+ 
+ 
+ It's Been a Minute
+ 
+
+ 
+ 
+ Embedded
+ 
+
+ 
+ 
+ 
+ 
+ Get NPR+
+ 
+ 
+
+ More Podcasts & Shows
+
+ 
+ 
+
+ 
+
+ 
+ 
+ 
+ 
+ Search
+ 
+ 
+
+ 
+
+ 
+ 
+ 
+ 
+ Newsletters
+ 
+ 
+
+ 
+
+ 
+ 
+ 
+ 
+ NPR Shop
+ 
+ 
+
+ 
+
+ 
+ 
+ 
+ 
+ Get NPR+
+ 
+ 
+
+ 
+
+ 
+
+ 
+ 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+ 
+ 
+ Tiny Desk
+ 
+
+ 
+ New Music Friday
+ 
+
+ 
+ All Songs Considered
+ 
+
+ 
+ Music Features
+ 
+
+ 
+ Live Sessions
+ 
+
+ 
+ 
+
+ 
+ 
+ 
+ 
+ About NPR
+
+ Diversity
+
+ Support
+
+ Careers
+
+ Press
+
+ Ethics
+
+ 
+ 
+
+ 
+
+ Insurance companies using aerial imagery to determine if they'll renew home coverage As insurance companies expand the use of satellites and drones to determine if they'll continue to cover homes in Texas, complaints for non-renewals and policy cancellations are growing quickly.
+
+ 
+
+ 
+ Business
+ 
+
+ Insurance companies using aerial imagery to determine if they'll renew home coverage
+
+ 
+ 
+ 
+
+ 
+ 
+ 
+ 
+ May 30, 20254:52 PM ET
+ 
+
+ 
+ Heard on All Things Considered
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+ 
+ 
+ 
+ By 
+ 
+ 
+ 
+ Audrey McGlinchy
+ 
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+ Insurance companies using aerial imagery to determine if they'll renew home coverage
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ Listen
+ 
+ 
+ · 
+ 3:54
+ 
+ 
+ 
+ 
+
+ 
+ 3:54
+ 
+ 
+
+ 
+ 
+ 
+ 
+ Transcript
+ 
+ 
+ 
+ Toggle more options
+ 
+ 
+ Download
+ 
+
+ 
+ Embed
+
+ 
+ 
+ 
+ 
+ 
+ 
+ Embed
+ 
+ 
+
+ 
+ <iframe src="https://www.npr.org/player/embed/nx-s1-5400372-e1/nx-s1-5475295-1" width="100%" height="290" frameborder="0" scrolling="no" title="NPR embedded audio player">
+ 
+
+ 
+
+ 
+
+ 
+ 
+ 
+ Transcript
+ 
+ 
+
+ 
+ 
+
+ As insurance companies expand the use of satellites and drones to determine if they'll continue to cover homes in Texas, complaints for non-renewals and policy cancellations are growing quickly.
+ 
+ Sponsor Message
+
+ 
+ 
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+ 
+ 
+ Transcript
+ 
+ 
+
+ JUANA SUMMERS, HOST: It's getting harder and more expensive to find homeowner's insurance in the U.S. In Texas, federal data shows insurers are often deciding not to renew policies, and insurance companies sometimes make those decisions by relying on computers, analyzing information about homes that no inspector visited. Audrey McGlinchy from member station KUT reports.AUDREY MCGLINCHY, BYLINE: Tracy Gartenmann got an email from her insurance company in January. Travelers insurance told her she had two months to trim the trees near her house or risk losing coverage.TRACY GARTENMANN: I thought it was a scam.MCGLINCHY: Two grainy photos taken from above Gartenmann's home in Austin were attached to the email. Gartenmann says she had no idea her insurance company had sky-high eyes on her house.GARTENMANN: I've never spent a whole lot of time thinking about my homeowner's insurance. But I guess it wouldn't have crossed my mind that that would've been a mechanism or technique that a corporation could use.MCGLINCHY: Interviews with homeowners and documents obtained through records requests, including a dozen state investigations, confirm insurers in Texas commonly use aerial images and artificial intelligence to decide if they will keep insuring homes. It's long been industry standard to use satellite or airplane photos to assess storm damage. But using these images to determine policy renewals is relatively new, and homeowners and consumer advocates worry the practice leads to inaccuracies. Ware Wendell is the head of Texas Watch, a consumer advocacy group.WARE WENDELL: We're really losing the human touch when it comes to the purchasing and servicing and adjusting of insurance policies, and I think that that's a bad thing for policyholders.MCGLINCHY: Since 2023, at least a dozen homeowners have asked the Texas Department of Insurance to investigate the use of aerial photos by insurance companies. In one case, a homeowner lost coverage after an insurance company looked at the wrong image. That story bugs Alaina Callahan. Callahan lives outside Houston. In March, her insurer said if she wanted to keep her coverage, she needed a new roof, but her roof was only 5 years old and in good condition. Callahan asked to see the aerial photos they had used.ALAINA CALLAHAN: How did they inspect my house? Where's the images? What images are they using?MCGLINCHY: In filings with the state, five insurers operating in Texas say they use third-party aerial photos. Some of these same companies say they use AI to analyze these images, which Callahan says she never got to see.CALLAHAN: I had no recourse as a homeowner. None whatsoever.MCGLINCHY: We sent a list of questions to five home insurance companies operating in Texas, including Travelers insurance. We asked how they use aerial photos, how accurate they are and what rights homeowners have to contest any conclusions. Two companies responded with general statements in which they confirmed using aerial photos but said little else.(SOUNDBITE OF CONSTRUCTION EQUIPMENT WHIRRING)MCGLINCHY: On any given day, you can drive around central Texas and see workers replacing roofs. It makes sense that insurers want eyes on this part of a home. Damaged roofs are often their biggest liability. Industry experts say using aerial photos and AI is more efficient and cheaper than sending out human inspectors.MARK FRIEDLANDER: Which is very invasive and, also, could be potentially hazardous because that inspector typically would have to climb on your roof to assess the roof.MCGLINCHY: Mark Friedlander works for the Insurance Information Institute, an industry organization. The use of aerial images and AI is not just happening in Texas. According to news reports, insurers in California, Pennsylvania and Florida are using aerial photos to decide whether to drop customers. It's a practice Friedlander says will only become more common.FRIEDLANDER: Companies that still haven't adopted this technology? They will eventually.MCGLINCHY: So next time you look up, smile. It might be your insurance company.For NPR News, I'm Audrey McGlinchy in Austin.
+
+ Copyright © 2025 NPR. All rights reserved. Visit our website terms of use and permissions pages at www.npr.org for further information.
+
+ 
+ Accuracy and availability of NPR transcripts may vary. Transcript text may be revised to correct errors or match updates to audio. Audio on npr.org may be edited after its original broadcast or publication. The authoritative record of NPR’s programming is the audio record.
+ 
+
+ 
+ Facebook
+
+ Flipboard
+
+ Email
+
+ 
+
+ 
+
+ 
+
+ 
+ 
+
+ 
+
+ 
+ 
+ Read & Listen
+
+ 
+ Home
+
+ News
+
+ Culture
+
+ Music
+
+ Podcasts & Shows
+
+ 
+ 
+
+ 
+ Connect
+
+ 
+ Newsletters
+
+ Facebook
+
+ Instagram
+
+ Press
+
+ Public Editor
+
+ Corrections
+
+ Transcripts
+
+ Contact & Help
+
+ 
+ 
+
+ 
+ About NPR
+
+ 
+ Overview
+
+ Diversity
+
+ NPR Network
+
+ Accessibility
+
+ Ethics
+
+ Finances
+
+ 
+ 
+
+ 
+ Get Involved
+
+ 
+ Support Public Radio
+
+ Sponsor NPR
+
+ NPR Careers
+
+ NPR Shop
+
+ NPR Extra
+
+ 
+ 
+
+ 
+
+ 
+ 
+ Terms of Use
+
+ Privacy
+
+ Your Privacy Choices
+
+ Text Only
+
+ 
+
+ 
+ 
+
+ 
+
+ 
+ 
+
+ 
+ 
+ 
+
+ 
+
+ 
+ Sponsor Message
+
+ 
+ 
+
+ 
+
+ 
+ Sponsor Message
+
+ Become an NPR sponsor
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Eavefile — show them the ground</title>
+<meta name="description" content="A local-first case file for the aerial-imagery insurance notice. Demand the photo. File the proof. Keep coverage — or at least the paper trail."/>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 96'%3E%3Crect width='96' height='96' rx='18' fill='%231B2430'/%3E%3Cpath d='M18 44 L48 22 L78 44' fill='none' stroke='%23C45C26' stroke-width='8'/%3E%3C/svg%3E"/>
+<style>
+  :root {
+    --ink: #1B2430; --paper: #F3EDE2; --card: #FFFCF6; --copper: #C45C26;
+    --muted: #5C6570; --line: #D4CBBC; --warn: #8F1D1D;
+    --serif: Georgia, "Iowan Old Style", Palatino, serif;
+    --sans: "Segoe UI", system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--sans); }
+  a { color: var(--copper); }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 22px 22px 80px; }
+  header { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+  .brand { display: flex; gap: 12px; align-items: center; text-decoration: none; color: inherit; }
+  .brand b { font-family: var(--serif); font-size: 24px; }
+  .nav a { margin-left: 18px; text-decoration: none; color: var(--ink); font-size: 14px; }
+  h1 { font-family: var(--serif); font-size: clamp(40px, 7vw, 78px); line-height: .98; letter-spacing: -.03em; margin: 28px 0 16px; }
+  h2 { font-family: var(--serif); font-size: 32px; margin: 0 0 12px; }
+  .lede { font-size: 20px; max-width: 40ch; color: var(--muted); }
+  .cta { display: inline-block; background: var(--ink); color: #fff; text-decoration: none; padding: 12px 18px; border-radius: 8px; margin-right: 10px; }
+  .cta.sec { background: transparent; color: var(--ink); border: 1px solid var(--ink); }
+  .hero-grid { display: grid; grid-template-columns: 1.2fr .8fr; gap: 28px; align-items: end; margin: 20px 0 50px; }
+  .letter { background: var(--card); border: 1px solid var(--line); padding: 22px; box-shadow: 0 16px 40px rgba(27,36,48,.08); font-family: var(--serif); transform: rotate(-1.2deg); }
+  .letter small { color: var(--muted); letter-spacing: .08em; text-transform: uppercase; font-family: var(--sans); font-size: 11px; }
+  .stamp { display: inline-block; border: 2px solid var(--warn); color: var(--warn); padding: 3px 8px; font-family: var(--sans); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; }
+  section { margin: 56px 0; }
+  .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .card { background: var(--card); border: 1px solid var(--line); padding: 18px; border-radius: 12px; }
+  .num { font-family: var(--serif); font-size: 40px; color: var(--copper); }
+  blockquote { margin: 0; font-family: var(--serif); font-size: 26px; line-height: 1.25; }
+  cite { display: block; margin-top: 10px; color: var(--muted); font-style: normal; font-size: 13px; }
+  .price { font-family: var(--serif); font-size: 56px; }
+  footer { border-top: 1px solid var(--line); padding-top: 20px; color: var(--muted); font-size: 13px; }
+  @media (max-width: 800px) { .hero-grid, .cards { grid-template-columns: 1fr; } .nav { display: none; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <a class="brand" href="./">
+      <svg width="40" height="40" viewBox="0 0 96 96" aria-hidden="true"><rect width="96" height="96" rx="18" fill="#1B2430"/><path d="M18 44 L48 22 L78 44" fill="none" stroke="#C45C26" stroke-width="5"/><path d="M26 44 V70 H70 V44" fill="none" stroke="#F6F1E8" stroke-width="3.5"/><rect x="40" y="50" width="22" height="28" rx="2" fill="#F6F1E8"/><path d="M40 56 H62" stroke="#C45C26" stroke-width="3"/></svg>
+      <b>Eavefile</b>
+    </a>
+    <nav class="nav">
+      <a href="#how">How it works</a>
+      <a href="#proof">Why now</a>
+      <a href="#price">Price</a>
+      <a href="app/eavefile.html">Open the app</a>
+    </nav>
+  </header>
+
+  <div class="hero-grid">
+    <div>
+      <div class="stamp">Local file · no account · no server</div>
+      <h1>The letter came from the sky. Your answer is on the ground.</h1>
+      <p class="lede">Insurers are dropping homes from aerial photos homeowners were never shown. Eavefile is the case file you finish tonight: demand the image, attach the proof, print the packet.</p>
+      <p>
+        <a class="cta" href="app/eavefile.html">Open Eavefile</a>
+        <a class="cta sec" href="#price">$49 founding license</a>
+      </p>
+    </div>
+    <aside class="letter">
+      <small>Notice of underwriting action</small>
+      <p>Dear Policyholder,</p>
+      <p>Based on a recent review of your property, your roof requires replacement with approved materials, or we will be unable to offer renewal.</p>
+      <p>No inspector visited. No image enclosed. Deadline attached.</p>
+      <p>— The carrier</p>
+    </aside>
+  </div>
+
+  <section id="proof">
+    <h2>This is not a vibe. It is a 2024 count, published this month.</h2>
+    <div class="cards">
+      <div class="card"><div class="num">2,019,799</div><p>Company-initiated homeowners nonrenewals nationwide in 2024, reported by insurers to state regulators.</p><p><a href="https://content.naic.org/sites/default/files/mcas-homeowners-property-insurance-market-dynamics-report.pdf">NAIC MCAS report, released Aug. 5, 2026</a></p></div>
+      <div class="card"><div class="num">216%</div><p>Increase in the Southeast’s company-initiated nonrenewal rate per 1,000 policies, 2018–2024. The West more than tripled in two years, to 25.1 per 1,000.</p><p><a href="https://content.naic.org/article/naic-releases-first-its-kind-national-analysis-homeowners-insurance-market-trends">NAIC press release</a></p></div>
+      <div class="card"><div class="num">$20k</div><p>What Linda Bennett of Santa Ana was told a roof replacement would cost — for a roof she said had never leaked, after no one knocked.</p><p><a href="https://abc7.com/post/orange-county-homeowner-says-insurer-secretly-used-drone-inspect-roof/18694624/">ABC7, March 9, 2026</a></p></div>
+    </div>
+  </section>
+
+  <section>
+    <blockquote>“My initial thought was it's a mistake. They've got the wrong house because there's nothing wrong with my roof.”</blockquote>
+    <cite>Linda Bennett, Santa Ana — ABC7 Eyewitness News, March 9, 2026. Three weeks later, after she pushed back, State Farm renewed her. <a href="https://abc7.com/post/state-farm-reverses-course-renews-santa-ana-womans-policy-owner-questioned-roof-assessment/18784311/">ABC7, March 30, 2026</a>. We do not claim our software caused that. We built the file both sides already described.</cite>
+  </section>
+
+  <section>
+    <h2>The carrier already told you what to send.</h2>
+    <p>State Farm, on the record to ABC7: <em>“If customers believe a review doesn't match the roof's current condition, or repairs have already been completed, customers should contact their local State Farm agent. Recent photos, a roofing invoice, or an inspection report are helpful in these conversations.”</em></p>
+    <p>NerdWallet’s consumer explainer: ask why, ask to see the images and when they were taken, then contest with current photos or a licensed inspection. United Policyholders documents wrong-house flags and skylights read as roofing. Connecticut’s department said in 2024 and again in February 2026 that cosmetic discoloration and streaking should not support a nonrenewal.</p>
+    <p>The playbook is public. The software to finish it in one sitting, on a machine you own, was not.</p>
+  </section>
+
+  <section id="how">
+    <h2>What you actually do</h2>
+    <div class="cards">
+      <div class="card"><h3>1. Start the file</h3><p>Paste the notice. Set the coverage-end date. The clock is the product.</p></div>
+      <div class="card"><h3>2. Read your state card</h3><p>Sourced notice rules for CA, FL, TX, CT, plus aerial-image limits summarized for GA, IN, LA, MD. Every card has the URL we fetched. If we didn’t fetch it, we don’t invent it.</p></div>
+      <div class="card"><h3>3. Print the packet</h3><p>Three drafts: demand the images, appeal with exhibits, department complaint. Evidence locker. One printable packet. Export a <code>.eave.json</code> you can keep after the browser forgets you.</p></div>
+    </div>
+    <p style="margin-top:18px"><a class="cta" href="app/eavefile.html">Open the working app</a></p>
+  </section>
+
+  <section id="price">
+    <h2>One price. One file. No rent.</h2>
+    <p class="price">$49</p>
+    <p>Founding License, once. Free tier: one case, five exhibits, watermarked drafts. Walk-the-lot checklist is always free — do it two months before renewal, the way Doug Heller at CFA told NerdWallet to shop quotes anyway.</p>
+    <p>Checkout is not wired in this package. The run that built this was forbidden from paid signups. The license check is an honor-system key in the file. Demo key: <code>EF1-SHOW-THEM-GR00</code>.</p>
+  </section>
+
+  <section>
+    <h2>Honest limits</h2>
+    <p>Eavefile does not call the carrier. It does not buy you a new policy. It does not guarantee a reversal — Bennett’s renewal followed a TV newsroom, not an app. A market-exit nonrenewal (the company leaving your ZIP) will not be talked out of with photos. Shop replacement coverage the same day you start the file. This is not legal advice and not an insurance agency.</p>
+  </section>
+
+  <footer>
+    <p>Eavefile · local-first case file · not a law firm. Sources on this page were fetched 2026-08-20. Domain eavefile.com was RDAP-available (HTTP 404 at rdap.verisign.com) and was not purchased. <a href="app/eavefile.html">App</a></p>
+  </footer>
+</div>
+</body>
+</html>
